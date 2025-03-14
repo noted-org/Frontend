@@ -1,1 +1,25 @@
-<p>header works!</p>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noted - Header</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header class="bg-gray-800 text-white p-4 md:p-6 flex justify-center items-center">
+        <div id="header-left">
+            <!-- <button class="button" mat-mini-fab><mat-icon>home</mat-icon></button> -->
+        </div>
+        <div id="header-middle">
+            <h1 (click)="goToHome()" class="text-xl md:text-2xl font-bold">Noted</h1>
+        </div>
+        <div id="header-right">
+            <button class="button" id="menu-button" mat-mini-fab [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+            <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="goToProfile()">Profil</button>
+            <button mat-menu-item (click)="logout()">Abmelden</button>
+            </mat-menu>
+        </div>
+    </header>
+</body>
+</html>
