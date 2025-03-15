@@ -1,0 +1,26 @@
+input[type="password"]::-webkit-textfield-decoration-container,
+input[type="password"]::-webkit-inner-spin-button,
+input[type="password"]::-webkit-outer-spin-button {
+    display: none;
+}
+.password-requirements {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.password-requirements li {
+    display: flex;
+    align-items: center;
+    color: red; 
+}
+
+.password-requirements li.valid {
+    color: green; 
+}
+
+.password-requirements mat-icon {
+    font-size: 16px;
+    margin-right: 8px;
+}
