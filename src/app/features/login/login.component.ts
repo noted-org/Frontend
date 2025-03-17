@@ -1,10 +1,15 @@
 import { Component, inject } from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatStepperModule} from '@angular/material/stepper';
-import {MatButtonModule} from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { UserService } from '../../shared/services/user.service';
+import { MatIcon } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { LoginUser } from '../../shared/types/user.type';
 
 @Component({
   selector: 'app-login',
@@ -12,26 +17,62 @@ import {MatButtonModule} from '@angular/material/button';
   imports: [
     MatCardModule, 
     MatButtonModule,
+    MatIcon,
     MatStepperModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule],
+    MatInputModule
+  ],
+  providers: [UserService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  private _formBuilder = inject(FormBuilder);
+  loginForm: FormGroup;
+  hidePassword = true; // Steuert die Sichtbarkeit des Passworts
+  private router = inject (Router);
 
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
-  isLinear = false;
+  constructor(
+    private fb: FormBuilder,
+    private UserService: UserService // Angenommen, du hast einen AuthService
+  ) {
+    // Initialisiere das Login-Formular
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
+  async login(): Promise<void>{
+    const loginData = this.loginForm.value;
+    if(loginData.username && loginData.password){
+      try{
+        let loginUser: LoginUser | undefined;
+        const uname = loginData.username;
+        const upass = loginData.password;
+        loginUser = {
+          username: uname,
+          password: upass,
+        };
+        const savedUser = await this.UserService.loginUser(loginUser);
+        if(savedUser){
+          localStorage.setItem('id', (savedUser?.id || 0).toString());
 
-  login(): void{
+          this.router.navigate([`/home/${localStorage.getItem('id')}`]);
+        }else{
+          console.error("Error login in.");
+        }
+      }catch(error){
+        console.error(error);
+      }
 
+
+    }else{
+      alert("Gebe deine Anmeldedaten ein.");
+    }
+  }
+  toRegister(): void{
+    this.router.navigate([`/register`]);
   }
 }

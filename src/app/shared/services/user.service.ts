@@ -1,5 +1,6 @@
 import { User } from "../types/user.type";
 import { CreateUser } from "../types/user.type";
+import { LoginUser } from "../types/user.type";
 
 export class UserService{
     private readonly BASE_URL = 'http://localhost:3000/api';
@@ -26,6 +27,9 @@ export class UserService{
     }
 
     async createUser(user: CreateUser): Promise<User>{
-        return this.post<User>(`${this.BASE_URL}/user`, user);
+        return this.post<User>(`${this.BASE_URL}/users`, user);
     }
+    async loginUser(user: LoginUser): Promise<User> {
+        return this.post<User>(`${this.BASE_URL}/users/auth`, user);  
+      }
 }
