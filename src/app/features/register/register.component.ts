@@ -51,9 +51,12 @@ export class RegisterComponent {
   thirdFormGroup = this._formBuilder.group({
     thirdCtrl: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[\\W_]).{6,}$')]],
   });
+  fourthFormGroup = this._formBuilder.group({
+    fourthCtrl: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]],
+  });
   
   isFormValid() {
-    return this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid;
+    return this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid;
   }
   hasMinLength(): boolean {
     const password = this.thirdFormGroup.get('thirdCtrl')?.value;
@@ -77,27 +80,41 @@ export class RegisterComponent {
     const password = this.thirdFormGroup.get('thirdCtrl')?.value;
     return !!password && /[\W_]/.test(password);
   }
+  emailCorrect(): Boolean{
+    const mail = this.fourthFormGroup.get('fourthCtrl')?.value;
+    return !!mail && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
+  }
 
   isLinear = false;
 
   async register(): Promise<void>{
-    const name = this.firstFormGroup.get('firstCtrl')?.value;
+    const nickname = this.firstFormGroup.get('firstCtrl')?.value;
     const username = this.secondFormGroup.get('secondCtrl')?.value;
     const password = this.thirdFormGroup.get('thirdCtrl')?.value;
+    const email = this.fourthFormGroup.get('fourthCtrl')?.value;
 
     let newUser: CreateUser | undefined;
 
-    if (name && username && password){
+    if (nickname && username && password && email){
       newUser = {
-        name,
+        nickname,
         password,
         username,
+        email,
       };
     }
     
     if(newUser){
       try{
         const savedUser = await this.UserService.createUser(newUser);
+        if(savedUser){
+          // automatische _id Generierung?
+          localStorage.setItem('id', (savedUser.id || 0).toString());
+
+          //routing zu home einbauen
+          this.router.navigate([`/home/${localStorage.getItem('id')}`]);
+
+        }
       }catch(error){
         console.error("Error creating User");
       }

@@ -31,6 +31,25 @@
                 </div>
               </form>
             </mat-step>
+
+            <mat-step [stepControl]="fourthFormGroup">
+                <form [formGroup]="fourthFormGroup">
+                  <ng-template matStepLabel>Email</ng-template>
+                  <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="fourthCtrl" placeholder="you@sth"
+                           required>
+                  </mat-form-field>
+                  <p *ngIf="!emailCorrect()">
+                    Die E-Mail-Adresse ist ungültig.
+                  </p>
+                  <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                  </div>
+                </form>
+            </mat-step>
+
             <mat-step [stepControl]="thirdFormGroup">
                 <form [formGroup]="thirdFormGroup">
                   <ng-template matStepLabel>Passwort</ng-template>
