@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateUser } from '../../shared/types/user.type';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../shared/services/user.service';
-//import { SHA512 } from "crypto-js";
+import * as sha512 from 'crypto-js';
 
 @Component({
   selector: 'app-register',
@@ -42,10 +42,6 @@ export class RegisterComponent {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
-
-  /*sha512(message: string): string {
-    return createHash("sha512").update(message).digest("hex");
-  }*/
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', [Validators.required,  Validators.pattern('^[A-Za-z]+$')]],
@@ -103,18 +99,19 @@ export class RegisterComponent {
     if (nickname && username && password && email){
       newUser = {
         nickname: nickname,
-        password: password,
+        password: sha512.SHA512(password).toString(),
         username: username,
         email: email,
       };
     }
+    console.log(newUser);
     
     if(newUser){
       try{
         const savedUser = await this.UserService.createUser(newUser);
-        if(savedUser){
+        if(savedUser && savedUser.id){
           // automatische _id Generierung?
-          localStorage.setItem('id', (savedUser.id || 0).toString());
+          localStorage.setItem('id', (savedUser.id).toString());
 
           //routing zu home einbauen
           this.router.navigate([`/home/${localStorage.getItem('id')}`]);

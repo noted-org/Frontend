@@ -3,7 +3,7 @@ import { CreateUser } from "../types/user.type";
 import { LoginUser } from "../types/user.type";
 
 export class UserService{
-    private readonly BASE_URL = 'http://localhost:3000/api';
+    private readonly BASE_URL = 'http://localhost:3000';
 
     async post<T>(url: string, body?: object): Promise<T> {
         const options: RequestInit = {method: 'POST'};
