@@ -3,13 +3,15 @@ import { User } from '../../shared/types/user.type';
 import { UserService } from '../../shared/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profil',
   standalone: true,
-  imports: [MatFormFieldModule],
+  imports: [MatFormFieldModule, CommonModule],
   templateUrl: './profil.component.html',
-  styleUrl: './profil.component.css'
+  styleUrl: './profil.component.css',
+  providers: [UserService]
 })
 export class ProfilComponent {
   @Input() id?: string;
