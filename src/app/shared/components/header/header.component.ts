@@ -15,14 +15,14 @@ export class HeaderComponent {
   private router = inject(Router);
 
   goToHome(): void{
-    this.userId = localStorage.getItem('_id');
+    this.userId = localStorage.getItem('id');
     console.log("clicked");
     this.router.navigate([`/home/${this.userId}`]);
   }
 
   userId: String | null = null;
   goToProfile(): void{
-    this.userId = localStorage.getItem('_id');
+    this.userId = localStorage.getItem('id');
 
     this.router.navigate([`/profile/${this.userId}`]).then(()=> {
       window.location.reload();
@@ -30,7 +30,7 @@ export class HeaderComponent {
   }
 
   logout(): void{
-    localStorage.removeItem('_id');
+    localStorage.removeItem('id');
     this.router.navigate([`/login`]).then(()=> {
       window.location.reload();
     });
