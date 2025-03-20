@@ -109,9 +109,9 @@ export class RegisterComponent {
     if(newUser){
       try{
         const savedUser = await this.UserService.createUser(newUser);
-        if(savedUser){
+        if(savedUser && savedUser.id){
           // automatische _id Generierung?
-          localStorage.setItem('id', (savedUser.id || 0).toString());
+          localStorage.setItem('id', (savedUser.id).toString());
 
           //routing zu home einbauen
           this.router.navigate([`/home/${localStorage.getItem('id')}`]);
