@@ -10,7 +10,7 @@ import { UserService } from '../../shared/services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { LoginUser } from '../../shared/types/user.type';
-import { createHash } from "crypto";
+//import { createHash } from "crypto";
 
 @Component({
   selector: 'app-login',
@@ -46,9 +46,9 @@ export class LoginComponent {
     });
   }
 
-  sha512(message: string): string {
+  /*sha512(message: string): string {
     return createHash("sha512").update(message).digest("hex");
-  }
+  }*/
 
   async login(): Promise<void>{
     const loginData = this.loginForm.value;
@@ -59,7 +59,7 @@ export class LoginComponent {
         const upass = loginData.password;
         loginUser = {
           username: uname,
-          password: this.sha512(upass),
+          password: upass,
         };
         const savedUser = await this.UserService.loginUser(loginUser);
         if(savedUser){
