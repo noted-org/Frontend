@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateUser } from '../../shared/types/user.type';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../shared/services/user.service';
+import { createHash } from "crypto";
 
 @Component({
   selector: 'app-register',
@@ -40,6 +41,10 @@ export class RegisterComponent {
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
+  }
+
+  sha512(message: string): string {
+    return createHash("sha512").update(message).digest("hex");
   }
 
   firstFormGroup = this._formBuilder.group({
@@ -97,10 +102,10 @@ export class RegisterComponent {
 
     if (nickname && username && password && email){
       newUser = {
-        nickname,
-        password,
-        username,
-        email,
+        nickname: nickname,
+        password: this.sha512(password),
+        username: username,
+        email: email,
       };
     }
     
