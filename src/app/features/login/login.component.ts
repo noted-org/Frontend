@@ -61,8 +61,8 @@ export class LoginComponent {
         console.log(loginUser);
         
         const savedUser = await this.UserService.loginUser(loginUser);
-        if(savedUser){
-          localStorage.setItem('id', (savedUser?.id || 0).toString());
+        if(savedUser && savedUser.id){
+          localStorage.setItem('id', (savedUser?.id).toString());
 
           this.router.navigate([`/home/${localStorage.getItem('id')}`]);
         }else{
