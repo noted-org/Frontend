@@ -10,6 +10,7 @@ import { UserService } from '../../shared/services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { LoginUser } from '../../shared/types/user.type';
+import { createHash } from "crypto";
 
 @Component({
   selector: 'app-login',
@@ -44,6 +45,11 @@ export class LoginComponent {
       password: ['', Validators.required],
     });
   }
+
+  sha512(message: string): string {
+    return createHash("sha512").update(message).digest("hex");
+  }
+
   async login(): Promise<void>{
     const loginData = this.loginForm.value;
     if(loginData.username && loginData.password){
@@ -53,7 +59,7 @@ export class LoginComponent {
         const upass = loginData.password;
         loginUser = {
           username: uname,
-          password: upass,
+          password: this.sha512(upass),
         };
         const savedUser = await this.UserService.loginUser(loginUser);
         if(savedUser){
@@ -66,7 +72,6 @@ export class LoginComponent {
       }catch(error){
         console.error(error);
       }
-
 
     }else{
       alert("Gebe deine Anmeldedaten ein.");
