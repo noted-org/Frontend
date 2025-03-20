@@ -1,1 +1,36 @@
-<p>profile</p>
+<h2>
+    <span *ngIf="sameUser">Dein Profil</span>
+    <span *ngIf="!sameUser">{{ user?.nickname }}'s Profil</span>:
+  </h2>
+  <table class="simple-table">
+      <tbody>
+        <tr>
+          <td>Name</td>
+          <td>{{ user?.nickname || ''}}</td>
+        </tr>
+        <tr>
+          <td>Username</td>
+          <td>{{ user?.username || ''}}</td>
+        </tr>
+        <tr>
+          <td>E-Mail</td>
+          <td>{{ user?.email || ''}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button *ngIf="sameUser" (click)="changeData()" mat-button>Profildaten ändern</button>
+    <div *ngIf="editForm" class="edit-form">
+      <h3>Profil bearbeiten</h3>
+      <form>
+        <mat-form-field appearance="outline">
+          <mat-label>Name:</mat-label>
+          <input matInput #nicknameInput placeholder="{{user?.nickname}}">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>E-Mail:</mat-label>
+          <textarea matInput #emailInput placeholder="{{user?.email}}"></textarea>
+        </mat-form-field>
+        <button (click)="saveChanges(nicknameInput.value, emailInput.value)">Änderungen speichern</button>
+        <button (click)="discardChanges()">Änderungen verwerfen</button>
+    </form>
+    </div>

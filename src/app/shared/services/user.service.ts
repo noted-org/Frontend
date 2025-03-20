@@ -32,4 +32,52 @@ export class UserService{
     async loginUser(user: LoginUser): Promise<User> {
         return this.post<User>(`${this.BASE_URL}/users/auth`, user);  
       }
+    async getUser(userId: number): Promise<User>{
+      try{
+        const response = await fetch(`${this.BASE_URL}/users/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type':'application/json',
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`Problem searching User: ${response.statusText}`);
+        }
+        const user: User = await response.json();
+        return user;
+      }catch(error){
+        console.error('Problem with getting user: ', error);
+        throw error;
+      }
+    }
+    async updateUser(userId: string, nickname: string, email: string): Promise<User | void> {
+      const userIdAsNumber = parseInt(userId, 10);
+      try {
+        const body = {
+          id: userIdAsNumber,
+          nickname: nickname ? nickname : undefined,
+          email: email ? email : undefined,
+        };
+  
+        const requestBody = JSON.parse(JSON.stringify(body));
+  
+        const response = await fetch(`${this.BASE_URL}/users/${userId}`, {
+          method: 'PATCH',  
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Problem updating user: ${response.statusText}`);
+        }
+  
+        const updatedUser: User = await response.json();
+        return updatedUser;
+  
+      } catch (error) {
+        console.error('Problem with updating user: ', error);
+      }
+    }
 }
