@@ -50,12 +50,13 @@ export class UserService{
         throw error;
       }
     }
-    async updateUser(userId: string, nickname: string, email: string): Promise<User | void> {
+    async updateUser(userId: string, nickname: string, username: string, email: string): Promise<User | void> {
       const userIdAsNumber = parseInt(userId, 10);
       try {
         const body = {
           id: userIdAsNumber,
           nickname: nickname ? nickname : undefined,
+          username: username ? username : undefined,
           email: email ? email : undefined,
         };
   
