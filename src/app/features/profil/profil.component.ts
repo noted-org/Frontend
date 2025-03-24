@@ -1,14 +1,21 @@
-import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, inject} from '@angular/core';
 import { User } from '../../shared/types/user.type';
 import { UserService } from '../../shared/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatStepperModule } from '@angular/material/stepper';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profil',
   standalone: true,
-  imports: [MatFormFieldModule, CommonModule],
+  imports: [MatFormFieldModule, CommonModule, MatCardModule, MatStepperModule, FormsModule, ReactiveFormsModule, MatTooltipModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './profil.component.html',
   styleUrl: './profil.component.css',
   providers: [UserService]
@@ -18,6 +25,8 @@ export class ProfilComponent {
   userIdFromUrl: string | null = null;
   sameUser: boolean = false;
   editForm: boolean = false;
+  private _formBuilder = inject(FormBuilder);
+  isLinear = false;
 
 
   /*private ApiService = inject (ApiService);
@@ -33,6 +42,23 @@ export class ProfilComponent {
     //private dialog: MatDialog,
     private cdRef: ChangeDetectorRef
   ){}
+
+  firstFormGroup = this._formBuilder.group({
+    firstCtrl: ['', [Validators.required,  Validators.pattern('^[A-Za-z]+$')]],
+  });
+  secondFormGroup = this._formBuilder.group({
+    secondCtrl: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9\\W_]+$')]],
+  });
+  thirdFormGroup = this._formBuilder.group({
+    thirdCtrl: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[\\W_]).{6,}$')]],
+  });
+  fourthFormGroup = this._formBuilder.group({
+    fourthCtrl: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]],
+  });
+  
+  isFormValid() {
+    return this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid;
+  }
 
  
   ngOnInit(): void {
@@ -61,18 +87,27 @@ export class ProfilComponent {
     }
   }
 
+  emailCorrect(): Boolean{
+    const mail = this.fourthFormGroup.get('fourthCtrl')?.value;
+    return !!mail && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
+  }
+
   changeData(){
     this.editForm = true;
   }
-  saveChanges(nickname: string, email: string){
-  
-    const updatedUser = this.userService.updateUser(localStorage.getItem('id')||'', nickname, email).then(()=>{
+  saveChanges(){
+    const nickname = this.firstFormGroup.get('firstCtrl')?.value || '';
+    const username = this.secondFormGroup.get('secondCtrl')?.value || '';
+    const email = this.fourthFormGroup.get('fourthCtrl')?.value || '';
+
+    const updatedUser = this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email).then(()=>{
       window.location.reload();
       this.editForm = false;
     });
     window.location.reload();
     console.log(updatedUser);
   }
+  
   discardChanges(){
     this.editForm = false;
   }

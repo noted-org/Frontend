@@ -1,3 +1,75 @@
+<div class="profile-container">
+  <div class = "profile-header">
+    <img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>
+    <h1 class="profile-name">
+      <span *ngIf="!sameUser">{{ user?.nickname }}</span>
+    </h1>
+  </div>
+  <div class="profile-details">
+    <p><strong>Benutzername:</strong> <span class="profile-username"> {{ user?.username }}</span> </p>
+    <p><strong>E-Mail:</strong> <span class="profile-username"> {{ user?.email }}</span> </p>
+    <p><strong>User seit:</strong> <span class="profile-username"> {{ user?.createdAt }}</span> </p>
+  </div>
+</div>
+
+<button *ngIf="sameUser" class="edit-profile" onClick="changeData()">Profil bearbeiten</button>
+
+<div *ngIf="editForm" class="edit-form-container" id="editForm">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Profil bearbeiten</mat-card-title>
+        
+    </mat-card-header>
+    <mat-card-content>
+        <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+            <mat-step [stepControl]="firstFormGroup">
+              <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Name</ng-template>
+                <mat-form-field>
+                  <mat-label>Name</mat-label>
+                  <input matTooltip="Nur Buchstaben erlaubt" matInput placeholder="user?.nickname" formControlName="firstCtrl" required>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup">
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Username</ng-template>
+                <mat-form-field>
+                  <mat-label>Username</mat-label>
+                  <input matInput formControlName="secondCtrl" placeholder="user?.username" required>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+
+            <mat-step [stepControl]="fourthFormGroup">
+                <form [formGroup]="fourthFormGroup">
+                  <ng-template matStepLabel>Email</ng-template>
+                  <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="fourthCtrl" placeholder="user?.email"
+                           required>
+                  </mat-form-field>
+                  <p *ngIf="!emailCorrect()">
+                    Die E-Mail-Adresse ist ungültig.
+                  </p>
+                  <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button [disabled]="!isFormValid()" [matTooltip]="!isFormValid() ? 'Überprüfe die Richtigkeit aller Eingaben.' : null" (click)="saveChanges()">Änderungen speichern</button>
+                  </div>
+                </form>
+              </mat-step>
+        </mat-stepper>
+    </mat-card-content>
+  </mat-card>
+</div>
+<!--
 <h2>
     <span *ngIf="sameUser">Dein Profil</span>
     <span *ngIf="!sameUser">{{ user?.nickname }}'s Profil</span>:
@@ -26,11 +98,15 @@
           <mat-label>Name:</mat-label>
           <input matInput #nicknameInput placeholder="{{user?.nickname}}">
         </mat-form-field>
+         <mat-form-field appearance="outline">
+          <mat-label>Username:</mat-label>
+          <input matInput #usernameInput placeholder="{{user?.username}}">
+        </mat-form-field>
         <mat-form-field>
           <mat-label>E-Mail:</mat-label>
           <textarea matInput #emailInput placeholder="{{user?.email}}"></textarea>
         </mat-form-field>
-        <button (click)="saveChanges(nicknameInput.value, emailInput.value)">Änderungen speichern</button>
+        <button (click)="saveChanges()">Änderungen speichern</button>
         <button (click)="discardChanges()">Änderungen verwerfen</button>
     </form>
-    </div>
+    </div> -->
