@@ -112,6 +112,7 @@ export class RegisterComponent {
         if(savedUser && savedUser.id){
           // automatische _id Generierung?
           localStorage.setItem('id', (savedUser.id).toString());
+          localStorage.setItem('pw', newUser.password);
 
           //routing zu home einbauen
           this.router.navigate([`/home/${localStorage.getItem('id')}`]);
