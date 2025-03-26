@@ -79,31 +79,29 @@ export class UserService{
     }
     async updateUser(userId: string, nickname: string, username: string, email: string): Promise<User | void> {
       const userIdAsNumber = parseInt(userId, 10);
+      const existingUser = await this.getUser(userIdAsNumber);
       try {
         const body = {
-          id: userIdAsNumber,
-          nickname: nickname ? nickname : undefined,
-          username: username ? username : undefined,
-          email: email ? email : undefined,
+          nickname: nickname || undefined,
+          username: username || undefined,
+          password: existingUser.password,
+          email: email ||undefined,
         };
-  
-      const requestBody = JSON.parse(JSON.stringify(body));
   
       const response = await fetch(`${this.BASE_URL}/users/${userId}`, {
         method: 'PATCH',  
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userId} ${existingUser.password}`, 
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(body),
       });
   
       if (!response.ok) {
         throw new Error(`Problem updating user: ${response.statusText}`);
       }
   
-      const updatedUser: User = await response.json();
-      return updatedUser;
-  
+      return await response.json();
     } catch (error) {
       console.error('Problem with updating user: ', error);
     }
