@@ -114,11 +114,15 @@ export class ProfilComponent {
     const email = this.fourthFormGroup.get('fourthCtrl')?.value || '';
 
     try{
-      await this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email);
+      const updatedUser = await this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email);
 
       this.firstFormGroup.patchValue({ firstCtrl: nickname });
       this.secondFormGroup.patchValue({ secondCtrl: username });
       this.fourthFormGroup.patchValue({ fourthCtrl: email });
+
+      if(updatedUser){
+        this.user = updatedUser;
+      }
 
       this.editForm=false;
       this.normalForm=true;
