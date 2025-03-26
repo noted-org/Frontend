@@ -25,6 +25,8 @@ export class ProfilComponent {
   userIdFromUrl: string | null = null;
   sameUser: boolean = false;
   editForm: boolean = false;
+  normalForm: boolean = true;
+  
   private _formBuilder = inject(FormBuilder);
   isLinear = false;
 
@@ -39,7 +41,6 @@ export class ProfilComponent {
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    //private dialog: MatDialog,
     private cdRef: ChangeDetectorRef
   ){}
 
@@ -49,15 +50,15 @@ export class ProfilComponent {
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9\\W_]+$')]],
   });
-  thirdFormGroup = this._formBuilder.group({
+  /*thirdFormGroup = this._formBuilder.group({
     thirdCtrl: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[\\W_]).{6,}$')]],
-  });
+  });*/
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]],
   });
   
   isFormValid() {
-    return this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid;
+    return this.firstFormGroup.valid && this.secondFormGroup.valid && this.fourthFormGroup.valid;
   }
 
  
@@ -82,6 +83,12 @@ export class ProfilComponent {
     try{
       this.user = await this.userService.getUser(userIdAsNumber);
       console.log("User Daten: ", this.user);
+
+      this.firstFormGroup.patchValue({firstCtrl: this.user?.nickname || ''});
+      this.secondFormGroup.patchValue({secondCtrl: this.user?.username || ''});
+      this.fourthFormGroup.patchValue({fourthCtrl: this.user?.email || ''});
+
+      this.cdRef.detectChanges();
     }catch(error){
       console.error('Error while loading User Data: ', error);
     }
@@ -93,22 +100,36 @@ export class ProfilComponent {
   }
 
   changeData(){
+    if(this.user){
+      this.firstFormGroup.patchValue({firstCtrl: this.user.nickname});
+      this.secondFormGroup.patchValue({secondCtrl: this.user.username});
+      this.fourthFormGroup.patchValue({fourthCtrl: this.user.email});
+    }
+    this.normalForm = false;
     this.editForm = true;
   }
-  saveChanges(){
+  async saveChanges(){
     const nickname = this.firstFormGroup.get('firstCtrl')?.value || '';
     const username = this.secondFormGroup.get('secondCtrl')?.value || '';
     const email = this.fourthFormGroup.get('fourthCtrl')?.value || '';
 
-    const updatedUser = this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email).then(()=>{
-      window.location.reload();
-      this.editForm = false;
-    });
-    window.location.reload();
-    console.log(updatedUser);
+    try{
+      await this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email);
+
+      this.firstFormGroup.patchValue({ firstCtrl: nickname });
+      this.secondFormGroup.patchValue({ secondCtrl: username });
+      this.fourthFormGroup.patchValue({ fourthCtrl: email });
+
+      this.editForm=false;
+      this.normalForm=true;
+      console.log("Profil erfolgreich aktualisiert.");
+    } catch (error){
+      console.error("Fehler beim Speichern der Änderungen:", error);
+    }
   }
   
   discardChanges(){
     this.editForm = false;
+    this.normalForm = true;
   }
 }
