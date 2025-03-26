@@ -79,12 +79,11 @@ export class UserService{
     }
     async updateUser(userId: string, nickname: string, username: string, email: string): Promise<User | void> {
       const userIdAsNumber = parseInt(userId, 10);
-      const existingUser = await this.getUser(userIdAsNumber);
+      const pW = localStorage.getItem("pw");
       try {
         const body = {
           nickname: nickname || undefined,
           username: username || undefined,
-          password: existingUser.password,
           email: email ||undefined,
         };
   
@@ -92,7 +91,7 @@ export class UserService{
         method: 'PATCH',  
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${userId} ${existingUser.password}`, 
+          'Authorization': `Bearer ${userId} ${pW}`, 
         },
         body: JSON.stringify(body),
       });
