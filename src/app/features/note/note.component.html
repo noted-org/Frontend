@@ -1,17 +1,18 @@
-<div class="create-note-container">
-  <button class="create-note-button" (click)="createNewNote()">
-    Create New Note
-  </button>
-</div>
-
-<div class="show-notes">
-  <div
-    *ngFor="let note of notes"
-    class="note-card"
-    [routerLink]="['/notes', note.id]"
-  >
+<div class="show-notes" *ngIf="note">
+  <div class="note-card">
     <h3 class="note-title">{{ note.name }}</h3>
-    <p class="note-content">{{ note.content }}</p>
+
+    <p *ngIf="!isEditing" (click)="isEditing = true" class="note-content">
+      {{ note.content }}
+    </p>
+    <input
+      *ngIf="isEditing"
+      type="text"
+      [(ngModel)]="note.content"
+      (blure)="isEditing = false"
+      class="note-content"
+    />
+
     <div class="note-footer">
       <span class="note-author">
         <a [routerLink]="['/profile', note.id]" class="no-underline"
