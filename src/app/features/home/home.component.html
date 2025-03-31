@@ -1,1 +1,37 @@
-<p>home works!</p>
+<div class="create-note-container">
+  <button
+    mat-raised-button
+    class="create-note-button"
+    (click)="createNewNote()"
+  >
+    Create New Note (+)
+  </button>
+</div>
+
+<div class="show-notes">
+  <div
+    *ngFor="let note of notes"
+    class="note-card"
+    [routerLink]="['/notes', note.id]"
+  >
+    <h3 class="note-title">{{ note.name }}</h3>
+    <p class="note-content">{{ note.content }}</p>
+
+    <div class="note-tags" *ngIf="note.tags && note.tags.length > 0">
+      <div class="tags-container">
+        <span *ngFor="let tag of note.tags" class="tag-chip">
+          {{ tag }}
+        </span>
+      </div>
+    </div>
+
+    <div class="note-footer">
+      <span class="note-author">
+        <a [routerLink]="['/profile', note.id]" class="no-underline"
+          >By: {{ note.authorName }}</a
+        >
+      </span>
+      <span class="note-date">{{ note.createdAt | date : "medium" }}</span>
+    </div>
+  </div>
+</div>

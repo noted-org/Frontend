@@ -1,0 +1,61 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+input[matInput] {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  border-radius: 8px;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-underline {
+  background-color: #2575fc;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-ripple {
+  background-color: #2e3d61;
+}
+
+.save-button {
+  color: white !important;
+  background: linear-gradient(135deg, #2e3d61, #2575fc);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.save-button:hover {
+  background: linear-gradient(135deg, #1e2a47, #1a5de2);
+}
+
+.cancel-button {
+  color: white !important;
+  background: linear-gradient(135deg, #c0392b, #ff8c42);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.cancel-button:hover {
+  background: linear-gradient(135deg, #a93226, #e67e22);
+}
+
+.animated-dialog {
+  animation: none !important;
+}
+
+.cdk-overlay-backdrop.animated-backdrop {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.cdk-overlay-backdrop.animated-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1;
+}
