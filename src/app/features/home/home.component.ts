@@ -7,11 +7,15 @@ import { CreateNote, Note } from '../../shared/types/note.type';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { User } from '../../shared/types/user.type';
+import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NoteComponent, CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatButtonModule],
   providers: [NoteService, UserService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -20,59 +24,57 @@ export class HomeComponent implements OnInit {
   notes: Note[] = [];
   private noteService = inject(NoteService);
   private userService = inject(UserService);
-  private router = inject(Router);
+
+  constructor(private dialog: MatDialog) {}
 
   async ngOnInit() {
     this.loadNotes();
   }
 
-  async loadNotes() {
-    try {
-      const fetchedNotes = await this.noteService.getAllNotes();
-      if (fetchedNotes) {
-        this.notes = fetchedNotes;
-        this.notes.forEach(async (note) => {
-          note.authorName = await this.userService.getUserName(note.author);
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching notes');
-    }
+  loadNotes() {
+    this.noteService
+      .getAllNotes()
+      .pipe(
+        switchMap((fetchedNotes) => {
+          if (!fetchedNotes) return of([]);
+
+          return forkJoin(
+            fetchedNotes.map((note) =>
+              this.userService.getUserName(note.author).pipe(
+                map((authorName) => ({ ...note, authorName })),
+                catchError(() => of({ ...note, authorName: 'Unknown' }))
+              )
+            )
+          );
+        })
+      )
+      .subscribe({
+        next: (notesWithAuthors) => {
+          console.log(notesWithAuthors);
+          this.notes = notesWithAuthors.map((note) => ({
+            ...note,
+            tags: note.tags || [],
+          }));
+        },
+        error: (error) => {
+          console.error('Error fetching notes:', error);
+        },
+      });
   }
 
-  async createNewNote() {
-    const currentUserId = localStorage.getItem('id');
-    const currentUserPw = localStorage.getItem('pw');
-
-    if (!currentUserId || !currentUserPw) {
-      console.log('User information not found.');
-      return;
-    }
-
-    const currentUser: User = {
-      id: parseInt(currentUserId),
-      nickname: '',
-      password: currentUserPw,
-      username: '',
-      email: '',
-    };
-
-    if (currentUserId && currentUserPw) {
-      const newNote: CreateNote = {
-        name: 'New Note',
-        content: '',
-        author: currentUserId,
-      };
-
-      try {
-        const createdNote = await this.noteService.createNote(
-          newNote,
-          currentUser
-        );
-        this.router.navigate(['/notes', createdNote.id]);
-      } catch (error) {}
-    } else {
-      console.log('User information not found.');
-    }
+  createNewNote() {
+    const _popup = this.dialog.open(NoteDialogComponent, {
+      restoreFocus: true,
+      autoFocus: false,
+      width: '80%',
+      height: '62%',
+      data: {
+        title: 'Create New Note',
+        content: 'Note content',
+      },
+    });
+    _popup.afterClosed().subscribe((item) => {
+      this.loadNotes();
+    });
   }
 }

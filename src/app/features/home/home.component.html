@@ -1,6 +1,10 @@
 <div class="create-note-container">
-  <button class="create-note-button" (click)="createNewNote()">
-    Create New Note
+  <button
+    mat-raised-button
+    class="create-note-button"
+    (click)="createNewNote()"
+  >
+    Create New Note (+)
   </button>
 </div>
 
@@ -12,6 +16,15 @@
   >
     <h3 class="note-title">{{ note.name }}</h3>
     <p class="note-content">{{ note.content }}</p>
+
+    <div class="note-tags" *ngIf="note.tags && note.tags.length > 0">
+      <div class="tags-container">
+        <span *ngFor="let tag of note.tags" class="tag-chip">
+          {{ tag }}
+        </span>
+      </div>
+    </div>
+
     <div class="note-footer">
       <span class="note-author">
         <a [routerLink]="['/profile', note.id]" class="no-underline"

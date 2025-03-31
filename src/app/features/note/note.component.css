@@ -2,30 +2,66 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 75vh; /* Make the container take the full height of the viewport */
-  padding: 0;
+  min-height: calc(100vh - 96px - 56px) !important;
+  padding: 20px, 0;
+  width: 100%;
 }
 
 .note-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 48px; /* Increase padding for more spacious feel */
+  padding: 32px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
   border: 1px solid #ddd;
-  width: 90%; /* Let the card take up most of the screen width */
-  max-width: 1000px; /* Optional: limits the card size */
-  height: 90%; /* Let the card take up most of the screen height */
+  width: 90%;
+  max-width: 1000px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: auto;
+}
+
+.note-content {
+  flex-grow: 1;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  padding: inherit;
+  margin: inherit;
+}
+
+input.note-content {
+  border: 1px solid #ccc; /* Subtle border */
+  outline: none;
 }
 
 .note-title {
-  font-size: 3rem; /* Larger title */
+  flex-grow: 1;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 3rem;
+  line-height: inherit;
+  padding: inherit;
+  margin: inherit;
   color: #333;
   margin-bottom: 24px; /* Increase margin for better separation */
   font-weight: bold;
+}
+
+input.note-title {
+  border: 1px solid #ccc; /* Subtle border */
+  outline: none;
 }
 
 .note-footer {

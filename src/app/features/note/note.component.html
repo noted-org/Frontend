@@ -1,15 +1,31 @@
 <div class="show-notes" *ngIf="note">
   <div class="note-card">
-    <h3 class="note-title">{{ note.name }}</h3>
+    <p
+      *ngIf="!isEditingHeader"
+      (click)="startEditingHeader()"
+      class="note-title"
+    >
+      {{ note.name }}
+    </p>
+    <input
+      #noteInputHeader
+      *ngIf="isEditingHeader"
+      type="text"
+      [(ngModel)]="note.name"
+      (blur)="stopEditingHeader()"
+      class="note-title"
+    />
 
-    <p *ngIf="!isEditing" (click)="isEditing = true" class="note-content">
+    <p *ngIf="!isEditing" (click)="startEditing()" class="note-content">
       {{ note.content }}
     </p>
     <input
+      #noteInput
       *ngIf="isEditing"
       type="text"
       [(ngModel)]="note.content"
-      (blure)="isEditing = false"
+      (blur)="isEditing = false"
+      (blur)="stopEditing()"
       class="note-content"
     />
 

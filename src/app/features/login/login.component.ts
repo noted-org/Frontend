@@ -63,6 +63,7 @@ export class LoginComponent {
         const savedUser = await this.UserService.loginUser(loginUser);
         if(savedUser && savedUser.id){
           localStorage.setItem('id', (savedUser?.id).toString());
+          localStorage.setItem('pw', loginUser.password);
 
           this.router.navigate([`/home/${localStorage.getItem('id')}`]);
         }else{

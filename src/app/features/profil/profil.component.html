@@ -1,1 +1,48 @@
-<p>profile</p>
+<div *ngIf="normalForm" class="profile-container">
+  <div class = "profile-header">
+    <img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>
+    <h1 class="profile-name">
+      <span *ngIf="sameUser">{{ user?.nickname }}</span>
+    </h1>
+  </div>
+  <div class="profile-details">
+    <p><strong>Benutzername:</strong> <span class="profile-username"> {{ user?.username }}</span> </p>
+    <p><strong>E-Mail:</strong> <span class="profile-username"> {{ user?.email }}</span> </p>
+    <p><strong>User seit:</strong> <span class="profile-username"> {{ user?.createdAt }}</span> </p>
+  </div>
+  <button *ngIf="sameUser" class="edit-profile" (click)="changeData()">Profil bearbeiten</button>
+</div>
+
+<div *ngIf="editForm" class="profile-container" id="editForm">
+  <div class = "profile-header">
+    <img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>
+    <h1 class="profile-name">
+      <form [formGroup]="firstFormGroup">
+        <strong>Name:</strong>
+        <input type="text" class="input-field" formControlName="firstCtrl" />
+        <mat-icon>edit</mat-icon>
+      </form>
+    </h1>
+  </div>
+  <div class="profile-details">
+    <form [formGroup]="secondFormGroup">
+      <p>
+        <strong>Benutzername:</strong>
+        <input type="text" class="input-field" formControlName="secondCtrl"/>
+        <mat-icon>edit</mat-icon>
+      </p>
+    </form>
+    <form [formGroup]="fourthFormGroup">
+      <p>
+        <strong>E-Mail:</strong> 
+        <input type="text" class="input-field" formControlName="fourthCtrl"/>
+        <mat-icon>edit</mat-icon>
+      </p>
+    </form>
+    <p><strong>User seit:</strong> <span class="profile-username"> {{ user?.createdAt }}</span> </p>
+  </div>
+  <div class="edit-actions">
+    <button class="save-button" (click)="saveChanges()">Speichern</button>
+    <button class="cancel-button" (click)="discardChanges()">Abbrechen</button>
+  </div>
+</div>
