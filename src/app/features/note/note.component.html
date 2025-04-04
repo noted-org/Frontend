@@ -1,0 +1,41 @@
+<div class="show-notes" *ngIf="note">
+  <div class="note-card">
+    <p
+      *ngIf="!isEditingHeader"
+      (click)="startEditingHeader()"
+      class="note-title"
+    >
+      {{ note.name }}
+    </p>
+    <input
+      #noteInputHeader
+      *ngIf="isEditingHeader"
+      type="text"
+      [(ngModel)]="note.name"
+      (blur)="stopEditingHeader()"
+      class="note-title"
+    />
+
+    <p *ngIf="!isEditing" (click)="startEditing()" class="note-content">
+      {{ note.content }}
+    </p>
+    <input
+      #noteInput
+      *ngIf="isEditing"
+      type="text"
+      [(ngModel)]="note.content"
+      (blur)="isEditing = false"
+      (blur)="stopEditing()"
+      class="note-content"
+    />
+
+    <div class="note-footer">
+      <span class="note-author">
+        <a [routerLink]="['/profile', note.id]" class="no-underline"
+          >By: {{ note.authorName }}</a
+        >
+      </span>
+      <span class="note-date">{{ note.createdAt | date : "medium" }}</span>
+    </div>
+  </div>
+</div>
