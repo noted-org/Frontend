@@ -30,11 +30,6 @@ export class ProfilComponent {
   private _formBuilder = inject(FormBuilder);
   isLinear = false;
 
-
-  /*private ApiService = inject (ApiService);
-  private _snackBar = inject (MatSnackBar);
-  private router = inject(Router);*/
-
   errorMessage: string | null = null;
   user: User | null = null;
 
@@ -50,9 +45,6 @@ export class ProfilComponent {
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9\\W_]+$')]],
   });
-  /*thirdFormGroup = this._formBuilder.group({
-    thirdCtrl: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[\\W_]).{6,}$')]],
-  });*/
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]],
   });
@@ -92,11 +84,6 @@ export class ProfilComponent {
     }catch(error){
       console.error('Error while loading User Data: ', error);
     }
-  }
-
-  emailCorrect(): Boolean{
-    const mail = this.fourthFormGroup.get('fourthCtrl')?.value;
-    return !!mail && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
   }
 
   changeData(){

@@ -1,24 +1,23 @@
 <div *ngIf="normalForm" class="profile-container">
   <div class = "profile-header">
-    <img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>
+    <!--<img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>-->
     <h1 class="profile-name">
       <span *ngIf="sameUser">{{ user?.nickname }}</span>
     </h1>
   </div>
   <div class="profile-details">
-    <p><strong>Benutzername:</strong> <span class="profile-username"> {{ user?.username }}</span> </p>
-    <p><strong>E-Mail:</strong> <span class="profile-username"> {{ user?.email }}</span> </p>
-    <p><strong>User seit:</strong> <span class="profile-username"> {{ user?.createdAt }}</span> </p>
+    <p><strong>Benutzername:</strong> <span class="profile-detail"> {{ user?.username }}</span> </p>
+    <p><strong>E-Mail:</strong> <span class="profile-detail"> {{ user?.email }}</span> </p>
+    <p><strong>User seit:</strong> <span class="profile-detail"> {{ user?.createdAt }}</span> </p>
   </div>
   <button *ngIf="sameUser" class="edit-profile" (click)="changeData()">Profil bearbeiten</button>
 </div>
 
 <div *ngIf="editForm" class="profile-container" id="editForm">
   <div class = "profile-header">
-    <img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>
+    <!--<img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>-->
     <h1 class="profile-name">
       <form [formGroup]="firstFormGroup">
-        <strong>Name:</strong>
         <input type="text" class="input-field" formControlName="firstCtrl" />
         <mat-icon>edit</mat-icon>
       </form>

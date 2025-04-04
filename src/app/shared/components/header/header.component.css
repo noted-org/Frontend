@@ -7,9 +7,9 @@ html, body {
     box-sizing: border-box;
 }
 
-header {
-    background-color: #2e3d61; 
-    color: white;
+.header {
+    background-color: var(--color-primary); 
+    color: var(--color-bg);
     padding: 10px;
     text-align: center;
     width: 100%;
@@ -21,7 +21,6 @@ header {
 
 h1 {
     font-size: 2rem;
-    font-weight: bold;
 }
 
 .header-middle {
@@ -37,6 +36,7 @@ h1 {
     align-items: center; 
 }
 
+
 @media (min-width: 768px) {
     header {
         padding: 20px;
@@ -47,9 +47,7 @@ h1 {
 }
 .button {
     margin-left: auto; 
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+    /*font-size: 1rem;*/
 }
