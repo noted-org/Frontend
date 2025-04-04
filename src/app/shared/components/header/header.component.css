@@ -8,21 +8,20 @@ body {
   box-sizing: border-box;
 }
 
-header {
-  background-color: #2e3d61;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
+.header {
+    background-color: var(--color-primary); 
+    color: var(--color-bg);
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 20px;
 }
 
 h1 {
-  font-size: 2rem;
-  font-weight: bold;
+    font-size: 2rem;
 }
 
 .header-middle {
@@ -38,6 +37,7 @@ h1 {
   align-items: center;
 }
 
+
 @media (min-width: 768px) {
   header {
     padding: 20px;
@@ -47,10 +47,8 @@ h1 {
   }
 }
 .button {
-  margin-left: auto;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
+    margin-left: auto; 
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+    /*font-size: 1rem;*/
 }

@@ -2,7 +2,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
 }
   
 
@@ -21,6 +22,8 @@ mat-card-title {
     font-size: 24px;
     font-weight: bold;
     color: #333;
+    padding-bottom:20px;
+    padding-top: 20px;
 }
   
 
@@ -38,30 +41,22 @@ button[mat-raised-button] {
     border-radius: 8px; 
     transition: all 0.3s ease-in-out;
 }
-button[mat-raised-button]:disabled {
-    background-color: #ccc; 
-    color: #666; 
-    cursor: not-allowed; 
-}
 
 button[mat-raised-button][color="primary"] {
-    background-color: #2e3d61;
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
 }
   
 button[mat-raised-button][color="primary"]:hover {
-    background-color: #475c90;
+    background-color: var(--color-secondary);
 }
-  
-button[mat-raised-button]:not([color="primary"]) {
-    background-color: #28a745;
-    color: white;
-}
-  
-button[mat-raised-button]:not([color="primary"]):hover {
-    background-color: #218838;
-}
-  
+
+button[mat-raised-button][color="primary"]:disabled {
+    background-color: #ccc; 
+    color: #666; 
+    cursor: not-allowed; 
+} 
+
 mat-icon {
     cursor: pointer;
 }
