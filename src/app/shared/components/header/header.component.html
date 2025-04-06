@@ -13,11 +13,18 @@
         <div id="header-middle">
             <h1 (click)="goToHome()" class="text-xl md:text-2xl font-bold">Noted</h1>
         </div>
-        <div id="header-right">
+        <div class="header-right" *ngIf="loggedIn">
             <button class="button" id="menu-button" mat-mini-fab [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
             <mat-menu #menu="matMenu" class="matMenu">
             <button mat-menu-item (click)="goToProfile()">Profil</button>
             <button mat-menu-item (click)="logout()">Abmelden</button>
+            </mat-menu>
+        </div>
+        <div class="header-right" *ngIf="!loggedIn">
+            <button class="button" id="menu-button" mat-mini-fab [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+            <mat-menu #menu="matMenu" class="matMenu">
+            <button mat-menu-item (click)="goToLogin()">Anmelden</button>
+            <button mat-menu-item (click)="goToRegister()">Registrieren</button>
             </mat-menu>
         </div>
     </header>
