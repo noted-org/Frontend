@@ -33,7 +33,7 @@ h1
   flex-grow: 1;
 }
 
-.header-right {
+#header-right {
   display: flex;
   justify-content: flex-end;
   align-items: center;

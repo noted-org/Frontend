@@ -119,4 +119,8 @@ export class UserService {
       console.error('Problem with updating user: ', error);
     }
   }
+
+  userLoggedIn(): boolean{
+    return !!localStorage.getItem('id');
+  }
 }
