@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatButtonModule, MatMenuModule, MatIconModule, CommonModule],
+  imports: [MatButtonModule, MatMenuModule, MatIconModule, CommonModule, NgOptimizedImage],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -22,9 +22,14 @@ export class HeaderComponent {
   }
 
   goToHome(): void{
+    if(this.loggedIn){
     this.userId = localStorage.getItem('id');
     console.log("clicked");
     this.router.navigate([`/home/${this.userId}`]);
+    }
+    else{
+      this.router.navigate([`/login`]);
+    }
   }
 
   userId: String | null = null;
