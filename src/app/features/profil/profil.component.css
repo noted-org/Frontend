@@ -13,12 +13,13 @@
     padding: 20px;
   }
   
-  /*.profile-image {
-    width: 100px;
-    height: 100px;
+  .profile-image {
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    border: 3px solid #007bff;
-  }*/
+    object-fit: cover;  /* Damit das Bild das Bildverhältnis behält */
+    margin-bottom: 10px;
+  }
   
   .profile-name {
     font-size: 22px;

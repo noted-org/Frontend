@@ -3,8 +3,8 @@
     <h1 class="profile-name">
       <span *ngIf="sameUser">{{ user?.nickname }}</span>
     </h1>
-    <img *ngIf="selectedImage" [src]="selectedImage" alt="Profilbild" class="profile-image" width="100" height="100"/>
-    <img *ngIf="!selectedImage" src="https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="Profilbild" class="profile-image" width="100" height="100" />
+    <img *ngIf="selectedImage" [src]="selectedImage" alt="Profilbild" class="profile-image" />
+    <img *ngIf="!selectedImage" src="https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="Profilbild" class="profile-image"  />
   </div>
   <div class="profile-details">
     <p><strong>Benutzername:</strong> <span class="profile-detail"> {{ user?.username }}</span> </p>
