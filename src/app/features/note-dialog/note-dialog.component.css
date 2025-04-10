@@ -9,21 +9,25 @@ input[matInput] {
   border-radius: 8px;
 }
 
+h1[mat-dialog-title]{
+  margin-left: 8px;
+  margin-top: 5px; 
+}
 .mat-form-field-appearance-fill .mat-form-field-flex {
   border-radius: 8px;
 }
 
 .mat-form-field-appearance-fill .mat-form-field-underline {
-  background-color: #2575fc;
+  background-color: var(--color-secondary);
 }
 
 .mat-form-field-appearance-fill .mat-form-field-ripple {
-  background-color: #2e3d61;
+  background-color: var(--color-primary);
 }
 
 .save-button {
-  color: white !important;
-  background: linear-gradient(135deg, #2e3d61, #2575fc);
+  color: var(--color-bg) !important;
+  background: var(--color-primary);
   border-radius: 8px;
   padding: 10px 20px;
   font-size: 16px;
@@ -31,20 +35,21 @@ input[matInput] {
 }
 
 .save-button:hover {
-  background: linear-gradient(135deg, #1e2a47, #1a5de2);
+  background: var(--color-secondary);
 }
 
 .cancel-button {
-  color: white !important;
-  background: linear-gradient(135deg, #c0392b, #ff8c42);
+  color: var(--color-bg);
+  background: var(--color-primary);
   border-radius: 8px;
   padding: 10px 20px;
+  margin-left: 20px;
   font-size: 16px;
   transition: background 0.3s ease;
 }
 
 .cancel-button:hover {
-  background: linear-gradient(135deg, #a93226, #e67e22);
+  background: var(--color-secondary);
 }
 
 .animated-dialog {

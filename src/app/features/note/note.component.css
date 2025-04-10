@@ -8,12 +8,12 @@
 }
 
 .note-card {
-  background: #ffffff;
+  background: var(--color-bg);
   border-radius: 16px;
   padding: 32px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
   width: 90%;
   max-width: 1000px;
   flex: 1;
@@ -38,7 +38,7 @@
 }
 
 input.note-content {
-  border: 1px solid #ccc; /* Subtle border */
+  border: 1px solid var(--color-border); /* Subtle border */
   outline: none;
 }
 
@@ -54,13 +54,13 @@ input.note-content {
   line-height: inherit;
   padding: inherit;
   margin: inherit;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 24px; /* Increase margin for better separation */
   font-weight: bold;
 }
 
 input.note-title {
-  border: 1px solid #ccc; /* Subtle border */
+  border: 1px solid var(--color-border); /* Subtle border */
   outline: none;
 }
 
@@ -68,12 +68,12 @@ input.note-title {
   display: flex;
   justify-content: space-between;
   font-size: 1.2rem; /* Increase font size for footer */
-  color: #777;
-  border-top: 1px solid #eee;
+  color: var(--color-contrast);
+  border-top: 1px solid var(--color-border);
   padding-top: 16px;
 }
 
 .no-underline {
   text-decoration: none;
-  color: #777;
+  color:var(--color-contrast);
 }

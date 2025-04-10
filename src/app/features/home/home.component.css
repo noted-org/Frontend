@@ -6,12 +6,12 @@
 }
 
 .note-card {
-  background: #ffffff;
+  background: var(--color-bg);
   border-radius: 10px;
   padding: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
-  border: 1px solid #ddd;
+  border: 2px solid var(--color-border);
   min-height: 200px;
 }
 
@@ -21,7 +21,7 @@
 
 .note-title {
   font-size: 1rem;
-  color: #555;
+  color: var(--color-text);
   margin-bottom: 12px;
 }
 
@@ -29,25 +29,28 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  color: #777;
-  border-top: 1px solid #eee;
+  color: var(--color-text);
+  border-top: 0.5px solid var(--color-border);
   padding-top: 8px;
 }
 
 .no-underline {
   text-decoration: none;
-  color: #777;
+  color: var(--color-text);
+}
+.no-underline:hover{
+  color: var(--color-contrast);
 }
 .create-note-container {
   margin-bottom: 20px;
   text-align: right; /* or left/center based on your design */
 }
 
-.create-note-button {
+button[mat-raised-button] {
   padding: 10px 20px;
   margin-right: 20px;
-  color: white !important;
-  background: linear-gradient(135deg, #2e3d61, #2575fc);
+  color: var(--color-bg);/*white !important;*/
+  background: var(--color-primary);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -60,11 +63,11 @@
 }
 
 .tag-chip {
-  background: #e0e0e0;
+  background: var(--color-bg);
   border-radius: 16px;
   padding: 4px 12px;
   font-size: 12px;
-  color: rgba(0, 0, 0, 0.87);
+  color: var(--color-text);
   display: inline-block;
   margin: 2px;
 }

@@ -18,8 +18,7 @@
     <!--<img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>-->
     <h1 class="profile-name">
       <form [formGroup]="firstFormGroup">
-        <input type="text" class="input-field" formControlName="firstCtrl" />
-        <mat-icon>edit</mat-icon>
+        <input type="text" class="input-field-title" formControlName="firstCtrl" />
       </form>
     </h1>
   </div>
@@ -28,14 +27,12 @@
       <p>
         <strong>Benutzername:</strong>
         <input type="text" class="input-field" formControlName="secondCtrl"/>
-        <mat-icon>edit</mat-icon>
       </p>
     </form>
     <form [formGroup]="fourthFormGroup">
       <p>
         <strong>E-Mail:</strong> 
         <input type="text" class="input-field" formControlName="fourthCtrl"/>
-        <mat-icon>edit</mat-icon>
       </p>
     </form>
     <p><strong>User seit:</strong> <span class="profile-username"> {{ user?.createdAt }}</span> </p>
