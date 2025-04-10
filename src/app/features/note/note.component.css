@@ -40,6 +40,8 @@
 input.note-content {
   border: 1px solid var(--color-border); /* Subtle border */
   outline: none;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .note-title {
@@ -62,6 +64,8 @@ input.note-content {
 input.note-title {
   border: 1px solid var(--color-border); /* Subtle border */
   outline: none;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .note-footer {

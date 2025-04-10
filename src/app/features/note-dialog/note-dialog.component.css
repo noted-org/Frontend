@@ -1,6 +1,18 @@
+.form{
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 mat-form-field {
   width: 100%;
   margin-bottom: 16px;
+}
+
+mat-hint{
+  color: var(--color-text);
 }
 
 input[matInput] {
@@ -10,6 +22,7 @@ input[matInput] {
 }
 
 h1[mat-dialog-title]{
+  color: var(--color-text);
   margin-left: 8px;
   margin-top: 5px; 
 }

@@ -11,26 +11,30 @@
 :root {
     /* Light Mode Farben */
     --color-bg: #ffffff;
+    --color-bg-second: rgb(228, 228, 228);
     --color-text: #333333;
     --color-contrast:#6e6e6e;
     --color-primary: #2e3d61;
     --color-secondary: #52638a;
-    --color-border: #dddddd;
+    --color-border: #aca9a9;
     --color-button-bg: #007bff;
     --color-button-text: #ffffff;
+    --color-logo: white;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         /* Dark Mode Farben */
         --color-bg: #121212;
+        --color-bg-second: rgb(53, 53, 53);
         --color-text: #f0f0f0;
-        --color-contrast: #adadad;
-        --color-primary: #1e90ff;
-        --color-secondary: #aaaaaa;
-        --color-border: #333333;
+        --color-contrast: hsl(0, 0%, 68%);
+        --color-primary: #68a6b1;
+        --color-secondary: #3d7e8b;
+        --color-border: #636363;
         --color-button-bg: #1e90ff;
         --color-button-text: #ffffff;
+        --color-logo: none;
     }
 }
 
@@ -58,3 +62,10 @@ button {
 button:hover {
     background-color: var(--color-secondary);
 }
+
+.mat-menu-panel {
+    background-color: var(--color-bg) !important;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
