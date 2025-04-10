@@ -26,6 +26,7 @@ export class ProfilComponent {
   sameUser: boolean = false;
   editForm: boolean = false;
   normalForm: boolean = true;
+  selectedImage: string | ArrayBuffer | null = null;
   
   private _formBuilder = inject(FormBuilder);
   isLinear = false;
@@ -47,6 +48,9 @@ export class ProfilComponent {
   });
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]],
+  });
+  imageFormGroup = this._formBuilder.group({
+    imageCtrl: [null]
   });
   
   isFormValid() {
@@ -79,6 +83,7 @@ export class ProfilComponent {
       this.firstFormGroup.patchValue({firstCtrl: this.user?.nickname || ''});
       this.secondFormGroup.patchValue({secondCtrl: this.user?.username || ''});
       this.fourthFormGroup.patchValue({fourthCtrl: this.user?.email || ''});
+      //this.imageFormGroup.patchValue({imageCtrl: this.user?.profilepicture || ''});
 
       this.cdRef.detectChanges();
     }catch(error){
@@ -91,6 +96,7 @@ export class ProfilComponent {
       this.firstFormGroup.patchValue({firstCtrl: this.user.nickname});
       this.secondFormGroup.patchValue({secondCtrl: this.user.username});
       this.fourthFormGroup.patchValue({fourthCtrl: this.user.email});
+      //this.imageFormGroup.patchValue({imageCtrl: this.user.profilepicture})
     }
     this.normalForm = false;
     this.editForm = true;
@@ -99,6 +105,7 @@ export class ProfilComponent {
     const nickname = this.firstFormGroup.get('firstCtrl')?.value || '';
     const username = this.secondFormGroup.get('secondCtrl')?.value || '';
     const email = this.fourthFormGroup.get('fourthCtrl')?.value || '';
+    const profilepicture = this.imageFormGroup.get('imageCtrl')?.value || '';
 
     try{
       const updatedUser = await this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email);
@@ -106,6 +113,7 @@ export class ProfilComponent {
       this.firstFormGroup.patchValue({ firstCtrl: nickname });
       this.secondFormGroup.patchValue({ secondCtrl: username });
       this.fourthFormGroup.patchValue({ fourthCtrl: email });
+      //this.imageFormGroup.patchValue({  imageCtrl: profilepicture});
 
       if(updatedUser){
         this.user = updatedUser;
@@ -122,5 +130,21 @@ export class ProfilComponent {
   discardChanges(){
     this.editForm = false;
     this.normalForm = true;
+  }
+
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      const file = input.files[0];
+      this.previewImage(file);
+    }
+  }
+
+  previewImage(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedImage = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 }

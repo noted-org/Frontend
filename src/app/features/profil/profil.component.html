@@ -1,9 +1,10 @@
 <div *ngIf="normalForm" class="profile-container">
   <div class = "profile-header">
-    <!--<img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>-->
     <h1 class="profile-name">
       <span *ngIf="sameUser">{{ user?.nickname }}</span>
     </h1>
+    <img *ngIf="selectedImage" [src]="selectedImage" alt="Profilbild" class="profile-image" width="100" height="100"/>
+    <img *ngIf="!selectedImage" src="https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="Profilbild" class="profile-image" width="100" height="100" />
   </div>
   <div class="profile-details">
     <p><strong>Benutzername:</strong> <span class="profile-detail"> {{ user?.username }}</span> </p>
@@ -15,12 +16,15 @@
 
 <div *ngIf="editForm" class="profile-container" id="editForm">
   <div class = "profile-header">
-    <!--<img src="profilbild.jpg" alt="Profilbild" class="profile-image"/>-->
     <h1 class="profile-name">
       <form [formGroup]="firstFormGroup">
         <input type="text" class="input-field-title" formControlName="firstCtrl" />
       </form>
     </h1>
+    <form [formGroup]="imageFormGroup">
+      <p><strong>Profilbild:</strong></p>
+      <input type="file" accept="image/*" formControlName="imageCtrl" (change)="onImageSelected($event)" />
+    </form>
   </div>
   <div class="profile-details">
     <form [formGroup]="secondFormGroup">
