@@ -48,6 +48,7 @@ export class HeaderComponent {
 
   logout(): void{
     localStorage.removeItem('id');
+    localStorage.removeItem('pw');
     this.router.navigate([``]).then(()=> {
       window.location.reload();
     });

@@ -4,7 +4,7 @@ export interface Note {
   name: string;
   content: string;
   author: string;
-  tags?: string[];
+  tags?: {name: string, id: number}[];
   createdAt?: string;
   updatedAt?: string;
 }

@@ -77,3 +77,11 @@ input.note-title {
   text-decoration: none;
   color: #777;
 }
+
+#tags-note {
+  margin-top: 10px;
+}
+
+mat-chip {
+  margin: 2px;
+}
