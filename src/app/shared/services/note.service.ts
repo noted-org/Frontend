@@ -80,16 +80,16 @@ export class NoteService {
     return this.http.post(`http://localhost:3000/tags`, { "name": tagName });
   }
   
-  getAllTags(): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:3000/tags`);
+  getAllTags(): Observable<{id: number, name: string}[]> {
+    return this.http.get<{id: number, name: string}[]>(`http://localhost:3000/tags`);
   }
 
   addTagsToNote( userid: string, userpw: string, noteId: number, tags: number[]){
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${userid} ${userpw}`
-  });
-    return this.http.post(`http://localhost:3000/notes/${noteId}/tags`, { tags: tags }, { headers });
+    });
+    return this.http.post<{id: number, name: string}>(`http://localhost:3000/notes/${noteId}/tags`, { tags: tags }, { headers });
   }
 
   getAllNotes(): Observable<Note[]> {

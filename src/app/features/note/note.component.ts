@@ -32,12 +32,13 @@ import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {AsyncPipe} from '@angular/common';
 import * as sha512 from 'crypto-js';
+import { TagInputComponent } from '../tag-input/tag-input.component';
 
 
 @Component({
   selector: 'app-note',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule],
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, TagInputComponent, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule],
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
   providers: [NoteService, UserService],
@@ -47,38 +48,18 @@ export class NoteComponent implements OnInit {
   @ViewChild('noteInput') noteInput!: ElementRef;
   @ViewChild('noteInputHeader') noteInputHeader!: ElementRef;
 
-  @ViewChild('expansionPanel') expansionPanel!: ElementRef;
-  @ViewChild('expansionPanelHeader') expansionPanelHeader!: ElementRef;
-
-
   private noteService = inject(NoteService);
   private userService = inject(UserService);
-
-  readonly panelOpenState = signal(false);
 
   note: Note | undefined;
   isEditing: boolean = false;
   isEditingHeader: boolean = false;
   firstFormGroup: any;
   menuOpen: Boolean = false;
-
-  tags: {name: string, id: number}[] = [];
-  allTags: string[] = []; 
-  newTagName = new FormControl('');
+  
   noteTags: {name: string, id: number}[] = [];
+  allTags: {name: string, id: number}[] = [];
 
-  myControl = new FormControl('');
-  filteredOptions: Observable<string[]> = this.myControl.valueChanges.pipe(
-    startWith(''),
-    map(value => this._filter(value || ''))
-  );
-
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
 
   ngAfterViewChecked() {
     if (this.isEditing && this.noteInput) {
@@ -90,17 +71,8 @@ export class NoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
-    this.noteService.getAllTags().subscribe(tags => {
-      this.allTags = tags;
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value || ''))
-      );
-    });
+    this.loadAllTags();
+
     if (this.id) {
       this.loadSingleNote().subscribe((note) => {
         this.note = note;
@@ -108,17 +80,26 @@ export class NoteComponent implements OnInit {
           console.error('Note is undefined or null');
         }
       });
+      this.loadNoteWithTags();
     } else {
       console.error('ID is not defined');
     }
-    if (this.note?.tags) {
-      this.tags = this.note.tags;
-    }
-    this.loadNoteWithTags();
+    
   }
 
-  options: string[] = this.allTags;
+  loadAllTags() {
+    this.noteService.getAllTags().subscribe(tags => {
+      this.allTags = tags;
+    });
+  }
+  onTagAdded(newTag: {name: string, id: number}) {
+    this.addTagToNote(newTag.id);
+  }
 
+  //remove ´TagFromNote muss noch implementiert werden, siehe unten
+/*   onTagRemoved(tagId: number) {
+    this.removeTagFromNote(tagId);
+  } */
   loadNoteWithTags() {
     if (this.id) {
       this.noteService.getSingleNote(this.id).subscribe({
@@ -129,56 +110,44 @@ export class NoteComponent implements OnInit {
         error: (err) => console.error('Error loading note', err)
       });
     }
-    console.log("Tags: " + this.noteTags);
-  }
-
-  onTagSelected(event: MatAutocompleteSelectedEvent): void {
-    const selectedTag = event.option.value;
-    if (this.allTags.includes(selectedTag)) {
-        // Tag already exists - add directly to note
-        this.addTagToNote(selectedTag);
-        this.myControl.setValue('');
-    }
-  }
-  
-
-  addNewTag(): void {
-    const newTag = this.myControl.value?.trim();
-    if (!newTag) return;
-
-    this.noteService.addTag(newTag).subscribe({
-      next: (response) => {
-        // when successfully adding:
-        this.tags.push({id: response.id, name: response.name});
-
-        this.addTagToNote(response.id);
-        this.myControl.setValue('');
-      },
-      error: (err) => console.error('Error creating new tag', err)
-    });
   }
 
   private addTagToNote(tagId: number) {
     if (!this.note?.id) return;
+  
+    const currentUserId = localStorage.getItem('id');
+    const currentUserPw = localStorage.getItem('pw');
+  
+    if (!currentUserId || !currentUserPw) return;
+  
+    this.noteService.addTagsToNote(currentUserId, currentUserPw, this.id, [tagId])
+      .subscribe({
+        next: (addedTag) => {
+          if (addedTag) {
+            this.noteTags.push(addedTag);
+          } else {
+            this.loadNoteWithTags();
+          }
+        },
+        error: (err) => console.error('Error adding tag to note', err)
+      });
+  }
 
+  //muss noch in NoteService implementiert werden, konnte ich aber noch nicht testen
+  /* private removeTagFromNote(tagId: number) {
     const currentUserId = localStorage.getItem('id');
     const currentUserPw = localStorage.getItem('pw');
 
-    if(!currentUserId || !currentUserPw){
-      return;
-    }
+    if (!currentUserId || !currentUserPw) return;
 
-    this.noteService.addTagsToNote(currentUserId, currentUserPw, this.id, [tagId]).subscribe({
+    this.noteService.removeTagFromNote(currentUserId, currentUserPw, this.id, tagId)
+      .subscribe({
         next: () => {
-          this.noteTags.push(this.tags.find(el => el.id == tagId) || {id: -1, name: "Error"});
+          this.noteTags = this.noteTags.filter(t => t.id !== tagId);
         },
-        error: (err) => console.error('Error adding tag to note', err)
-    });
-  }
-  removeTag(tagId: number): void {
-    this.noteTags = this.noteTags.filter(t => t.id !== tagId);
-    this.tags = this.tags.filter(t => t.id !== tagId);
-  }
+        error: (err) => console.error('Error removing tag from note', err)
+      });
+  } */
 
 
   loadSingleNote(): Observable<Note | undefined> {
