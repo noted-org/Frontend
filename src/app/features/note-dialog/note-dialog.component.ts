@@ -22,6 +22,7 @@ import { User } from '../../shared/types/user.type';
 import { UserService } from '../../shared/services/user.service';
 import { CreateNote } from '../../shared/types/note.type';
 import { HomeComponent } from '../home/home.component';
+import { TagInputComponent } from '../tag-input/tag-input.component';
 dialogAnimation;
 
 @Component({
@@ -36,6 +37,7 @@ dialogAnimation;
     MatLabel,
     MatInputModule,
     ReactiveFormsModule,
+    TagInputComponent,
   ],
   templateUrl: './note-dialog.component.html',
   styleUrl: './note-dialog.component.css',
@@ -49,6 +51,10 @@ export class NoteDialogComponent implements OnInit {
   private NoteService = inject(NoteService);
   currentUser: User | undefined;
 
+  initialTags: { name: string; id: number }[] = [];
+  allAvailableTags: { name: string; id: number }[] = [];
+  selectedTags: { name: string; id: number }[] = [];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ref: MatDialogRef<NoteDialogComponent>
@@ -57,13 +63,32 @@ export class NoteDialogComponent implements OnInit {
   firstFormGroup = this._formBuilder.group({
     title: ['', Validators.required],
     content: ['', Validators.required],
-    tags: [''],
   });
 
   @HostBinding('@dialogAnimation') animation = true;
 
   ngOnInit(): void {
     this.inputData = this.data;
+    this.loadAvailableTags();
+
+    if (this.data.note) {
+      this.initialTags = this.data.note.tags || [];
+      this.selectedTags = [...this.initialTags];
+    }
+  }
+
+  loadAvailableTags(): void {
+    this.NoteService.getAllTags().subscribe((tags) => {
+      this.allAvailableTags = tags;
+    });
+  }
+
+  onTagAdded(tag: { name: string; id: number }): void {
+    this.selectedTags.push(tag);
+  }
+
+  onTagRemoved(tagId: number): void {
+    this.selectedTags = this.selectedTags.filter((tag) => tag.id !== tagId);
   }
 
   onCancel(): void {
@@ -95,18 +120,12 @@ export class NoteDialogComponent implements OnInit {
       email: 'default@email.com', // Add default or get from storage
     };
 
-    const tagsInput = this.firstFormGroup.value.tags || '';
-    const tags = tagsInput
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0);
-
     // Prepare note data
     const noteData: CreateNote = {
       name: this.firstFormGroup.value.title!,
       author: currentUser.username, // This was empty before
       content: this.firstFormGroup.value.content!,
-      tags: tags,
+      tags: this.selectedTags,
     };
 
     // Submit to service

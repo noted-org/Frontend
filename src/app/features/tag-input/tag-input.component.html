@@ -1,43 +1,55 @@
 <div id="tags">
-    <div id="add-tags">
-      <mat-expansion-panel hideToggle #expansionPanel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-        <mat-expansion-panel-header #expansionPanelHeader>
-          <mat-panel-title> <mat-icon>add</mat-icon> </mat-panel-title>
-          <mat-panel-description>
-            {{panelOpenState() ? '' : 'add tags'}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <form class="example-form" (submit)="addNewTag()">
-          <mat-form-field class="example-full-width">
-            <mat-label>Tag</mat-label>
-            <input type="text"
-                  placeholder="Pick one or create new"
-                  aria-label="Tag"
-                  matInput
-                  [formControl]="myControl"
-                  [matAutocomplete]="auto">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onTagSelected($event)">
-              @for (option of filteredOptions | async; track option) {
-                <mat-option [value]="option">{{option}}</mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
-          <button mat-button type="submit" [disabled]="!myControl.value?.trim()">
-            <mat-icon>add_circle</mat-icon>
-          </button>
-        </form>
-      </mat-expansion-panel>
-    </div>
-    <div id="tags-note">
-      <mat-chip-listbox>
-        @for (tag of tags; track tag) {
-          <mat-chip (removed)="removeTag(tag)">
-            {{tag}}
-            <button matChipRemove>
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip>
-        }
-      </mat-chip-listbox>
-    </div>
+  <div id="add-tags">
+    <mat-expansion-panel
+      hideToggle
+      #expansionPanel
+      (opened)="panelOpenState.set(true)"
+      (closed)="panelOpenState.set(false)"
+    >
+      <mat-expansion-panel-header #expansionPanelHeader>
+        <mat-panel-title> <mat-icon>add</mat-icon> </mat-panel-title>
+        <mat-panel-description>
+          {{ panelOpenState() ? "" : "add tags" }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form class="example-form" (submit)="addNewTag()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Tag</mat-label>
+          <input
+            type="text"
+            placeholder="Pick one or create new"
+            aria-label="Tag"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            autoActiveFirstOption
+            #auto="matAutocomplete"
+            (optionSelected)="onTagSelected($event)"
+            [displayWith]="displayFn"
+          >
+            @for (option of filteredOptions | async; track trackById) {
+            <mat-option [value]="option">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-button type="submit" [disabled]="!myControl.value?.trim()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </form>
+    </mat-expansion-panel>
+  </div>
+  <div id="tags-note">
+    <mat-chip-listbox>
+      @for (tag of tags; track trackById) {
+      <mat-chip (removed)="removeTag(tag.id)">
+        {{ tag.name }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      }
+    </mat-chip-listbox>
+  </div>
 </div>

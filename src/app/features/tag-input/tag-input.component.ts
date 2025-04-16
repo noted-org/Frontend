@@ -1,4 +1,14 @@
-import { Component, inject, signal, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -12,45 +22,55 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-tag-input',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule, MatChipsModule, MatExpansionModule, MatFormFieldModule, MatIconModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatExpansionPanel,
+  ],
   templateUrl: './tag-input.component.html',
-  styleUrl: './tag-input.component.css'
+  styleUrl: './tag-input.component.css',
 })
-export class TagInputComponent implements OnInit{
-  @Input() initialTags: {name: string, id: number}[] = [];
-  @Input() allAvailableTags: string[] = [];
-  @Output() tagAdded = new EventEmitter<{name: string, id: number}>();
+export class TagInputComponent implements OnInit {
+  @Input() initialTags: { name: string; id: number }[] = [];
+  @Input() allAvailableTags: { name: string; id: number }[] = [];
+  @Output() tagAdded = new EventEmitter<{ name: string; id: number }>();
   @Output() tagRemoved = new EventEmitter<number>();
 
+  @ViewChild('expansionPanel') expansionPanel!: MatExpansionPanel;
+  @ViewChild('expansionPanelHeader') expansionPanelHeader!: MatExpansionPanel;
 
-  @ViewChild('expansionPanel') expansionPanel!: ElementRef;
-  @ViewChild('expansionPanelHeader') expansionPanelHeader!: ElementRef;
-  
   private noteService = inject(NoteService);
-  
+
   readonly panelOpenState = signal(false);
 
-  tags: {name: string, id: number}[] = [];
-  allTags: string[] = []; 
-  newTagName = new FormControl('');
-  options: string[] = this.allTags;
-
+  tags: { name: string; id: number }[] = [];
 
   myControl = new FormControl('');
-  filteredOptions!: Observable<string[]>;
+  filteredOptions!: Observable<{ name: string; id: number }[]>;
 
+  displayFn(tag: { name: string; id: number } | null): string {
+    return tag ? tag.name : '';
+  }
+  trackById = (index: number, tag: { id: number }) => tag.id;
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): { name: string; id: number }[] {
     const filterValue = value.toLowerCase();
 
-    return this.allAvailableTags.filter(option => 
-      option.toLowerCase().includes(filterValue) &&
-      !this.tags.some(t => t.name === option)
-    );  
+    return this.allAvailableTags.filter(
+      (tag) =>
+        tag.name.toLowerCase().includes(filterValue) &&
+        !this.tags.some((t) => t.name === tag.name)
+    );
   }
 
   ngOnInit() {
@@ -58,11 +78,11 @@ export class TagInputComponent implements OnInit{
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ''))
+      map((value) => this._filter(value || ''))
     );
-    
+
     if (this.allAvailableTags.length === 0) {
-      this.noteService.getAllTags().subscribe(tags => {
+      this.noteService.getAllTags().subscribe((tags) => {
         this.allAvailableTags = tags;
         this.updateFilterOptions();
       });
@@ -74,34 +94,48 @@ export class TagInputComponent implements OnInit{
   private updateFilterOptions() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ''))
+      map((value) => this._filter(value || ''))
     );
   }
 
   onTagSelected(event: MatAutocompleteSelectedEvent): void {
     const selectedTag = event.option.value;
-    if (this.allAvailableTags.includes(selectedTag)) {
+    if (this.allAvailableTags.some((tag) => tag.id === selectedTag.id)) {
       this.addNewTag(selectedTag);
     }
   }
-  
 
-  addNewTag(tagName?: string): void {
-    const newTag = tagName || this.myControl.value?.trim();
-    if (!newTag) return;
+  addNewTag(tag?: string | { name: string; id: number }): void {
+    if (!tag) return;
 
-    this.noteService.addTag(newTag).subscribe({
-      next: (response) => {
-        this.tags.push(response);
-        this.tagAdded.emit(response);
+    if (typeof tag === 'string') {
+      const newTagName = tag.trim();
+      if (!newTagName) return;
+
+      this.noteService.addTag(newTagName).subscribe({
+        next: (response) => {
+          this.tags.push(response);
+          this.tagAdded.emit(response);
+          this.myControl.setValue('');
+          this.panelOpenState.set(false);
+          this.expansionPanel.close();
+        },
+        error: (err) => console.error('Error creating new tag', err),
+      });
+    } else {
+      // It's an existing tag from autocomplete
+      if (!this.tags.find((t) => t.id === tag.id)) {
+        this.tags.push(tag);
+        this.tagAdded.emit(tag);
         this.myControl.setValue('');
-      },
-      error: (err) => console.error('Error creating new tag', err)
-    });
+        this.panelOpenState.set(false);
+        this.expansionPanel.close();
+      }
+    }
   }
 
   removeTag(tagId: number): void {
-    this.tags = this.tags.filter(t => t.id !== tagId);
+    this.tags = this.tags.filter((t) => t.id !== tagId);
     this.tagRemoved.emit(tagId);
   }
 }
