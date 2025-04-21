@@ -1,14 +1,4 @@
-import {
-  Component,
-  inject,
-  signal,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, inject, signal, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -23,6 +13,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-tag-input',
@@ -36,6 +27,7 @@ import { MatExpansionPanel } from '@angular/material/expansion';
     MatFormFieldModule,
     MatIconModule,
     MatExpansionPanel,
+    MatInputModule
   ],
   templateUrl: './tag-input.component.html',
   styleUrl: './tag-input.component.css',
@@ -61,7 +53,9 @@ export class TagInputComponent implements OnInit {
   displayFn(tag: { name: string; id: number } | null): string {
     return tag ? tag.name : '';
   }
-  trackById = (index: number, tag: { id: number }) => tag.id;
+
+  trackOptionById = (index: number, option: { id: number }) => `option-${index}-${option.id}`;
+  trackTagById = (index: number, tag: { id: number }) => `tag-${index}-${tag.id}`;
 
   private _filter(value: string): { name: string; id: number }[] {
     const filterValue = value.toLowerCase();
@@ -75,6 +69,10 @@ export class TagInputComponent implements OnInit {
 
   ngOnInit() {
     this.tags = [...this.initialTags];
+    this.tags = [...new Map(this.initialTags.map(tag => [tag.id, tag])).values()];
+
+    console.log('Tags mit IDs:', this.tags.map(t => t.id));
+
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -105,13 +103,14 @@ export class TagInputComponent implements OnInit {
     }
   }
 
-  addNewTag(tag?: string | { name: string; id: number }): void {
+  addNewTag(tag?: string | { name: string; id: number } | null): void {
+    console.log("add Tag: " + tag);
     if (!tag) return;
-
+  
     if (typeof tag === 'string') {
       const newTagName = tag.trim();
       if (!newTagName) return;
-
+  
       this.noteService.addTag(newTagName).subscribe({
         next: (response) => {
           this.tags.push(response);
@@ -123,8 +122,7 @@ export class TagInputComponent implements OnInit {
         error: (err) => console.error('Error creating new tag', err),
       });
     } else {
-      // It's an existing tag from autocomplete
-      if (!this.tags.find((t) => t.id === tag.id)) {
+      if (!this.tags.some((t) => t.id === tag.id)) {
         this.tags.push(tag);
         this.tagAdded.emit(tag);
         this.myControl.setValue('');
@@ -132,9 +130,12 @@ export class TagInputComponent implements OnInit {
         this.expansionPanel.close();
       }
     }
-  }
+  }  
 
   removeTag(tagId: number): void {
+    const id = localStorage.getItem('id');
+    const pw = localStorage.getItem('pw');
+
     this.tags = this.tags.filter((t) => t.id !== tagId);
     this.tagRemoved.emit(tagId);
   }

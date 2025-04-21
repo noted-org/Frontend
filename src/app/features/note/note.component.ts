@@ -76,6 +76,7 @@ export class NoteComponent implements OnInit {
     if (this.id) {
       this.loadSingleNote().subscribe((note) => {
         this.note = note;
+        this.noteTags = note?.tags || [];
         if (!note) {
           console.error('Note is undefined or null');
         }
@@ -86,6 +87,14 @@ export class NoteComponent implements OnInit {
     }
     
   }
+  
+  onTagRemoved(tagId: number) {
+
+    this.removeTagFromNote(tagId); //muss noch implementiert werden
+    /* if (this.note) {
+      this.note.tags = this.note.tags?.filter(tag => tag.id !== Number(tagId));
+    }   */
+  }
 
   loadAllTags() {
     this.noteService.getAllTags().subscribe(tags => {
@@ -94,12 +103,11 @@ export class NoteComponent implements OnInit {
   }
   onTagAdded(newTag: {name: string, id: number}) {
     this.addTagToNote(newTag.id);
+    if (this.note) {
+      this.note.tags?.push(newTag);
+    }
   }
 
-  //remove ´TagFromNote muss noch implementiert werden, siehe unten
-/*   onTagRemoved(tagId: number) {
-    this.removeTagFromNote(tagId);
-  } */
   loadNoteWithTags() {
     if (this.id) {
       this.noteService.getSingleNote(this.id).subscribe({
@@ -134,11 +142,11 @@ export class NoteComponent implements OnInit {
   }
 
   //muss noch in NoteService implementiert werden, konnte ich aber noch nicht testen
-  /* private removeTagFromNote(tagId: number) {
+  private removeTagFromNote(tagId: number) {
     const currentUserId = localStorage.getItem('id');
     const currentUserPw = localStorage.getItem('pw');
 
-    if (!currentUserId || !currentUserPw) return;
+    if (!currentUserId || !currentUserPw || !this.id) return;
 
     this.noteService.removeTagFromNote(currentUserId, currentUserPw, this.id, tagId)
       .subscribe({
@@ -147,7 +155,7 @@ export class NoteComponent implements OnInit {
         },
         error: (err) => console.error('Error removing tag from note', err)
       });
-  } */
+  } 
 
 
   loadSingleNote(): Observable<Note | undefined> {

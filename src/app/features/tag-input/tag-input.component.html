@@ -12,7 +12,7 @@
           {{ panelOpenState() ? "" : "add tags" }}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <form class="example-form" (submit)="addNewTag()">
+      <form class="example-form" (click)="addNewTag()">
         <mat-form-field class="example-full-width">
           <mat-label>Tag</mat-label>
           <input
@@ -29,12 +29,12 @@
             (optionSelected)="onTagSelected($event)"
             [displayWith]="displayFn"
           >
-            @for (option of filteredOptions | async; track trackById) {
+          @for (option of filteredOptions | async; track trackOptionById($index, option)) {
             <mat-option [value]="option">{{ option.name }}</mat-option>
-            }
+          }
           </mat-autocomplete>
         </mat-form-field>
-        <button mat-button type="submit" [disabled]="!myControl.value?.trim()">
+        <button mat-button (click)="addNewTag(myControl.value)" [disabled]="!myControl.value?.trim()">
           <mat-icon>add_circle</mat-icon>
         </button>
       </form>
@@ -42,14 +42,14 @@
   </div>
   <div id="tags-note">
     <mat-chip-listbox>
-      @for (tag of tags; track trackById) {
-      <mat-chip (removed)="removeTag(tag.id)">
-        {{ tag.name }}
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip>
-      }
+        @for (tag of tags; track trackTagById($index, tag)) {
+            <mat-chip (removed)="removeTag(tag.id)">
+              {{ tag.name }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+        }
     </mat-chip-listbox>
   </div>
 </div>
