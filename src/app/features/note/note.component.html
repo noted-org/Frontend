@@ -1,5 +1,11 @@
 <div class="show-notes" *ngIf="note">
   <div class="note-card">
+    <app-tag-input
+      [initialTags]="note.tags || []"
+      [allAvailableTags]="allTags"
+      (tagAdded)="onTagAdded($event)"
+      (tagRemoved)="onTagRemoved($event)"
+    ></app-tag-input>
     <p
       *ngIf="!isEditingHeader"
       (click)="startEditingHeader()"

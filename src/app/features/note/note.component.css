@@ -81,3 +81,11 @@ input.note-title {
   text-decoration: none;
   color:var(--color-contrast);
 }
+
+#tags-note {
+  margin-top: 10px;
+}
+
+mat-chip {
+  margin: 2px;
+}

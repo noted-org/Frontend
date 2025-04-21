@@ -60,6 +60,24 @@ export class NoteService {
     );
   }
 
+  delete<T>(url: string, user: User, body?: object): Observable<T> {
+    const headers = body
+      ? new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.id} ${user.password}`,
+        })
+      : undefined;
+
+    console.log('DELETE Request URL:', url);
+    console.log('DELETE Request Headers:', headers);
+    console.log('DELETE Request Body:', body);
+
+    return this.http.delete<T>(url, { 
+      headers,
+      body 
+    });
+  }
+
   createNote(noteData: CreateNote, user: User): Observable<Note> {
     const payload = {
       ...noteData,
@@ -76,8 +94,34 @@ export class NoteService {
     return this.patch<Note>(`${this.BASE_URL}/notes/${note.id}`, user, payload);
   }
 
+  addTag(tagName: string): Observable<any> {
+    return this.http.post(`http://localhost:3000/tags`, { "name": tagName });
+  }
+  
+  getAllTags(): Observable<{id: number, name: string}[]> {
+    return this.http.get<{id: number, name: string}[]>(`http://localhost:3000/tags`);
+  }
+
+  addTagsToNote( userid: string, userpw: string, noteId: number, tags: number[]){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${userid} ${userpw}`
+    });
+    return this.http.post<{id: number, name: string}>(`http://localhost:3000/notes/${noteId}/tags`, { tags: tags }, { headers });
+  }
+  removeTagFromNote(userId: string, password: string, noteId: number, tagId: number): Observable<void> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${userId} ${password}`
+    });
+    
+    return this.http.delete<void>(`${this.BASE_URL}/notes/${noteId}/tags/${tagId}`, {
+      headers
+    });
+  }
+
   getAllNotes(): Observable<Note[]> {
-    return this.get<Note[]>(`${this.BASE_URL}/notes/`);
+    return this.get<Note[]>(`http://localhost:3000/notes/`);
   }
 
   getNotesByTag(tag: string): Observable<Note[]> {

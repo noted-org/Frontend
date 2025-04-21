@@ -16,13 +16,13 @@
         Content is required
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Tags (comma seperated)</mat-label>
-      <input matInput formControlName="tags" />
-      <mat-hint
-        >Enter tags seperated by commas (e.g., work, personal, ideas)</mat-hint
-      >
-    </mat-form-field>
+    <app-tag-input
+      [initialTags]="initialTags"
+      [allAvailableTags]="allAvailableTags"
+      (tagAdded)="onTagAdded($event)"
+      (tagRemoved)="onTagRemoved($event)"
+    >
+    </app-tag-input>
   </div>
   <div mat-dialog-actions>
     <button mat-raised-button class="cancel-button" (click)="onCancel()">
