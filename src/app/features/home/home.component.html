@@ -20,14 +20,14 @@
     <div class="note-tags" *ngIf="note.tags && note.tags.length > 0">
       <div class="tags-container">
         <span *ngFor="let tag of note.tags" class="tag-chip">
-          {{ tag }}
+          {{ tag.name }}
         </span>
       </div>
     </div>
 
     <div class="note-footer">
       <span class="note-author">
-        <a [routerLink]="['/profile', note.id]" class="no-underline"
+        <a [routerLink]="['/profile', note.author]" class="no-underline"
           >By: {{ note.authorName }}</a
         >
       </span>
