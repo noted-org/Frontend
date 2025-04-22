@@ -1,0 +1,52 @@
+#tags {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+mat-icon{
+    fill: var(--color-bg);
+    color: var(--color-bg);
+}
+
+mat-panel-title, mat-panel-description{
+    color: var(--color-bg); 
+}
+
+mat-expansion-panel {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+mat-form-field {
+    width: 100%;
+    color: var(--color-text);
+
+    .mat-form-field-flex {
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    input {
+        color: var(--color-text);
+    }
+}
+
+mat-chip {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    button {
+        color: var(--color-text);
+    }
+}
+
+mat-expansion-panel-header {
+    background-color: var(--color-primary) !important;
+    color: var(--color-bg) !important;
+    margin: 5px;
+}
+
+mat-expansion-panel-header:hover {
+    background-color: var(--color-secondary) !important;
+    color: var(--color-bg) !important;
+}

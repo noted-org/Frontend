@@ -65,14 +65,3 @@ h1 {
   height: 70px;
   width: 70px;
 }
-
-button[mat-menu-item] {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  margin-top:5px;
-  margin-bottom: 5px;
-}
-
-button[mat-menu-item]:hover{
-  background-color: var(--color-bg-second);
-}

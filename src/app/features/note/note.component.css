@@ -89,3 +89,8 @@ input.note-title {
 mat-chip {
   margin: 2px;
 }
+
+app-tag-input {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
