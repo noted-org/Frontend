@@ -50,6 +50,8 @@ export class NoteDialogComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private NoteService = inject(NoteService);
   currentUser: User | undefined;
+  userId = Number(localStorage.getItem('id')) || 0;
+  userPw = localStorage.getItem('pw') || '';
 
   initialTags: { name: string; id: number }[] = [];
   allAvailableTags: { name: string; id: number }[] = [];
@@ -78,7 +80,7 @@ export class NoteDialogComponent implements OnInit {
   }
 
   loadAvailableTags(): void {
-    this.NoteService.getAllTags().subscribe((tags) => {
+    this.NoteService.getAllTags(this.userId, this.userPw).subscribe((tags) => {
       this.allAvailableTags = tags;
     });
   }

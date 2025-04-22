@@ -56,6 +56,8 @@ export class NoteComponent implements OnInit {
   isEditingHeader: boolean = false;
   firstFormGroup: any;
   menuOpen: Boolean = false;
+  userId = Number(localStorage.getItem('id')) || 0;
+  userPw = localStorage.getItem('pw') || '';
   
   noteTags: {name: string, id: number}[] = [];
   allTags: {name: string, id: number}[] = [];
@@ -97,7 +99,7 @@ export class NoteComponent implements OnInit {
   }
 
   loadAllTags() {
-    this.noteService.getAllTags().subscribe(tags => {
+    this.noteService.getAllTags(this.userId, this.userPw).subscribe(tags => {
       this.allTags = tags;
     });
   }
