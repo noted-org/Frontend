@@ -94,12 +94,20 @@ export class NoteService {
     return this.patch<Note>(`${this.BASE_URL}/notes/${note.id}`, user, payload);
   }
 
-  addTag(tagName: string): Observable<any> {
-    return this.http.post(`http://localhost:3000/tags`, { "name": tagName });
+  addTag(tagName: string, userId: number, userPw: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${userId} ${userPw}`
+    });
+    return this.http.post(`http://localhost:3000/tags`, { "name": tagName }, { headers });
   }
   
-  getAllTags(): Observable<{id: number, name: string}[]> {
-    return this.http.get<{id: number, name: string}[]>(`http://localhost:3000/tags`);
+  getAllTags(userId: number, userPw: string): Observable<{id: number, name: string}[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${userId} ${userPw}`
+    });
+    return this.http.get<{id: number, name: string}[]>(`http://localhost:3000/tags`, { headers });
   }
 
   addTagsToNote( userid: string, userpw: string, noteId: number, tags: number[]){

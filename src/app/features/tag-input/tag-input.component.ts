@@ -58,7 +58,7 @@ export class TagInputComponent implements OnInit {
   trackTagById = (index: number, tag: { id: number }) => `tag-${index}-${tag.id}`;
 
   private _filter(value: string): { name: string; id: number }[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
 
     return this.allAvailableTags.filter(
       (tag) =>
@@ -66,6 +66,8 @@ export class TagInputComponent implements OnInit {
         !this.tags.some((t) => t.name === tag.name)
     );
   }
+  userId = Number(localStorage.getItem('id')) || 0;
+  userPw = localStorage.getItem('pw') || '';
 
   ngOnInit() {
     this.tags = [...this.initialTags];
@@ -80,7 +82,7 @@ export class TagInputComponent implements OnInit {
     );
 
     if (this.allAvailableTags.length === 0) {
-      this.noteService.getAllTags().subscribe((tags) => {
+      this.noteService.getAllTags(this.userId, this.userPw).subscribe((tags) => {
         this.allAvailableTags = tags;
         this.updateFilterOptions();
       });
@@ -111,7 +113,7 @@ export class TagInputComponent implements OnInit {
       const newTagName = tag.trim();
       if (!newTagName) return;
   
-      this.noteService.addTag(newTagName).subscribe({
+      this.noteService.addTag(newTagName, this.userId, this.userPw).subscribe({
         next: (response) => {
           this.tags.push(response);
           this.tagAdded.emit(response);
