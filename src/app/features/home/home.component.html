@@ -14,10 +14,30 @@
     class="note-card"
     [routerLink]="['/notes', note.id]"
   >
-    <p class="note-delete">Delete note</p>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      type="button"
+      (click)="preventLoading($event)"
+      aria-label="Icon-button with a menu to edit and delete notes"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" class="mat-menu-background">
+      <button mat-menu-item (click)="deleteNote(note.id)">
+        <mat-icon class="mat-menu">delete_outline</mat-icon>
+        <span class="mat-menu">Delete</span>
+      </button>
+      <a
+        mat-menu-item
+        [routerLink]="['/notes', note.id]"
+        aria-label="Edit note"
+      >
+        <mat-icon class="mat-menu">edit</mat-icon>
+        <span class="mat-menu">Edit</span>
+      </a>
+    </mat-menu>
     <h3 class="note-title">{{ note.name }}</h3>
-    <button mat-mini-fab>Delete</button>
-
     <p class="note-content">{{ note.content }}</p>
 
     <div class="note-tags" *ngIf="note.tags && note.tags.length > 0">

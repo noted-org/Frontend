@@ -1,21 +1,27 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NoteComponent } from '../note/note.component';
 import { NoteService } from '../../shared/services/note.service';
 import { UserService } from '../../shared/services/user.service';
-import { CreateNote, Note } from '../../shared/types/note.type';
+import { Note } from '../../shared/types/note.type';
 import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
-import { User } from '../../shared/types/user.type';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { User } from '../../shared/types/user.type';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+  ],
   providers: [NoteService, UserService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -76,5 +82,33 @@ export class HomeComponent implements OnInit {
     _popup.afterClosed().subscribe((item) => {
       this.loadNotes();
     });
+  }
+
+  async deleteNote(id: Number | undefined) {
+    const currentUserId = localStorage.getItem('id');
+    const currentUserPw = localStorage.getItem('pw');
+
+    if (!currentUserId || !currentUserPw) {
+      console.log('User information not found.');
+      alert('User information not found');
+      return;
+    }
+
+    console.log(id);
+    console.log(typeof id);
+    if (typeof id === 'number' && !isNaN(id)) {
+      console.log('True');
+      this.noteService
+        .deleteNote(parseInt(currentUserId), currentUserPw, id)
+        .subscribe(() => {
+          const index = this.notes.findIndex((el) => el.id == id);
+          this.notes.splice(index, 1);
+        });
+    }
+  }
+
+  preventLoading(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
   }
 }
