@@ -14,7 +14,10 @@
     class="note-card"
     [routerLink]="['/notes', note.id]"
   >
+    <p class="note-delete">Delete note</p>
     <h3 class="note-title">{{ note.name }}</h3>
+    <button mat-mini-fab>Delete</button>
+
     <p class="note-content">{{ note.content }}</p>
 
     <div class="note-tags" *ngIf="note.tags && note.tags.length > 0">

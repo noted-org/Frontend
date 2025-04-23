@@ -4,12 +4,17 @@ export interface Note {
   name: string;
   content: string;
   author: string;
-  tags?: {name: string, id: number}[];
+  tags?: { name: string; id: number }[];
   createdAt?: string;
   updatedAt?: string;
 }
 
-export type CreateNote = Pick<Note, 'name' | 'content' | 'author' | 'tags'>;
+export type CreateNote = Omit<
+  Note,
+  'id' | 'authorName' | 'tags' | 'createdAt' | 'updatedAt'
+> & {
+  tags: number[];
+};
 export type UpdateNote = Pick<
   Note,
   'id' | 'name' | 'content' | 'author' | 'tags'

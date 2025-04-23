@@ -12,33 +12,56 @@ import {
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import {
+  MatFormField,
+  MatFormFieldModule,
+  MatLabel,
+} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NoteService } from '../../shared/services/note.service';
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Note, UpdateNote } from '../../shared/types/note.type';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { catchError, map, Observable, of, switchMap, startWith } from 'rxjs';
 import { User } from '../../shared/types/user.type';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {ChangeDetectionStrategy, computed, model, signal} from '@angular/core';
-import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {AsyncPipe} from '@angular/common';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  ChangeDetectionStrategy,
+  computed,
+  model,
+  signal,
+} from '@angular/core';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { AsyncPipe } from '@angular/common';
 import * as sha512 from 'crypto-js';
 import { TagInputComponent } from '../tag-input/tag-input.component';
-
 
 @Component({
   selector: 'app-note',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, TagInputComponent, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    TagInputComponent,
+    MatExpansionModule,
+    CommonModule,
+    RouterModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+  ],
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
   providers: [NoteService, UserService],
@@ -58,10 +81,9 @@ export class NoteComponent implements OnInit {
   menuOpen: Boolean = false;
   userId = Number(localStorage.getItem('id')) || 0;
   userPw = localStorage.getItem('pw') || '';
-  
-  noteTags: {name: string, id: number}[] = [];
-  allTags: {name: string, id: number}[] = [];
 
+  noteTags: { name: string; id: number }[] = [];
+  allTags: { name: string; id: number }[] = [];
 
   ngAfterViewChecked() {
     if (this.isEditing && this.noteInput) {
@@ -87,11 +109,9 @@ export class NoteComponent implements OnInit {
     } else {
       console.error('ID is not defined');
     }
-    
   }
-  
-  onTagRemoved(tagId: number) {
 
+  onTagRemoved(tagId: number) {
     this.removeTagFromNote(tagId); //muss noch implementiert werden
     /* if (this.note) {
       this.note.tags = this.note.tags?.filter(tag => tag.id !== Number(tagId));
@@ -99,11 +119,11 @@ export class NoteComponent implements OnInit {
   }
 
   loadAllTags() {
-    this.noteService.getAllTags(this.userId, this.userPw).subscribe(tags => {
+    this.noteService.getAllTags(this.userId, this.userPw).subscribe((tags) => {
       this.allTags = tags;
     });
   }
-  onTagAdded(newTag: {name: string, id: number}) {
+  onTagAdded(newTag: { name: string; id: number }) {
     this.addTagToNote(newTag.id);
     if (this.note) {
       this.note.tags?.push(newTag);
@@ -117,20 +137,21 @@ export class NoteComponent implements OnInit {
           this.note = note;
           this.noteTags = note.tags || [];
         },
-        error: (err) => console.error('Error loading note', err)
+        error: (err) => console.error('Error loading note', err),
       });
     }
   }
 
   private addTagToNote(tagId: number) {
     if (!this.note?.id) return;
-  
+
     const currentUserId = localStorage.getItem('id');
     const currentUserPw = localStorage.getItem('pw');
-  
+
     if (!currentUserId || !currentUserPw) return;
-  
-    this.noteService.addTagsToNote(currentUserId, currentUserPw, this.id, [tagId])
+
+    this.noteService
+      .addTagsToNote(currentUserId, currentUserPw, this.id, [tagId])
       .subscribe({
         next: (addedTag) => {
           if (addedTag) {
@@ -139,7 +160,7 @@ export class NoteComponent implements OnInit {
             this.loadNoteWithTags();
           }
         },
-        error: (err) => console.error('Error adding tag to note', err)
+        error: (err) => console.error('Error adding tag to note', err),
       });
   }
 
@@ -150,15 +171,15 @@ export class NoteComponent implements OnInit {
 
     if (!currentUserId || !currentUserPw || !this.id) return;
 
-    this.noteService.removeTagFromNote(currentUserId, currentUserPw, this.id, tagId)
+    this.noteService
+      .removeTagFromNote(currentUserId, currentUserPw, this.id, tagId)
       .subscribe({
         next: () => {
-          this.noteTags = this.noteTags.filter(t => t.id !== tagId);
+          this.noteTags = this.noteTags.filter((t) => t.id !== tagId);
         },
-        error: (err) => console.error('Error removing tag from note', err)
+        error: (err) => console.error('Error removing tag from note', err),
       });
-  } 
-
+  }
 
   loadSingleNote(): Observable<Note | undefined> {
     return this.noteService.getSingleNote(this.id).pipe(
