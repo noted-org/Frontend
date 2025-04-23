@@ -33,12 +33,13 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {AsyncPipe} from '@angular/common';
 import * as sha512 from 'crypto-js';
 import { TagInputComponent } from '../tag-input/tag-input.component';
+import { TextEditorComponent } from '../text-editor/text-editor.component'
 
 
 @Component({
   selector: 'app-note',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, TagInputComponent, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule],
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, TagInputComponent, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule, TextEditorComponent],
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
   providers: [NoteService, UserService],
@@ -58,7 +59,7 @@ export class NoteComponent implements OnInit {
   menuOpen: Boolean = false;
   userId = Number(localStorage.getItem('id')) || 0;
   userPw = localStorage.getItem('pw') || '';
-  
+
   noteTags: {name: string, id: number}[] = [];
   allTags: {name: string, id: number}[] = [];
 
@@ -87,9 +88,9 @@ export class NoteComponent implements OnInit {
     } else {
       console.error('ID is not defined');
     }
-    
+
   }
-  
+
   onTagRemoved(tagId: number) {
 
     this.removeTagFromNote(tagId); //muss noch implementiert werden
@@ -124,12 +125,12 @@ export class NoteComponent implements OnInit {
 
   private addTagToNote(tagId: number) {
     if (!this.note?.id) return;
-  
+
     const currentUserId = localStorage.getItem('id');
     const currentUserPw = localStorage.getItem('pw');
-  
+
     if (!currentUserId || !currentUserPw) return;
-  
+
     this.noteService.addTagsToNote(currentUserId, currentUserPw, this.id, [tagId])
       .subscribe({
         next: (addedTag) => {
@@ -157,7 +158,7 @@ export class NoteComponent implements OnInit {
         },
         error: (err) => console.error('Error removing tag from note', err)
       });
-  } 
+  }
 
 
   loadSingleNote(): Observable<Note | undefined> {

@@ -22,18 +22,13 @@
       class="note-title"
     />
 
-    <p *ngIf="!isEditing" (click)="startEditing()" class="note-content">
-      {{ note.content }}
-    </p>
-    <input
-      #noteInput
+    <p *ngIf="!isEditing" (click)="startEditing()" class="note-content" [innerHTML]="note.content"></p>
+
+    <app-text-editor
       *ngIf="isEditing"
-      type="text"
-      [(ngModel)]="note.content"
-      (blur)="isEditing = false"
+      [(content)]="note.content"
       (blur)="stopEditing()"
-      class="note-content"
-    />
+    ></app-text-editor>
 
     <div class="note-footer">
       <span class="note-author">
