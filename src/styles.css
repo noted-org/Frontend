@@ -20,6 +20,7 @@
   --color-button-bg: #007bff;
   --color-button-text: #ffffff;
   --color-logo: white;
+  --color-shadow: box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,6 +36,9 @@
     --color-button-bg: #1e90ff;
     --color-button-text: #ffffff;
     --color-logo: none;
+    --color-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.5), /* dunkler Schatten */
+    0 0 10px rgba(255, 255, 255, 0.1); /* leichter Glow */
   }
 }
 
