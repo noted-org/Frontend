@@ -22,8 +22,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NoteService } from '../../shared/services/note.service';
-import { FormControl } from '@angular/forms';
-import { Note, UpdateNote } from '../../shared/types/note.type';
+import {FormControl} from '@angular/forms';
+import { Note, UpdateNote, CreateNote } from '../../shared/types/note.type';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { catchError, map, Observable, of, switchMap, startWith } from 'rxjs';
@@ -45,6 +45,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AsyncPipe } from '@angular/common';
 import * as sha512 from 'crypto-js';
 import { TagInputComponent } from '../tag-input/tag-input.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AiRequestDialogComponent } from '../ai-request-dialog/ai-request-dialog.component';
+import { SummaryDialogComponent } from '../summary-dialog/summary-dialog.component';
 
 @Component({
   selector: 'app-note',
@@ -81,9 +84,13 @@ export class NoteComponent implements OnInit {
   menuOpen: Boolean = false;
   userId = Number(localStorage.getItem('id')) || 0;
   userPw = localStorage.getItem('pw') || '';
+  
+  noteTags: {name: string, id: number}[] = [];
+  allTags: {name: string, id: number}[] = [];
 
-  noteTags: { name: string; id: number }[] = [];
-  allTags: { name: string; id: number }[] = [];
+  
+  constructor(private dialog: MatDialog) {}
+
 
   ngAfterViewChecked() {
     if (this.isEditing && this.noteInput) {
@@ -258,6 +265,105 @@ export class NoteComponent implements OnInit {
       error: (err) => {
         console.error('Error updating note:', err);
         alert('Failed to save note changes. Please check your data.');
+      },
+    });
+  }
+  requestOfSummary(){
+    const _popup = this.dialog.open(AiRequestDialogComponent, {
+        restoreFocus: true,
+        autoFocus: false,
+        width: '100px',
+        height: '300px',
+        data: {
+          title: 'Do you want an AI generated summary of your note?',
+          content: 'Note content',
+        },
+      });
+    _popup.afterClosed().subscribe((item) => {
+        if(item === 'generate'){
+          this.generateSummary();
+        }
+        this.loadSingleNote();
+    });
+  }
+  
+  openSummaryDialog(updatedNote: Note){
+      const _popup = this.dialog.open(SummaryDialogComponent, {
+        restoreFocus: true,
+        autoFocus: false,
+        data: {
+          originalNote: this.note,
+          updatedNote: updatedNote
+        },
+      });
+    _popup.afterClosed().subscribe((item) => {
+        if(item === 'replace'){
+          this.note = updatedNote;
+          this.saveNoteChanges();
+        } else if (item === 'saveNew'){
+          this.saveAsNewNote(updatedNote);
+        } else{
+          console.log('Zusammenfassung verworfen')
+        }
+        this.loadSingleNote();
+    });
+  }
+
+  async generateSummary() {
+    if (!this.note?.id) {
+      throw new Error('Note is undefined this should never happen here.');
+    }
+    const user = await this.userService.getUser(this.userId);
+
+    this.noteService.summarize(this.note.id, user).subscribe({
+      next: (updatedNote) => {
+        this.openSummaryDialog(updatedNote);
+      },
+      error: (err) => {
+        console.error('Fehler beim Zusammenfassen:', err);
+      },
+    });
+  }
+
+  saveAsNewNote(note: Note){
+    const currentUserId = localStorage.getItem('id');
+    const currentUserPw = localStorage.getItem('pw');
+
+    if (!currentUserId || !currentUserPw) {
+      console.log('User information not found.');
+      alert('User information not found');
+      return;
+    }
+
+    const currentUser: User = {
+      id: parseInt(currentUserId),
+      nickname: 'defaultNickname',
+      password: currentUserPw,
+      username: 'defaultUsername',
+      email: 'default@email.com',
+    };
+
+    if (!this.id || !this.note) {
+      console.error('Note ID or data is missing.');
+      alert('Note ID or data is missing.');
+      return;
+    }
+
+    const noteData: CreateNote = {
+      name: note.name + ' (Summary)',
+      content: note.content,
+      author: note.author,
+      tags: note.tags || [],
+    };
+
+    this.noteService.createNote(noteData, currentUser).subscribe({
+      next: (res) => {
+        console.log('New note saved:', res);
+        alert('Summary successfully saved as a new note.')
+      },
+      error: (err) => {
+        console.error('Error saving new note:', err);
+        alert('Failed to save new note. Please check your data.');
       },
     });
   }

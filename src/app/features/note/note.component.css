@@ -94,3 +94,13 @@ app-tag-input {
   background-color: var(--color-bg);
   color: var(--color-text);
 }
+
+.note-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.note-toolbar button {
+  color: var(--color-primary);
+  background-color: transparent;
+}

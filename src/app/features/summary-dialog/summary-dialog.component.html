@@ -1,0 +1,13 @@
+<div class="form">
+    <h1 mat-dialog-title>
+        {{ data.updatedNote.name }}
+    </h1>
+    <p mat-dialog-content>
+        {{ data.updatedNote.content }}
+    </p>
+    <div mat-dialog-actions>
+      <button mat-button (click)="discard()">Verwerfen</button>
+      <button mat-button (click)="saveAsNew()">Zusätzlich speichern</button>
+      <button mat-raised-button (click)="replaceNote()">Ersetzen</button>
+    </div>
+  </div>
