@@ -1,6 +1,5 @@
 <div class="show-notes" *ngIf="note">
   <div class="note-card">
-    
     <app-tag-input
       [initialTags]="note.tags || []"
       [allAvailableTags]="allTags"
@@ -43,7 +42,7 @@
 
     <div class="note-footer">
       <span class="note-author">
-        <a [routerLink]="['/profile', note.id]" class="no-underline"
+        <a [routerLink]="['/profile', note.author]" class="no-underline"
           >By: {{ note.authorName }}</a
         >
       </span>
