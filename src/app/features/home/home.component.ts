@@ -5,12 +5,19 @@ import { UserService } from '../../shared/services/user.service';
 import { Note } from '../../shared/types/note.type';
 import { RouterModule } from '@angular/router';
 import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../shared/types/user.type';
+import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +28,7 @@ import { User } from '../../shared/types/user.type';
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
+    MatDialogModule,
   ],
   providers: [NoteService, UserService],
   templateUrl: './home.component.html',
@@ -31,6 +39,7 @@ export class HomeComponent implements OnInit {
   private noteService = inject(NoteService);
   private userService = inject(UserService);
 
+  private dialogRef: MatDialogRef<ConfirmationDialogComponent> | undefined;
   constructor(private dialog: MatDialog) {}
 
   async ngOnInit() {
@@ -84,27 +93,42 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  async deleteNote(id: Number | undefined) {
-    const currentUserId = localStorage.getItem('id');
-    const currentUserPw = localStorage.getItem('pw');
+  deleteNote(id: Number | undefined) {
+    const dialogConfig = new MatDialogConfig();
 
-    if (!currentUserId || !currentUserPw) {
-      console.log('User information not found.');
-      alert('User information not found');
-      return;
-    }
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
 
-    console.log(id);
-    console.log(typeof id);
-    if (typeof id === 'number' && !isNaN(id)) {
-      console.log('True');
-      this.noteService
-        .deleteNote(parseInt(currentUserId), currentUserPw, id)
-        .subscribe(() => {
-          const index = this.notes.findIndex((el) => el.id == id);
-          this.notes.splice(index, 1);
-        });
-    }
+    this.dialogRef = this.dialog.open(
+      ConfirmationDialogComponent,
+      dialogConfig
+    );
+    this.dialogRef.componentInstance.title = 'Delete Note';
+    this.dialogRef.componentInstance.confirmMessage =
+      'Are you sure you want to delete your note?';
+    this.dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const currentUserId = localStorage.getItem('id');
+        const currentUserPw = localStorage.getItem('pw');
+
+        if (!currentUserId || !currentUserPw) {
+          console.log('User information not found.');
+          alert('User information not found');
+          return;
+        }
+
+        if (typeof id === 'number' && !isNaN(id)) {
+          console.log('True');
+          this.noteService
+            .deleteNote(parseInt(currentUserId), currentUserPw, id)
+            .subscribe(() => {
+              const index = this.notes.findIndex((el) => el.id == id);
+              this.notes.splice(index, 1);
+            });
+        }
+      }
+      this.dialogRef = undefined;
+    });
   }
 
   preventLoading(event: Event) {
