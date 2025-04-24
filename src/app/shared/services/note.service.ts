@@ -142,4 +142,7 @@ export class NoteService {
     console.log(noteId);
     return this.get<Note>(`${this.BASE_URL}/notes/${noteId}`);
   }
+  summarize(noteId: number, user: User): Observable<Note> {
+    return this.post<Note>(`${this.BASE_URL}/notes/${noteId}`, user)
+  }
 }

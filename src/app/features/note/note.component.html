@@ -1,11 +1,17 @@
 <div class="show-notes" *ngIf="note">
   <div class="note-card">
+    
     <app-tag-input
       [initialTags]="note.tags || []"
       [allAvailableTags]="allTags"
       (tagAdded)="onTagAdded($event)"
       (tagRemoved)="onTagRemoved($event)"
     ></app-tag-input>
+    <div class="note-toolbar">
+      <button mat-icon-button (click)="requestOfSummary()">
+        <mat-icon>auto_awesome</mat-icon>
+      </button>
+    </div>
     <p
       *ngIf="!isEditingHeader"
       (click)="startEditingHeader()"
