@@ -18,6 +18,7 @@
   --color-secondary: #52638a;
   --color-border: #aca9a9;
   --color-button-bg: #007bff;
+  --color-greyblue: #4e5564;
   --color-button-text: #ffffff;
   --color-logo: white;
   --color-shadow:  0 0 0 1px rgba(0, 0, 0, 0.05),       /* feine Umrandung */
@@ -37,6 +38,7 @@
     --color-border: #636363;
     --color-button-bg: #1e90ff;
     --color-button-text: #ffffff;
+    --color-greyblue: #a7bdc2;
     --color-logo: none;
     --color-shadow:  0 0 0 1px rgba(255, 255, 255, 0.1),       /* feiner heller Rand */
     0 0 20px rgba(255, 255, 255, 0.08),       /* weicher Glow */
