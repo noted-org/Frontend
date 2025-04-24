@@ -353,7 +353,7 @@ export class NoteComponent implements OnInit {
       name: note.name + ' (Summary)',
       content: note.content,
       author: note.author,
-      tags: note.tags || [],
+      tags: note.tags ? note.tags.map(tag => tag.id) : [],
     };
 
     this.noteService.createNote(noteData, currentUser).subscribe({
