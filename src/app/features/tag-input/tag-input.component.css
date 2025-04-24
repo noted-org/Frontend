@@ -30,12 +30,14 @@ mat-form-field {
 }
 
 mat-chip {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    button {
-        color: var(--color-text);
-    }
+    background-color: var(--color-greyblue) !important;
+    color: var(--color-text) !important;
 }
+
+mat-chip button:hover{
+  background-color: var(--color-greyblue);
+}
+
 
 mat-expansion-panel-header {
     background-color: var(--color-primary) !important;
@@ -45,6 +47,10 @@ mat-expansion-panel-header {
 mat-expansion-panel-header:hover {
     background-color: var(--color-secondary) !important;
     color: var(--color-bg) !important;
+}
+
+::ng-deep .mdc-evolution-chip-set_chips {
+  margin: 5px !important;
 }
 
 /*::ng-deep #mat-autocomplete-0 {

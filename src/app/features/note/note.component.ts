@@ -141,7 +141,10 @@ export class NoteComponent implements OnInit {
     if (this.id) {
       this.noteService.getSingleNote(this.id).subscribe({
         next: (note) => {
-          this.note = note;
+          this.note = {
+            ...this.note,
+            ...note
+          };
           this.noteTags = note.tags || [];
         },
         error: (err) => console.error('Error loading note', err),

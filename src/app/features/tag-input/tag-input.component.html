@@ -53,7 +53,7 @@
   <div id="tags-note">
     <mat-chip-listbox>
       @for (tag of tags; track trackTagById($index, tag)) {
-      <mat-chip (removed)="removeTag(tag.id)">
+      <mat-chip class="tag" (removed)="removeTag(tag.id)">
         {{ tag.name }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
