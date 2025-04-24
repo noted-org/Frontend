@@ -20,7 +20,9 @@
   --color-button-bg: #007bff;
   --color-button-text: #ffffff;
   --color-logo: white;
-  --color-shadow: box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --color-shadow:  0 0 0 1px rgba(0, 0, 0, 0.05),       /* feine Umrandung */
+  0 10px 30px rgba(0, 0, 0, 0.2),      /* starker unterer Schatten */
+  0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,9 +38,9 @@
     --color-button-bg: #1e90ff;
     --color-button-text: #ffffff;
     --color-logo: none;
-    --color-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.5), /* dunkler Schatten */
-    0 0 10px rgba(255, 255, 255, 0.1); /* leichter Glow */
+    --color-shadow:  0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(255, 255, 255, 0.05);
   }
 }
 

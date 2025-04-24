@@ -6,7 +6,6 @@
     flex-direction: column;
     align-items: center;
     border-radius: 12px;
-    box-shadow: var(--color-shadow);
     gap: 16px;
     max-width: 400px;
     margin: auto;
@@ -48,5 +47,7 @@
   }
 
   ::ng-deep .mat-mdc-dialog-surface {
-    background-color: transparent;
+    background-color: var(--color-bg);
+    opacity: 1;
+    box-shadow: var(--color-shadow);
   }
