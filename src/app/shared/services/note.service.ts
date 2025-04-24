@@ -81,7 +81,11 @@ export class NoteService {
       ...noteData,
       tags: noteData.tags || [], // Ensure tags is always an array
     };
-    return this.post<Note>(`${this.BASE_URL}/notes`, user, payload);
+    return this.post<Note>(
+      `${this.BASE_URL}/notes?user=${user.id}`,
+      user,
+      payload
+    );
   }
 
   updateNote(note: UpdateNote, user: User): Observable<Note> {
@@ -153,8 +157,8 @@ export class NoteService {
     );
   }
 
-  getAllNotes(): Observable<Note[]> {
-    return this.get<Note[]>(`http://localhost:3000/notes/`);
+  getAllNotes(userId: Number): Observable<Note[]> {
+    return this.get<Note[]>(`http://localhost:3000/notes?user=${userId}`);
   }
 
   getNotesByTag(tag: string): Observable<Note[]> {
@@ -168,7 +172,7 @@ export class NoteService {
     return this.get<Note>(`${this.BASE_URL}/notes/${noteId}`);
   }
   summarize(noteId: number, user: User): Observable<Note> {
-    return this.post<Note>(`${this.BASE_URL}/notes/${noteId}/summarize`, user)
+    return this.post<Note>(`${this.BASE_URL}/notes/${noteId}/summarize`, user);
   }
 
   deleteNote(

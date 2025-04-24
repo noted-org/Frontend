@@ -42,13 +42,23 @@ export class HomeComponent implements OnInit {
   private dialogRef: MatDialogRef<ConfirmationDialogComponent> | undefined;
   constructor(private dialog: MatDialog) {}
 
+  private _currentUserId = localStorage.getItem('id');
+  private _currentUserPw = localStorage.getItem('pw');
+
   async ngOnInit() {
     this.loadNotes();
   }
 
   loadNotes() {
+    if (!this._currentUserId) {
+      console.log('User information not found.');
+      alert('User information not found');
+      return;
+    }
+    console.log(parseInt(this._currentUserId));
+
     this.noteService
-      .getAllNotes()
+      .getAllNotes(parseInt(this._currentUserId))
       .pipe(
         switchMap((fetchedNotes) => {
           if (!fetchedNotes) return of([]);
@@ -108,10 +118,7 @@ export class HomeComponent implements OnInit {
       'Are you sure you want to delete your note?';
     this.dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const currentUserId = localStorage.getItem('id');
-        const currentUserPw = localStorage.getItem('pw');
-
-        if (!currentUserId || !currentUserPw) {
+        if (!this._currentUserId || !this._currentUserPw) {
           console.log('User information not found.');
           alert('User information not found');
           return;
@@ -120,7 +127,7 @@ export class HomeComponent implements OnInit {
         if (typeof id === 'number' && !isNaN(id)) {
           console.log('True');
           this.noteService
-            .deleteNote(parseInt(currentUserId), currentUserPw, id)
+            .deleteNote(parseInt(this._currentUserId), this._currentUserPw, id)
             .subscribe(() => {
               const index = this.notes.findIndex((el) => el.id == id);
               this.notes.splice(index, 1);
