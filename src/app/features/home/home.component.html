@@ -1,3 +1,21 @@
+<div>
+  <mat-form-field>
+    <mat-label>Filter by Tags</mat-label>
+    <mat-select
+      [(value)]="selectedTags"
+      multiple
+      (selectionChange)="filterNotes()"
+    >
+      <mat-option
+        *ngFor="let tag of allTags; trackBy: trackByTagId"
+        [value]="tag.id"
+      >
+        {{ tag.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 <div class="create-note-container">
   <button
     mat-raised-button
@@ -10,7 +28,7 @@
 
 <div class="show-notes">
   <div
-    *ngFor="let note of notes"
+    *ngFor="let note of filteredNotes; trackBy: trackByNoteId"
     class="note-card"
     [routerLink]="['/notes', note.id]"
   >

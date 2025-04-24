@@ -15,9 +15,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../shared/types/user.type';
 import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { Title } from '@angular/platform-browser';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +31,12 @@ import { Title } from '@angular/platform-browser';
     MatMenuModule,
     MatIconModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [NoteService, UserService],
   templateUrl: './home.component.html',
@@ -36,17 +44,30 @@ import { Title } from '@angular/platform-browser';
 })
 export class HomeComponent implements OnInit {
   notes: Note[] = [];
+  filteredNotes: Note[] = [];
+  allTags: { id: number; name: string }[] = [];
+  selectedTags: number[] = [];
+
   private noteService = inject(NoteService);
   private userService = inject(UserService);
 
   private dialogRef: MatDialogRef<ConfirmationDialogComponent> | undefined;
   constructor(private dialog: MatDialog) {}
 
-  private _currentUserId = localStorage.getItem('id');
-  private _currentUserPw = localStorage.getItem('pw');
+  private _currentUserId = parseInt(localStorage.getItem('id') || '0');
+  private _currentUserPw = localStorage.getItem('pw') || '';
 
   async ngOnInit() {
     this.loadNotes();
+    this.loadAllTags();
+  }
+
+  trackByTagId(index: number, tag: { id: number; name: string }): number {
+    return tag.id;
+  }
+
+  trackByNoteId(index: number, note: Note): number {
+    return note.id!;
   }
 
   loadNotes() {
@@ -55,10 +76,10 @@ export class HomeComponent implements OnInit {
       alert('User information not found');
       return;
     }
-    console.log(parseInt(this._currentUserId));
+    console.log(this._currentUserId);
 
     this.noteService
-      .getAllNotes(parseInt(this._currentUserId))
+      .getAllNotes(this._currentUserId)
       .pipe(
         switchMap((fetchedNotes) => {
           if (!fetchedNotes) return of([]);
@@ -80,6 +101,7 @@ export class HomeComponent implements OnInit {
             ...note,
             tags: note.tags || [],
           }));
+          this.filteredNotes = this.notes;
         },
         error: (error) => {
           console.error('Error fetching notes:', error);
@@ -100,6 +122,7 @@ export class HomeComponent implements OnInit {
     });
     _popup.afterClosed().subscribe((item) => {
       this.loadNotes();
+      this.loadAllTags();
     });
   }
 
@@ -127,7 +150,7 @@ export class HomeComponent implements OnInit {
         if (typeof id === 'number' && !isNaN(id)) {
           console.log('True');
           this.noteService
-            .deleteNote(parseInt(this._currentUserId), this._currentUserPw, id)
+            .deleteNote(this._currentUserId, this._currentUserPw, id)
             .subscribe(() => {
               const index = this.notes.findIndex((el) => el.id == id);
               this.notes.splice(index, 1);
@@ -136,6 +159,26 @@ export class HomeComponent implements OnInit {
       }
       this.dialogRef = undefined;
     });
+  }
+
+  loadAllTags() {
+    this.noteService
+      .getAllTags(this._currentUserId, this._currentUserPw)
+      .subscribe((tags) => {
+        this.allTags = tags;
+      });
+  }
+
+  filterNotes() {
+    if (this.selectedTags.length > 0) {
+      this.filteredNotes = this.notes.filter((note) =>
+        this.selectedTags.every((tagId) =>
+          note.tags?.some((tag) => tag.id === tagId)
+        )
+      );
+    } else {
+      this.filteredNotes = this.notes;
+    }
   }
 
   preventLoading(event: Event) {
