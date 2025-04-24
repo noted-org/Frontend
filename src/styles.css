@@ -38,9 +38,9 @@
     --color-button-bg: #1e90ff;
     --color-button-text: #ffffff;
     --color-logo: none;
-    --color-shadow:  0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 10px 30px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(255, 255, 255, 0.05);
+    --color-shadow:  0 0 0 1px rgba(255, 255, 255, 0.1),       /* feiner heller Rand */
+    0 0 20px rgba(255, 255, 255, 0.08),       /* weicher Glow */
+    0 0 60px rgba(173, 216, 230, 0.1);  
   }
 }
 
