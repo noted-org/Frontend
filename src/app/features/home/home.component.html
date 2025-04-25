@@ -2,6 +2,7 @@
   <mat-form-field class="filter-field" floatLabel="always">
     <mat-chip-grid #chipGrid>
       <mat-chip-row
+        class="filter-mat-chip-row"
         *ngFor="let tag of selectedTags; trackBy: trackByTagId"
         [removable]="true"
         (removed)="removeTag(tag)"
