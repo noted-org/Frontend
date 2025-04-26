@@ -15,20 +15,18 @@ import { MatIconModule } from '@angular/material/icon';
 export class HeaderComponent {
   private router = inject(Router);
 
-  loggedIn: boolean = false;
-
-  ngOnInit(): void{
-    this.loggedIn = !!localStorage.getItem('id');
+  get loggedIn(): boolean {
+    return !!localStorage.getItem('id');
   }
 
   goToHome(): void{
     if(this.loggedIn){
-    this.userId = localStorage.getItem('id');
-    console.log("clicked");
-    this.router.navigate([`/home/${this.userId}`]);
+      this.userId = localStorage.getItem('id');
+      console.log("clicked");
+      this.router.navigate([`/home/${this.userId}`]);
     }
     else{
-      this.router.navigate([`/login`]);
+      this.router.navigate([``]);
     }
   }
 
@@ -36,27 +34,19 @@ export class HeaderComponent {
   goToProfile(): void{
     this.userId = localStorage.getItem('id');
 
-    this.router.navigate([`/profile/${this.userId}`]).then(()=> {
-      window.location.reload();
-    });
+    this.router.navigate([`/profile/${this.userId}`]);
   }
   goToLogin(): void{
-    this.router.navigate([`/login`]).then(()=> {
-      window.location.reload();
-    });
+    this.router.navigate([`/login`]);
   }
   goToRegister(): void{
-    this.router.navigate([`/register`]).then(()=> {
-      window.location.reload();
-    });
+    this.router.navigate([`/register`]);
   }
 
   logout(): void{
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
-    this.router.navigate([``]).then(()=> {
-      window.location.reload();
-    });
+    this.router.navigate([``]);
   }
 
 }
