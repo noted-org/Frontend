@@ -146,6 +146,7 @@ export class HomeComponent implements OnInit {
     _popup.afterClosed().subscribe((item) => {
       this.loadNotes();
       this.loadAllTags();
+      this.selectedTags = [];
     });
   }
 
