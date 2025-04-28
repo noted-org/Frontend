@@ -7,11 +7,11 @@
     <img *ngIf="!selectedImage" src="https://static.vecteezy.com/system/resources/previews/020/765/399/large_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="Profilbild" class="profile-image"  />
   </div>
   <div class="profile-details">
-    <p><strong>Benutzername:</strong> <span class="profile-detail"> {{ user?.username }}</span> </p>
+    <p><strong>Username:</strong> <span class="profile-detail"> {{ user?.username }}</span> </p>
     <p><strong>E-Mail:</strong> <span class="profile-detail"> {{ user?.email }}</span> </p>
-    <p><strong>User seit:</strong> <span class="profile-detail"> {{ user?.createdAt }}</span> </p>
+    <p><strong>User since:</strong> <span class="profile-detail"> {{ user?.createdAt }}</span> </p>
   </div>
-  <button *ngIf="sameUser" class="edit-profile" (click)="changeData()">Profil bearbeiten</button>
+  <button *ngIf="sameUser" class="edit-profile" (click)="changeData()">Edit Profil</button>
 </div>
 
 <div *ngIf="editForm" class="profile-container" id="editForm">
@@ -22,14 +22,14 @@
       </form>
     </h1>
     <form [formGroup]="imageFormGroup">
-      <p><strong>Profilbild:</strong></p>
+      <p><strong>Profil Picture:</strong></p>
       <input type="file" accept="image/*" formControlName="imageCtrl" (change)="onImageSelected($event)" />
     </form>
   </div>
   <div class="profile-details">
     <form [formGroup]="secondFormGroup">
       <p>
-        <strong>Benutzername:</strong>
+        <strong>Username:</strong>
         <input type="text" class="input-field" formControlName="secondCtrl"/>
       </p>
     </form>
@@ -39,10 +39,10 @@
         <input type="text" class="input-field" formControlName="fourthCtrl"/>
       </p>
     </form>
-    <p><strong>User seit:</strong> <span class="profile-username"> {{ user?.createdAt }}</span> </p>
+    <p><strong>User since:</strong> <span class="profile-username"> {{ user?.createdAt }}</span> </p>
   </div>
   <div class="edit-actions">
-    <button class="save-button" (click)="saveChanges()">Speichern</button>
-    <button class="cancel-button" (click)="discardChanges()">Abbrechen</button>
+    <button class="save-button" (click)="saveChanges()">Save</button>
+    <button class="cancel-button" (click)="discardChanges()">Discard</button>
   </div>
 </div>

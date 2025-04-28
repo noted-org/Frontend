@@ -12,6 +12,7 @@ import { CreateUser } from '../../shared/types/user.type';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../shared/services/user.service';
 import * as sha512 from 'crypto-js';
+import { MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,7 @@ import * as sha512 from 'crypto-js';
     MatFormFieldModule,
     MatInputModule,
     MatTooltipModule,
+    MatSnackBarModule,
     CommonModule,
     MatIconModule
   ],
@@ -36,6 +38,9 @@ export class RegisterComponent {
   private _formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private UserService = inject(UserService);
+  constructor(
+    private snackBar: MatSnackBar
+  ){}
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {
@@ -119,7 +124,17 @@ export class RegisterComponent {
 
         }
       }catch(error){
-        console.error("Error creating User");
+        if (error instanceof Response && error.status === 409) {
+          this.snackBar.open('This username is already taken. Please choose a different Username.', 'Close', {
+            duration: 5000,
+            panelClass: ['snackbar-warning']
+          });
+        }else{
+          this.snackBar.open('There was an Error creating a new User. Please check the fields and try again.', 'Close', {
+            duration: 5000,
+            panelClass: ['snackbar-warning']
+          });
+        }
       }
     }else{
       console.error("newUser not defined")

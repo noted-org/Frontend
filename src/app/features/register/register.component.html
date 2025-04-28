@@ -10,7 +10,7 @@
                 <ng-template matStepLabel>Name</ng-template>
                 <mat-form-field>
                   <mat-label>Name</mat-label>
-                  <input matTooltip="Nur Buchstaben erlaubt" matInput placeholder="Name" formControlName="firstCtrl" required>
+                  <input matTooltip="Only letters allowed" matInput placeholder="Name" formControlName="firstCtrl" required>
                 </mat-form-field>
                 <div>
                   <button mat-button matStepperNext>Next</button>
@@ -41,7 +41,7 @@
                            required>
                   </mat-form-field>
                   <p *ngIf="!emailCorrect()">
-                    Die E-Mail-Adresse ist ungültig.
+                    The email address is invalid.
                   </p>
                   <div>
                     <button mat-button matStepperPrevious>Back</button>
@@ -52,11 +52,11 @@
 
             <mat-step [stepControl]="thirdFormGroup">
                 <form [formGroup]="thirdFormGroup">
-                  <ng-template matStepLabel>Passwort</ng-template>
+                  <ng-template matStepLabel>Password</ng-template>
                   <mat-form-field>
-                    <mat-label>Passwort</mat-label>
+                    <mat-label>Password</mat-label>
                     <input 
-                        matTooltip="min. 6 Zeichen mit Buchstabe, Zahl und Sonderzeichen."
+                        matTooltip="At least 6 characters, including a letter, a number, and a special character."
                         matInput 
                         [type]="hide() ? 'password' : 'text'" 
                         formControlName="thirdCtrl" 
@@ -76,19 +76,19 @@
                   <ul class="password-requirements">
                     <li [class.valid]="hasMinLength()">
                       <mat-icon *ngIf="hasMinLength()">check</mat-icon>
-                      Mindestens 6 Zeichen
+                      min. 6 characters
                     </li>
                     <li [class.valid]="hasLetter()">
                       <mat-icon *ngIf="hasLetter()">check</mat-icon>
-                      Mindestens ein Buchstabe
+                      min. one letter
                     </li>
                     <li [class.valid]="hasNumber()">
                       <mat-icon *ngIf="hasNumber()">check</mat-icon>
-                      Mindestens eine Zahl
+                      min. one number
                     </li>
                     <li [class.valid]="hasSpecialChar()">
                       <mat-icon *ngIf="hasSpecialChar()">check</mat-icon>
-                      Mindestens ein Sonderzeichen
+                      min. one special character
                     </li>
                   </ul>
                   <div>
@@ -98,7 +98,7 @@
                 </form>
               </mat-step>
         </mat-stepper>
-        <mat-card-subtitle> Du hast schon einen Account?</mat-card-subtitle>
+        <mat-card-subtitle>You already have an account?</mat-card-subtitle>
         <button class="button" (click)="toLogin()" mat-raised-button color="primary">Login</button>
     </mat-card-content>
 </mat-card>
