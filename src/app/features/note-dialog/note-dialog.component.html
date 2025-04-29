@@ -16,6 +16,7 @@
           Content is required
         </mat-error>
       </mat-form-field>
+
       <app-tag-input
         [initialTags]="initialTags"
         [allAvailableTags]="allAvailableTags"
@@ -23,6 +24,7 @@
         (tagRemoved)="onTagRemoved($event)"
       >
       </app-tag-input>
+
     </div>
     <div mat-dialog-actions>
       <button mat-raised-button class="cancel-button" (click)="onCancel()">

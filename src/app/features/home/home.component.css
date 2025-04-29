@@ -63,6 +63,14 @@
   gap: 4px;
 }
 
+
+.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .create-note-container {
   display: flex;
   justify-content: flex-end;
@@ -135,4 +143,4 @@ button[mat-raised-button] {
 
 ::ng-deep .mat-mdc-focus-indicator {
   background-color: blue !important;
-} */
+} 

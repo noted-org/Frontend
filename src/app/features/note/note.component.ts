@@ -45,26 +45,34 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AsyncPipe } from '@angular/common';
 import * as sha512 from 'crypto-js';
 import { TagInputComponent } from '../tag-input/tag-input.component';
+import { TextEditorComponent } from '../text-editor/text-editor.component'
 import { MatDialog } from '@angular/material/dialog';
 import { AiRequestDialogComponent } from '../ai-request-dialog/ai-request-dialog.component';
 import { SummaryDialogComponent } from '../summary-dialog/summary-dialog.component';
 
+
 @Component({
   selector: 'app-note',
   standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    TagInputComponent,
-    MatExpansionModule,
-    CommonModule,
-    RouterModule,
-    MatChipsModule,
-    MatIconModule,
-    MatAutocompleteModule,
-  ],
+
+imports: [
+  FormsModule,
+  ReactiveFormsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  TagInputComponent,
+  AsyncPipe,
+  MatFormField,
+  MatExpansionModule,
+  MatLabel,
+  CommonModule,
+  RouterModule,
+  MatChipsModule,
+  MatIconModule,
+  MatAutocompleteModule,
+  TextEditorComponent,
+]
+
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
   providers: [NoteService, UserService],
@@ -84,9 +92,9 @@ export class NoteComponent implements OnInit {
   menuOpen: Boolean = false;
   userId = Number(localStorage.getItem('id')) || 0;
   userPw = localStorage.getItem('pw') || '';
-  
-  noteTags: {name: string, id: number}[] = [];
-  allTags: {name: string, id: number}[] = [];
+
+  noteTags: { name: string, id: number }[] = [];
+  allTags: { name: string, id: number }[] = [];
 
   
   constructor(private dialog: MatDialog) {}
@@ -118,6 +126,7 @@ export class NoteComponent implements OnInit {
     }
   }
 
+
   onTagRemoved(tagId: number) {
     this.removeTagFromNote(tagId); //muss noch implementiert werden
     /* if (this.note) {
@@ -130,7 +139,10 @@ export class NoteComponent implements OnInit {
       this.allTags = tags;
     });
   }
-  onTagAdded(newTag: { name: string; id: number }) {
+
+
+  onTagAdded(newTag: { name: string, id: number }) {
+
     this.addTagToNote(newTag.id);
     if (this.note) {
       this.note.tags?.push(newTag);
@@ -160,8 +172,10 @@ export class NoteComponent implements OnInit {
 
     if (!currentUserId || !currentUserPw) return;
 
-    this.noteService
-      .addTagsToNote(currentUserId, currentUserPw, this.id, [tagId])
+
+
+    this.noteService.addTagsToNote(currentUserId, currentUserPw, this.id, [tagId])
+
       .subscribe({
         next: (addedTag) => {
           if (addedTag) {
@@ -191,12 +205,13 @@ export class NoteComponent implements OnInit {
       });
   }
 
+
   loadSingleNote(): Observable<Note | undefined> {
     return this.noteService.getSingleNote(this.id).pipe(
       switchMap((note) => {
         return this.userService
           .getUserName(note.author)
-          .pipe(map((authorName) => ({ ...note, authorName })));
+          .pipe(map((authorName) => ({...note, authorName})));
       }),
       catchError((error) => {
         console.error('Error fetching note', error);
@@ -219,8 +234,8 @@ export class NoteComponent implements OnInit {
   }
 
   stopEditing() {
-    this.isEditing = false;
-    this.saveNoteChanges();
+      this.isEditing = false;
+      this.saveNoteChanges(); // 0 ms reicht, um den Angular-Zyklus abzuwarten
   }
 
   saveNoteChanges() {

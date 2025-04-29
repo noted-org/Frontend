@@ -95,6 +95,7 @@ app-tag-input {
   color: var(--color-text);
 }
 
+
 .note-toolbar {
   display: flex;
   justify-content: flex-end;
