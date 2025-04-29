@@ -71,7 +71,7 @@ imports: [
   MatIconModule,
   MatAutocompleteModule,
   TextEditorComponent,
-]
+],
 
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
@@ -96,7 +96,7 @@ export class NoteComponent implements OnInit {
   noteTags: { name: string, id: number }[] = [];
   allTags: { name: string, id: number }[] = [];
 
-  
+
   constructor(private dialog: MatDialog) {}
 
 
@@ -304,7 +304,7 @@ export class NoteComponent implements OnInit {
         this.loadSingleNote();
     });
   }
-  
+
   openSummaryDialog(updatedNote: Note){
       const _popup = this.dialog.open(SummaryDialogComponent, {
         restoreFocus: true,
