@@ -6,6 +6,11 @@
       (tagAdded)="onTagAdded($event)"
       (tagRemoved)="onTagRemoved($event)"
     ></app-tag-input>
+    <div class="note-toolbar">
+      <button mat-icon-button (click)="requestOfSummary()">
+        <mat-icon>auto_awesome</mat-icon>
+      </button>
+    </div>
     <p
       *ngIf="!isEditingHeader"
       (click)="startEditingHeader()"
@@ -32,7 +37,7 @@
 
     <div class="note-footer">
       <span class="note-author">
-        <a [routerLink]="['/profile', note.id]" class="no-underline"
+        <a [routerLink]="['/profile', note.author]" class="no-underline"
           >By: {{ note.authorName }}</a
         >
       </span>

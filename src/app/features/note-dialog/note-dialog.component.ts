@@ -127,7 +127,7 @@ export class NoteDialogComponent implements OnInit {
       name: this.firstFormGroup.value.title!,
       author: currentUser.username, // This was empty before
       content: this.firstFormGroup.value.content!,
-      tags: this.selectedTags,
+      tags: this.selectedTags.map((tag) => tag.id),
     };
 
     // Submit to service

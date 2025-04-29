@@ -26,7 +26,7 @@ export class ProfilComponent {
   sameUser: boolean = false;
   editForm: boolean = false;
   normalForm: boolean = true;
-  selectedImage: string | ArrayBuffer | null = null;
+  selectedImage: string | null = null;
   
   private _formBuilder = inject(FormBuilder);
   isLinear = false;
@@ -68,6 +68,7 @@ export class ProfilComponent {
     }
     if(this.userIdFromUrl){
       this.fetchUserById(this.userIdFromUrl);
+      this.fetchProfilePictureById(this.userIdFromUrl);
     }
     console.log(this.userIdFromUrl);
 
@@ -90,6 +91,16 @@ export class ProfilComponent {
       console.error('Error while loading User Data: ', error);
     }
   }
+  private async fetchProfilePictureById(userId: string){
+    const userIdAsNumber = parseInt(userId, 10);
+    try{
+      this.selectedImage = await this.userService.getProfilePicture(userIdAsNumber);
+    }catch(error){
+      console.error('Error while loading Profile Picture Data: ', error);
+    }
+  }
+
+
 
   changeData(){
     if(this.user){
@@ -105,10 +116,10 @@ export class ProfilComponent {
     const nickname = this.firstFormGroup.get('firstCtrl')?.value || '';
     const username = this.secondFormGroup.get('secondCtrl')?.value || '';
     const email = this.fourthFormGroup.get('fourthCtrl')?.value || '';
-    const profilepicture = this.imageFormGroup.get('imageCtrl')?.value || '';
 
     try{
-      const updatedUser = await this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email);
+      const updatedUser = this.selectedImage ? await this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email, this.selectedImage) : 
+        await this.userService.updateUser(localStorage.getItem('id') || '', nickname, username, email);
 
       this.firstFormGroup.patchValue({ firstCtrl: nickname });
       this.secondFormGroup.patchValue({ secondCtrl: username });
@@ -143,7 +154,7 @@ export class ProfilComponent {
   previewImage(file: File): void {
     const reader = new FileReader();
     reader.onload = () => {
-      this.selectedImage = reader.result;
+      this.selectedImage = reader.result?.toString() || null;
     };
     reader.readAsDataURL(file);
   }

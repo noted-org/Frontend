@@ -86,11 +86,32 @@ export class UserService {
       throw error;
     }
   }
+
+  async getProfilePicture(userId: number): Promise<string> {
+    try {
+      const response = await fetch(`${this.BASE_URL}/users/${userId}/profile-picture`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Problem getting profile picture: ${response.statusText}`);
+      }
+      const image: string = await response.text();
+      return image;
+    } catch (error) {
+      console.error('Problem with getting profile picture: ', error);
+      throw error;
+    }
+  }
+
   async updateUser(
     userId: string,
     nickname: string,
     username: string,
-    email: string
+    email: string,
+    profilePicture?: string
   ): Promise<User | void> {
     const userIdAsNumber = parseInt(userId, 10);
     const password = localStorage.getItem('pw');
@@ -99,6 +120,7 @@ export class UserService {
         nickname: nickname || undefined,
         username: username || undefined,
         email: email || undefined,
+        profilePicture: profilePicture || undefined,
       };
 
       const response = await fetch(`${this.BASE_URL}/users/${userId}`, {

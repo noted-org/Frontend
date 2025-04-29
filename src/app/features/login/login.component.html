@@ -6,7 +6,7 @@
         <form [formGroup]="loginForm">
 
             <mat-form-field appearance="outline">
-              <mat-label>Benutzername</mat-label>
+              <mat-label>Username</mat-label>
               <input
                 matInput
                 placeholder="Benutzername"
@@ -14,12 +14,12 @@
                 required
               />
               <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-                Benutzername ist erforderlich.
+                Please enter your Username.
               </mat-error>
             </mat-form-field>
       
             <mat-form-field appearance="outline">
-              <mat-label>Passwort</mat-label>
+              <mat-label>Password</mat-label>
               <input
                 matInput
                 [type]="hidePassword ? 'password' : 'text'"
@@ -36,7 +36,7 @@
                 <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
               <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-                Passwort ist erforderlich.
+                Please enter your password.
               </mat-error>
             </mat-form-field>
       
@@ -50,7 +50,7 @@
             >Login</button>
         </form>
         
-    <mat-card-subtitle>Du hast noch keinen Account?</mat-card-subtitle>
+    <mat-card-subtitle>Don't have an Account yet?</mat-card-subtitle>
     <button class="button" color="primary" (click)="toRegister()"  mat-raised-button>Register</button>
     </mat-card-content>
 </mat-card>

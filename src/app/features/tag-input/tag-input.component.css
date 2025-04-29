@@ -22,31 +22,64 @@ mat-expansion-panel {
 mat-form-field {
     width: 100%;
     color: var(--color-text);
+    margin: 5px;
 
     .mat-form-field-flex {
       background-color: rgba(255, 255, 255, 0.6);
     }
-
-    input {
-        color: var(--color-text);
-    }
 }
 
 mat-chip {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    button {
-        color: var(--color-text);
-    }
+    background-color: var(--color-greyblue) !important;
+    color: var(--color-text) !important;
 }
+
+mat-chip button:hover{
+  background-color: var(--color-greyblue);
+}
+
 
 mat-expansion-panel-header {
     background-color: var(--color-primary) !important;
     color: var(--color-bg) !important;
-    margin: 5px;
 }
 
 mat-expansion-panel-header:hover {
     background-color: var(--color-secondary) !important;
     color: var(--color-bg) !important;
 }
+
+::ng-deep .mdc-evolution-chip-set_chips {
+  margin: 5px !important;
+}
+
+/*::ng-deep #mat-autocomplete-0 {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  ::ng-deep #mat-option-0 {
+    color: var(--color-bg);
+  }
+
+  ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field.ng-tns-c508571215-3 {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  ::ng-deep .mat-mdc-input-element {
+    color: var(--color-bg) !important;
+  }
+
+  ::ng-deep .mat-mdc-input-element::placeholder{
+    color: var(--color-bg) !important ;
+    opacity: 1;
+  }
+
+  ::ng-deep mat-label.ng-tns-c508571215-3{
+    color: var(--color-bg);
+  }
+
+  ::ng-deep .mdc-list-item_primary-text {
+    color: var(--color-bg) !important;
+  }*/

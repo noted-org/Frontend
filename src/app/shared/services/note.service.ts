@@ -61,20 +61,18 @@ export class NoteService {
   }
 
   delete<T>(url: string, user: User, body?: object): Observable<T> {
-    const headers = body
-      ? new HttpHeaders({
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.id} ${user.password}`,
-        })
-      : undefined;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${user.id} ${user.password}`,
+    });
 
     console.log('DELETE Request URL:', url);
-    console.log('DELETE Request Headers:', headers);
+    console.log('DELETE Request Headers:', user);
     console.log('DELETE Request Body:', body);
 
-    return this.http.delete<T>(url, { 
+    return this.http.delete<T>(url, {
       headers,
-      body 
+      body,
     });
   }
 
@@ -83,7 +81,11 @@ export class NoteService {
       ...noteData,
       tags: noteData.tags || [], // Ensure tags is always an array
     };
-    return this.post<Note>(`${this.BASE_URL}/notes`, user, payload);
+    return this.post<Note>(
+      `${this.BASE_URL}/notes?user=${user.id}`,
+      user,
+      payload
+    );
   }
 
   updateNote(note: UpdateNote, user: User): Observable<Note> {
@@ -97,39 +99,66 @@ export class NoteService {
   addTag(tagName: string, userId: number, userPw: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${userId} ${userPw}`
+      Authorization: `Bearer ${userId} ${userPw}`,
     });
-    return this.http.post(`http://localhost:3000/tags`, { "name": tagName }, { headers });
-  }
-  
-  getAllTags(userId: number, userPw: string): Observable<{id: number, name: string}[]> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${userId} ${userPw}`
-    });
-    return this.http.get<{id: number, name: string}[]>(`http://localhost:3000/tags`, { headers });
+    return this.http.post(
+      `http://localhost:3000/tags`,
+      { name: tagName },
+      { headers }
+    );
   }
 
-  addTagsToNote( userid: string, userpw: string, noteId: number, tags: number[]){
+  getAllTags(
+    userId: number,
+    userPw: string
+  ): Observable<{ id: number; name: string }[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${userid} ${userpw}`
+      Authorization: `Bearer ${userId} ${userPw}`,
     });
-    return this.http.post<{id: number, name: string}>(`http://localhost:3000/notes/${noteId}/tags`, { tags: tags }, { headers });
-  }
-  removeTagFromNote(userId: string, password: string, noteId: number, tagId: number): Observable<void> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${userId} ${password}`
-    });
-    
-    return this.http.delete<void>(`${this.BASE_URL}/notes/${noteId}/tags/${tagId}`, {
-      headers
-    });
+    return this.http.get<{ id: number; name: string }[]>(
+      `http://localhost:3000/tags`,
+      { headers }
+    );
   }
 
-  getAllNotes(): Observable<Note[]> {
-    return this.get<Note[]>(`http://localhost:3000/notes/`);
+  addTagsToNote(
+    userid: string,
+    userpw: string,
+    noteId: number,
+    tags: number[]
+  ) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userid} ${userpw}`,
+    });
+    return this.http.post<{ id: number; name: string }>(
+      `http://localhost:3000/notes/${noteId}/tags`,
+      { tags: tags },
+      { headers }
+    );
+  }
+  removeTagFromNote(
+    userId: string,
+    password: string,
+    noteId: number,
+    tagId: number
+  ): Observable<void> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userId} ${password}`,
+    });
+
+    return this.http.delete<void>(
+      `${this.BASE_URL}/notes/${noteId}/tags/${tagId}`,
+      {
+        headers,
+      }
+    );
+  }
+
+  getAllNotes(userId: Number): Observable<Note[]> {
+    return this.get<Note[]>(`http://localhost:3000/notes?user=${userId}`);
   }
 
   getNotesByTag(tag: string): Observable<Note[]> {
@@ -141,5 +170,22 @@ export class NoteService {
   getSingleNote(noteId: number): Observable<Note> {
     console.log(noteId);
     return this.get<Note>(`${this.BASE_URL}/notes/${noteId}`);
+  }
+  summarize(noteId: number, user: User): Observable<Note> {
+    return this.post<Note>(`${this.BASE_URL}/notes/${noteId}/summarize`, user);
+  }
+
+  deleteNote(
+    userId: number,
+    password: string,
+    noteId: number
+  ): Observable<void> {
+    return this.delete<void>(`${this.BASE_URL}/notes/${noteId}`, {
+      id: userId,
+      password: password,
+      nickname: '',
+      username: '',
+      email: '',
+    });
   }
 }

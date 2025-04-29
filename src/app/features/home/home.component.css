@@ -38,23 +38,8 @@
   text-decoration: none;
   color: var(--color-text);
 }
-.no-underline:hover{
+.no-underline:hover {
   color: var(--color-contrast);
-}
-.create-note-container {
-  margin-bottom: 20px;
-  text-align: right; /* or left/center based on your design */
-}
-
-button[mat-raised-button] {
-  padding: 10px 20px;
-  margin-right: 20px;
-  color: var(--color-bg);/*white !important;*/
-  background: var(--color-primary);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
 }
 
 .note-tags {
@@ -78,9 +63,84 @@ button[mat-raised-button] {
   gap: 4px;
 }
 
+
 .clamp {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.create-note-container {
+  display: flex;
+  justify-content: flex-end;
+  align-self: start;
+}
+
+button[mat-raised-button] {
+  margin-right: 20px;
+  color: var(--color-bg);
+  background: var(--color-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 56px;
+  min-width: 150px;
+}
+
+.filter-create-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filter-field {
+  min-width: 150px;
+  max-width: 350px;
+  padding-left: 20px;
+}
+
+.filter-tag-label {
+  color: black;
+}
+
+.filter-tag-label::placeholder {
+  color: black !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mat-menu {
+    color: white;
+  }
+
+  ::ng-deep .mat-menu-background {
+    background-color: black;
+    border: 2px solid #636363;
+  }
+}
+
+::ng-deep
+  .filter-field.mat-mdc-form-field:hover
+  .mat-mdc-form-field-focus-overlay,
+::ng-deep
+  .filter-field.mat-mdc-form-field.mat-focused
+  .mat-mdc-form-field-focus-overlay,
+::ng-deep .filter-field.mat-mdc-form-field .mat-mdc-form-field-focus-overlay {
+  background-color: var(--color-primary) !important;
+  opacity: 1 !important;
+}
+
+/* ::ng-deep .mat-mdc-option {
+  background-color: purple !important;
+}
+
+::ng-deep .mdc-list-item {
+  background-color: pink !important;
+}
+
+::ng-deep .mat-mdc-focus-indicator {
+  background-color: blue !important;
+} 

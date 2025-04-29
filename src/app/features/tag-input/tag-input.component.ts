@@ -1,4 +1,14 @@
-import { Component, inject, signal, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -27,7 +37,7 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatIconModule,
     MatExpansionPanel,
-    MatInputModule
+    MatInputModule,
   ],
   templateUrl: './tag-input.component.html',
   styleUrl: './tag-input.component.css',
@@ -54,8 +64,10 @@ export class TagInputComponent implements OnInit {
     return tag ? tag.name : '';
   }
 
-  trackOptionById = (index: number, option: { id: number }) => `option-${index}-${option.id}`;
-  trackTagById = (index: number, tag: { id: number }) => `tag-${index}-${tag.id}`;
+  trackOptionById = (index: number, option: { id: number }) =>
+    `option-${index}-${option.id}`;
+  trackTagById = (index: number, tag: { id: number }) =>
+    `tag-${index}-${tag.id}`;
 
   private _filter(value: string): { name: string; id: number }[] {
     const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
@@ -71,10 +83,14 @@ export class TagInputComponent implements OnInit {
 
   ngOnInit() {
     this.tags = [...this.initialTags];
-    this.tags = [...new Map(this.initialTags.map(tag => [tag.id, tag])).values()];
+    this.tags = [
+      ...new Map(this.initialTags.map((tag) => [tag.id, tag])).values(),
+    ];
 
-    console.log('Tags mit IDs:', this.tags.map(t => t.id));
-
+    console.log(
+      'Tags mit IDs:',
+      this.tags.map((t) => t.id)
+    );
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -82,10 +98,12 @@ export class TagInputComponent implements OnInit {
     );
 
     if (this.allAvailableTags.length === 0) {
-      this.noteService.getAllTags(this.userId, this.userPw).subscribe((tags) => {
-        this.allAvailableTags = tags;
-        this.updateFilterOptions();
-      });
+      this.noteService
+        .getAllTags(this.userId, this.userPw)
+        .subscribe((tags) => {
+          this.allAvailableTags = tags;
+          this.updateFilterOptions();
+        });
     } else {
       this.updateFilterOptions();
     }
@@ -106,13 +124,13 @@ export class TagInputComponent implements OnInit {
   }
 
   addNewTag(tag?: string | { name: string; id: number } | null): void {
-    console.log("add Tag: " + tag);
+    console.log('add Tag: ' + tag);
     if (!tag) return;
-  
+
     if (typeof tag === 'string') {
       const newTagName = tag.trim();
       if (!newTagName) return;
-  
+
       this.noteService.addTag(newTagName, this.userId, this.userPw).subscribe({
         next: (response) => {
           this.tags.push(response);
@@ -132,7 +150,7 @@ export class TagInputComponent implements OnInit {
         this.expansionPanel.close();
       }
     }
-  }  
+  }
 
   removeTag(tagId: number): void {
     const id = localStorage.getItem('id');

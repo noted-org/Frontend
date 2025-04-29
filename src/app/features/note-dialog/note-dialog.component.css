@@ -77,3 +77,7 @@ h1[mat-dialog-title]{
 .cdk-overlay-backdrop.animated-backdrop.cdk-overlay-backdrop-showing {
   opacity: 1;
 }
+
+::ng-deep .mat-mdc-dialog-surface{
+  background-color: var(--color-bg);
+}

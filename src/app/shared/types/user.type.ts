@@ -6,7 +6,8 @@ export interface User{
     createdAt?: string;
     updatedAt?: string;
     email: string;
+    profilePicture?: string;
 }
 
-export type CreateUser = Pick<User, "nickname" | "password" | "username" | "email">;
+export type CreateUser = Pick<User, "nickname" | "password" | "username" | "email" | "profilePicture">;
 export type LoginUser = Pick<User, 'username' | 'password'>

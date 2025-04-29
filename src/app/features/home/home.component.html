@@ -1,19 +1,84 @@
-<div class="create-note-container">
-  <button
-    mat-raised-button
-    class="create-note-button"
-    (click)="createNewNote()"
-  >
-    Create New Note (+)
-  </button>
+<div class="filter-create-container">
+  <mat-form-field class="filter-field" floatLabel="always">
+    <mat-chip-grid #chipGrid>
+      <mat-chip-row
+        class="filter-mat-chip-row"
+        *ngFor="let tag of selectedTags; trackBy: trackByTagId"
+        [removable]="true"
+        (removed)="removeTag(tag)"
+      >
+        {{ tag.name }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      <input
+        class="filter-tag-label"
+        #tagInput
+        placeholder="Filter by tag"
+        [formControl]="tagCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        matChipInputAddOnBlur="false"
+        (matChipInputTokenEnd)="addTagFromInput($event)"
+      />
+    </mat-chip-grid>
+
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="onTagSelected($event)"
+    >
+      <mat-option
+        *ngFor="let tag of filteredTagOptions | async; trackBy: trackByTagId"
+        [value]="tag"
+      >
+        {{ tag.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <div class="create-note-container">
+    <button
+      class="create-note-container-button"
+      mat-raised-button
+      class="create-note-button"
+      (click)="createNewNote()"
+    >
+      Create New Note (+)
+    </button>
+  </div>
 </div>
 
 <div class="show-notes">
   <div
-    *ngFor="let note of notes"
+    *ngFor="let note of filteredNotes; trackBy: trackByNoteId"
     class="note-card"
     [routerLink]="['/notes', note.id]"
   >
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      type="button"
+      (click)="preventLoading($event)"
+      aria-label="Icon-button with a menu to edit and delete notes"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" class="mat-menu-background">
+      <button mat-menu-item (click)="deleteNote(note.id)">
+        <mat-icon class="mat-menu">delete_outline</mat-icon>
+        <span class="mat-menu">Delete</span>
+      </button>
+      <a
+        mat-menu-item
+        [routerLink]="['/notes', note.id]"
+        aria-label="Edit note"
+      >
+        <mat-icon class="mat-menu">edit</mat-icon>
+        <span class="mat-menu">Edit</span>
+      </a>
+    </mat-menu>
     <h3 class="note-title">{{ note.name }}</h3>
 
     <p class="note-content clamp" [innerHTML]="note.content"></p>

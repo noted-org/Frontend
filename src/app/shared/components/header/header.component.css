@@ -65,3 +65,12 @@ h1 {
   height: 70px;
   width: 70px;
 }
+
+::ng-deep .mat-mdc-menu-content {
+  background-color: var(--color-bg);
+  box-shadow: var(--color-shadow);
+}
+
+::ng-deep .mat-mdc-menu-item-text {
+  color: var(--color-text) !important;
+}
