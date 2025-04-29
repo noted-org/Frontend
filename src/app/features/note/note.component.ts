@@ -60,8 +60,8 @@ export class NoteComponent implements OnInit {
   userId = Number(localStorage.getItem('id')) || 0;
   userPw = localStorage.getItem('pw') || '';
 
-  noteTags: {name: string, id: number}[] = [];
-  allTags: {name: string, id: number}[] = [];
+  noteTags: { name: string, id: number }[] = [];
+  allTags: { name: string, id: number }[] = [];
 
 
   ngAfterViewChecked() {
@@ -104,7 +104,8 @@ export class NoteComponent implements OnInit {
       this.allTags = tags;
     });
   }
-  onTagAdded(newTag: {name: string, id: number}) {
+
+  onTagAdded(newTag: { name: string, id: number }) {
     this.addTagToNote(newTag.id);
     if (this.note) {
       this.note.tags?.push(newTag);
@@ -166,7 +167,7 @@ export class NoteComponent implements OnInit {
       switchMap((note) => {
         return this.userService
           .getUserName(note.author)
-          .pipe(map((authorName) => ({ ...note, authorName })));
+          .pipe(map((authorName) => ({...note, authorName})));
       }),
       catchError((error) => {
         console.error('Error fetching note', error);
@@ -189,8 +190,8 @@ export class NoteComponent implements OnInit {
   }
 
   stopEditing() {
-    this.isEditing = false;
-    this.saveNoteChanges();
+      this.isEditing = false;
+      this.saveNoteChanges(); // 0 ms reicht, um den Angular-Zyklus abzuwarten
   }
 
   saveNoteChanges() {

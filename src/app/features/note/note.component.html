@@ -22,12 +22,12 @@
       class="note-title"
     />
 
-    <p *ngIf="!isEditing" (click)="startEditing()" class="note-content" [innerHTML]="note.content"></p>
+    <p *ngIf="!isEditing" (click)="startEditing()" class="note-content" style="display: block" [innerHTML]="note.content"></p>
 
     <app-text-editor
       *ngIf="isEditing"
       [(content)]="note.content"
-      (blur)="stopEditing()"
+      (editorBlurred)="stopEditing()"
     ></app-text-editor>
 
     <div class="note-footer">

@@ -15,7 +15,8 @@
     [routerLink]="['/notes', note.id]"
   >
     <h3 class="note-title">{{ note.name }}</h3>
-    <p class="note-content">{{ note.content }}</p>
+
+    <p class="note-content" [innerHTML]="note.content"></p>
 
     <div class="note-tags" *ngIf="note.tags && note.tags.length > 0">
       <div class="tags-container">
