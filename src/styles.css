@@ -42,7 +42,7 @@
     --color-logo: none;
     --color-shadow:  0 0 0 1px rgba(255, 255, 255, 0.1),       /* feiner heller Rand */
     0 0 20px rgba(255, 255, 255, 0.08),       /* weicher Glow */
-    0 0 60px rgba(173, 216, 230, 0.1);  
+    0 0 60px rgba(173, 216, 230, 0.1);
   }
 }
 
@@ -75,5 +75,23 @@ button:hover {
   padding: 8px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ql-editor ul > li::before {
+  content: "• ";
+  margin-right: 0.5em;
+}
+
+.ql-editor ol {
+  counter-reset: item;
+}
+
+.ql-editor ol > li {
+  counter-increment: item;
+}
+
+.ql-editor ol > li::before {
+  content: counter(item) ". ";
+  margin-right: 0.5em;
 }
 

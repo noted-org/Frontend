@@ -23,6 +23,7 @@ import { UserService } from '../../shared/services/user.service';
 import { CreateNote } from '../../shared/types/note.type';
 import { HomeComponent } from '../home/home.component';
 import { TagInputComponent } from '../tag-input/tag-input.component';
+import {TextEditorComponent} from '../text-editor/text-editor.component';
 dialogAnimation;
 
 @Component({
@@ -38,6 +39,7 @@ dialogAnimation;
     MatInputModule,
     ReactiveFormsModule,
     TagInputComponent,
+    TextEditorComponent,
   ],
   templateUrl: './note-dialog.component.html',
   styleUrl: './note-dialog.component.css',

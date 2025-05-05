@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 96px - 56px) !important;
-  padding: 20px, 0;
+  padding: 20px 0;
   width: 100%;
 }
 
@@ -104,4 +104,19 @@ app-tag-input {
 .note-toolbar button {
   color: var(--color-primary);
   background-color: transparent;
+}
+
+.ql-editor ul {
+  list-style-type: disc !important;
+  margin-left: 1.5em !important;
+}
+
+.ql-editor ol {
+  list-style-type: decimal !important;
+  margin-left: 1.5em !important;
+}
+
+.ql-editor ul,
+.ql-editor ol {
+  list-style-position: inside !important;
 }

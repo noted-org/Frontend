@@ -1,41 +1,50 @@
 <div id="custom-toolbar" class="flex flex-wrap gap-2 p-2 bg-gray-100 rounded-xl shadow-sm">
-  <button class="ql-bold" mat-icon-button matTooltip="Fett">
+   <!-- <select class="ql-font" matTooltip="Schriftart wählen">
+        <option selected></option>
+        <option value="arial">Arial</option>
+        <option value="roboto">Roboto</option>
+        <option value="times-new-roman">Times New Roman</option>
+        <option value="courier-new">Courier New</option>
+        <option value="comic-sans">Comic Sans</option>
+    </select>-->
+
+  <button class="ql-bold" mat-icon-button matTooltip="Bold">
     <mat-icon>format_bold</mat-icon>
   </button>
 
-  <button class="ql-italic" mat-icon-button matTooltip="Kursiv">
+  <button class="ql-italic" mat-icon-button matTooltip="Italics">
     <mat-icon>format_italic</mat-icon>
   </button>
 
-  <button class="ql-underline" mat-icon-button matTooltip="Unterstrichen">
+  <button class="ql-underline" mat-icon-button matTooltip="Underline">
     <mat-icon>format_underlined</mat-icon>
   </button>
 
-  <button class="ql-strike" mat-icon-button matTooltip="Durchgestrichen">
+  <button class="ql-strike" mat-icon-button matTooltip="Strikethrough">
     <mat-icon>strikethrough_s</mat-icon>
   </button>
 
-  <button class="ql-list" value="ordered" mat-icon-button matTooltip="Nummerierte Liste">
+  <button class="ql-list" value="ordered" mat-icon-button matTooltip="Numbered List">
     <mat-icon>format_list_numbered</mat-icon>
   </button>
 
-  <button class="ql-list" value="bullet" mat-icon-button matTooltip="Punkte-Liste">
+  <button class="ql-list" value="bullet" mat-icon-button matTooltip="Bulleted List">
     <mat-icon>format_list_bulleted</mat-icon>
   </button>
 
-  <button class="ql-align" value="" mat-icon-button matTooltip="Linksbündig">
+  <button class="ql-align" value="" mat-icon-button matTooltip="Left Align">
     <mat-icon>format_align_left</mat-icon>
   </button>
 
-  <button class="ql-align" value="center" mat-icon-button matTooltip="Zentriert">
+  <button class="ql-align" value="center" mat-icon-button matTooltip="Center Align">
     <mat-icon>format_align_center</mat-icon>
   </button>
 
-  <button class="ql-align" value="right" mat-icon-button matTooltip="Rechtsbündig">
+  <button class="ql-align" value="right" mat-icon-button matTooltip="Right Align">
     <mat-icon>format_align_right</mat-icon>
   </button>
 
-  <button class="ql-clean" mat-icon-button matTooltip="Formatierung entfernen">
+  <button class="ql-clean" mat-icon-button matTooltip="Clear Formatting">
     <mat-icon>format_clear</mat-icon>
   </button>
 </div>
@@ -44,6 +53,7 @@
 <quill-editor
   [(ngModel)]="content"
   [modules]="modules"
-  [style]="{ height: '300px', width: '100%'}"
+  [style]="{ height: '300px', width: '100%' }"
+  (ngModelChange)="content = $event"
   (onBlur)="onEditorBlur()"
 ></quill-editor>

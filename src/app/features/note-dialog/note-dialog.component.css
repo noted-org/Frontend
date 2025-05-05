@@ -2,7 +2,7 @@
   background-color: var(--color-bg);
   color: var(--color-text);
   padding: 28px;
-  display: flex;
+  display: contents;
   align-items: center;
   justify-content: center;
 }
@@ -24,7 +24,7 @@ input[matInput] {
 h1[mat-dialog-title]{
   color: var(--color-text);
   margin-left: 8px;
-  margin-top: 5px; 
+  margin-top: 5px;
 }
 .mat-form-field-appearance-fill .mat-form-field-flex {
   border-radius: 8px;
@@ -80,4 +80,20 @@ h1[mat-dialog-title]{
 
 ::ng-deep .mat-mdc-dialog-surface{
   background-color: var(--color-bg);
+  height: fit-content;
+  padding: 16px;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-text);
+}
+
+::ng-deep input.mat-mdc-input-element {
+  color: var(--color-text) !important;
+}
+
+::ng-deep .mat-mdc-floating-label {
+  color: var(--color-text) !important;
 }

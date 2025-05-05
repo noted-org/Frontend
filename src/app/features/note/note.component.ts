@@ -10,7 +10,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import {MatButtonModule, MatIconButton} from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import {
   MatFormField,
@@ -50,28 +50,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { AiRequestDialogComponent } from '../ai-request-dialog/ai-request-dialog.component';
 import { SummaryDialogComponent } from '../summary-dialog/summary-dialog.component';
 
-
 @Component({
   selector: 'app-note',
   standalone: true,
 
-imports: [
-  FormsModule,
-  ReactiveFormsModule,
-  MatFormFieldModule,
-  MatInputModule,
-  TagInputComponent,
-  AsyncPipe,
-  MatFormField,
-  MatExpansionModule,
-  MatLabel,
-  CommonModule,
-  RouterModule,
-  MatChipsModule,
-  MatIconModule,
-  MatAutocompleteModule,
-  TextEditorComponent,
-],
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, TagInputComponent, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule, TextEditorComponent, MatIconButton,],
 
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
@@ -384,5 +367,14 @@ export class NoteComponent implements OnInit {
         alert('Failed to save new note. Please check your data.');
       },
     });
+  }
+
+  goBack() {
+    if (!this.isEditing){
+    window.history.back();}
+    else{
+      this.isEditing = false;
+      this.saveNoteChanges();
+    }
   }
 }
