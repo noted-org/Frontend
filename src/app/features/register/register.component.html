@@ -26,7 +26,7 @@
                          required>
                 </mat-form-field>
                 <div>
-                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperPrevious color="previous">Back</button>
                   <button mat-button matStepperNext>Next</button>
                 </div>
               </form>
@@ -44,7 +44,7 @@
                     Die E-Mail-Adresse ist ungültig.
                   </p>
                   <div>
-                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperPrevious color="previous">Back</button>
                     <button mat-button matStepperNext>Next</button>
                   </div>
                 </form>
@@ -92,7 +92,7 @@
                     </li>
                   </ul>
                   <div>
-                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperPrevious color="previous">Back</button>
                     <button mat-button [disabled]="!isFormValid()" [matTooltip]="!isFormValid() ? 'Überprüfe die Richtigkeit aller Eingaben.' : null" (click)="register()">Register</button>
                   </div>
                 </form>

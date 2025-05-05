@@ -57,18 +57,34 @@ mat-card-title {
     color: #333;
 }
 
-button[mat-raised-button][color="primary"], button[mat-button]{
+button[mat-button][color="previous"]{
+    background-color: var(--color-greyblue);
+    color: var(--color-bg);
+    margin: 5px;
+}
+
+button[mat-raised-button][color="primary"], button[mat-button], button[mat-button][color="previous"]:hover{
     background-color: var(--color-primary);
     color: var(--color-bg);
     margin: 5px;
 }
   
-button[mat-raised-button][color="primary"]:hover, button[mat-button]:hover {
+button[mat-raised-button][color="primary"]:hover, button[mat-button]:hover{
     background-color: var(--color-secondary);
 }
 
-button[mat-raised-button][color="primary"]:disabled, button[mat-button]:disabled{
+button[mat-raised-button][color="primary"]:disabled, button[mat-button]:disabled, button[mat-button][color="previous"]:disabled{
     background-color: #ccc; 
     color: #666; 
     cursor: not-allowed; 
 } 
+
+::ng-deep .mat-step-icon.mat-step-icon-state-number.mat-step-icon-selected{
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  ::ng-deep .mat-step-icon.mat-step-icon-state-edit{
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }

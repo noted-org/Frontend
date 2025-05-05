@@ -67,6 +67,11 @@
   
   .cancel-button {
     margin-left: 5px;
+    background-color: var(--color-greyblue);
+  }
+
+  .cancel-button:hover {
+    background-color: var(--color-primary);
   }
 
   .input-field-title{

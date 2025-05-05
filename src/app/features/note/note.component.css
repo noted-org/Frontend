@@ -104,3 +104,7 @@ app-tag-input {
   color: var(--color-primary);
   background-color: transparent;
 }
+
+.note-toolbar button:hover {
+  transform: scale(1.03);
+}

@@ -46,6 +46,11 @@
   text-align: right; /* or left/center based on your design */
 }
 
+.create-note-button:hover {
+  transform: scale(1.03);
+  background-color: var(--color-secondary);
+}
+
 button[mat-raised-button] {
   padding: 10px 20px;
   margin-right: 20px;

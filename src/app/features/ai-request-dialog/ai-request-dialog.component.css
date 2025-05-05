@@ -51,3 +51,11 @@
     opacity: 1;
     box-shadow: var(--color-shadow);
   }
+
+  .close-button{
+    background-color: var(--color-greyblue);
+  }
+
+  .close-button:hover{
+    background-color: var(--color-primary);
+  }
