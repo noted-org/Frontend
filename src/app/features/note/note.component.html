@@ -1,3 +1,9 @@
+<div class="back">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</div>
+
 <div class="show-notes" *ngIf="note">
   <div class="note-card">
     <app-tag-input
@@ -27,9 +33,12 @@
       class="note-title"
     />
 
-    <p *ngIf="!isEditing" (click)="startEditing()" class="note-content" style="display: block" [innerHTML]="note.content"></p>
+    <div *ngIf="!isEditing" class="ql-snow">
+      <div class="ql-editor view" (click)="startEditing()" [innerHTML]="note.content"></div>
+    </div>
 
-    <app-text-editor
+
+    <app-text-editor class="ql-editor"
       *ngIf="isEditing"
       [(content)]="note.content"
       (editorBlurred)="stopEditing()"
