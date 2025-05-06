@@ -11,6 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { LoginUser } from '../../shared/types/user.type';
 import * as sha512 from 'crypto-js';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -35,10 +36,11 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true; // Steuert die Sichtbarkeit des Passworts
   private router = inject (Router);
-
+  
   constructor(
     private fb: FormBuilder,
-    private UserService: UserService // Angenommen, du hast einen AuthService
+    private UserService: UserService, // Angenommen, du hast einen AuthService
+    private snackBar: MatSnackBar
   ) {
     // Initialisiere das Login-Formular
     this.loginForm = this.fb.group({
@@ -70,7 +72,17 @@ export class LoginComponent {
           console.error("Error login in.");
         }
       }catch(error){
-        console.error(error);
+        if (error instanceof Response && error.status === 403) {
+          this.snackBar.open('Wrong credentials. Please check your input for typos.', 'Close', {
+            duration: 5000,
+            panelClass: ['snackbar-warning']
+          });
+        }else{
+          this.snackBar.open('There was an Error login in. Please check the fields and try again.', 'Close', {
+            duration: 5000,
+            panelClass: ['snackbar-warning']
+          });
+        }
       }
 
     }else{
