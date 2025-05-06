@@ -171,12 +171,15 @@ export class NoteService {
     console.log(noteId);
     return this.get<Note>(`${this.BASE_URL}/notes/${noteId}`);
   }
-  summarize(noteId: number, user: User): Observable<Note> {
+  summarize(noteId: number, userId: String, userpw: String): Observable<string> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${user.id} ${user.password}`,
+      Authorization: `Bearer ${userId} ${userpw}`,
     });
-    return this.http.get<Note>(`${this.BASE_URL}/notes/${noteId}/summarize`, {headers});
+    return this.http.get(`${this.BASE_URL}/notes/${noteId}/summarize`, {
+      headers, 
+      responseType: 'text',
+    });
   }
 
   deleteNote(
