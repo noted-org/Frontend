@@ -12,7 +12,7 @@ import { Note } from '../../shared/types/note.type';
 export class SummaryDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<SummaryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { updatedNote: Note }
+    @Inject(MAT_DIALOG_DATA) public data: { originalNote: Note; summary: string }
   ) {}
 
   replaceNote() {

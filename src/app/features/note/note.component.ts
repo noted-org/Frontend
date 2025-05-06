@@ -288,21 +288,30 @@ export class NoteComponent implements OnInit {
     });
   }
 
-  openSummaryDialog(updatedNote: Note){
+  openSummaryDialog(summaryText: string){
+    if(!this.note){
+      console.log('Note not found.');
+      return;
+    }
       const _popup = this.dialog.open(SummaryDialogComponent, {
         restoreFocus: true,
         autoFocus: false,
         data: {
           originalNote: this.note,
-          updatedNote: updatedNote
+          summary: summaryText
         },
       });
-    _popup.afterClosed().subscribe((item) => {
-        if(item === 'replace'){
-          this.note = updatedNote;
+    _popup.afterClosed().subscribe((action) => {
+        if(action === 'replace'){
+          this.note!.content = summaryText;
           this.saveNoteChanges();
-        } else if (item === 'saveNew'){
-          this.saveAsNewNote(updatedNote);
+        } else if (action === 'saveAsNew'){
+          const newNote: Note = {
+            ...(this.note as Note),
+            id: undefined,
+            content: summaryText
+          };
+          this.saveAsNewNote(newNote);
         } else{
           console.log('Zusammenfassung verworfen')
         }
@@ -314,11 +323,14 @@ export class NoteComponent implements OnInit {
     if (!this.note?.id) {
       throw new Error('Note is undefined this should never happen here.');
     }
-    const user = await this.userService.getUser(this.userId);
+    const userId = localStorage.getItem('id');
+    const userPw = localStorage.getItem('pw');
 
-    this.noteService.summarize(this.note.id, user).subscribe({
-      next: (updatedNote) => {
-        this.openSummaryDialog(updatedNote);
+    if (!userId || !userPw) return;
+
+    this.noteService.summarize(this.note.id, userId, userPw).subscribe({
+      next: (summaryText: string) => {
+        this.openSummaryDialog(summaryText);
       },
       error: (err) => {
         console.error('Fehler beim Zusammenfassen:', err);
