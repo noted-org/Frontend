@@ -12,6 +12,7 @@ import {
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatButtonModule, MatIconButton} from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import {
   MatFormField,
   MatFormFieldModule,
@@ -54,7 +55,7 @@ import { SummaryDialogComponent } from '../summary-dialog/summary-dialog.compone
   selector: 'app-note',
   standalone: true,
 
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, TagInputComponent, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule, TextEditorComponent, MatIconButton,],
+  imports: [FormsModule, MatSnackBarModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, TagInputComponent, AsyncPipe, MatFormField, MatExpansionModule, MatLabel, CommonModule, RouterModule, MatChipsModule, MatIconModule, MatAutocompleteModule, TextEditorComponent, MatIconButton,],
 
   templateUrl: './note.component.html',
   styleUrl: './note.component.css',
@@ -80,7 +81,7 @@ export class NoteComponent implements OnInit {
   allTags: { name: string, id: number }[] = [];
 
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
 
   ngAfterViewChecked() {
@@ -227,7 +228,10 @@ export class NoteComponent implements OnInit {
 
     if (!currentUserId || !currentUserPw) {
       console.log('User information not found.');
-      alert('User information not found');
+      this.snackBar.open('User information not found', 'Close', {
+        duration: 5000,
+        panelClass: ['snackbar-warning']
+      });
       return;
     }
 
@@ -247,7 +251,10 @@ export class NoteComponent implements OnInit {
 
     if (!this.id || !this.note) {
       console.error('Note ID or data is missing.');
-      alert('Note ID or data is missing.');
+      this.snackBar.open('Note ID or data is missing.', 'Close', {
+        duration: 5000,
+        panelClass: ['snackbar-warning']
+      });
       return;
     }
 
@@ -265,7 +272,10 @@ export class NoteComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error updating note:', err);
-        alert('Failed to save note changes. Please check your data.');
+        this.snackBar.open('Error updating note.', 'Close', {
+          duration: 5000,
+          panelClass: ['snackbar-warning']
+        });
       },
     });
   }
@@ -277,7 +287,7 @@ export class NoteComponent implements OnInit {
         height: '300px',
         data: {
           title: 'Do you want an AI generated summary of your note?',
-          content: 'Note content',
+          content: 'This will use AI to summarize your note content and display it below',
         },
       });
     _popup.afterClosed().subscribe((item) => {
@@ -287,9 +297,27 @@ export class NoteComponent implements OnInit {
         this.loadSingleNote();
     });
   }
+  requestOfQuestions(){
+    const _popup = this.dialog.open(AiRequestDialogComponent, {
+      restoreFocus: true,
+      autoFocus: false,
+      width: '100px',
+      height: '300px',
+      data: {
+        title: 'Do you want AI generated questions based on your note?',
+        content: 'This will use AI to generate questions based on your note content and display it below',
+      },
+    });
+    _popup.afterClosed().subscribe((item) => {
+        if(item === 'generate'){
+          this.generateQuestions();
+        }
+        this.loadSingleNote();
+    });
+  }
 
-  openSummaryDialog(summaryText: string){
-    if(!this.note){
+  openResponseDialog(summaryText: string, type: Boolean){
+      if(!this.note){
       console.log('Note not found.');
       return;
     }
@@ -311,9 +339,9 @@ export class NoteComponent implements OnInit {
             id: undefined,
             content: summaryText
           };
-          this.saveAsNewNote(newNote);
+          this.saveAsNewNote(newNote, type);
         } else{
-          console.log('Zusammenfassung verworfen')
+          console.log('Verworfen')
         }
         this.loadSingleNote();
     });
@@ -330,21 +358,49 @@ export class NoteComponent implements OnInit {
 
     this.noteService.summarize(this.note.id, userId, userPw).subscribe({
       next: (summaryText: string) => {
-        this.openSummaryDialog(summaryText);
+        this.openResponseDialog(summaryText, true);
       },
       error: (err) => {
         console.error('Fehler beim Zusammenfassen:', err);
       },
     });
   }
+  async generateQuestions() {
+    if (!this.note?.id) {
+      throw new Error('Note is undefined this should never happen here.');
+    }
+    const userId = localStorage.getItem('id');
+    const userPw = localStorage.getItem('pw');
 
-  saveAsNewNote(note: Note){
+    if (!userId || !userPw) return;
+
+    this.noteService.generateQuestions(this.note.id, userId, userPw).subscribe({
+      next: (questionText: string) => {
+        this.openResponseDialog(questionText, false);
+      },
+      error: (err) => {
+        console.error('Fehler beim generieren der Fragen:', err);
+      },
+    });
+  }
+  saveAsNewNote(note: Note, summary: Boolean){
     const currentUserId = localStorage.getItem('id');
     const currentUserPw = localStorage.getItem('pw');
+    let type: string;
+
+    if (summary) {
+      type = 'Summary';
+    } else {
+      type = 'Questions';
+    }
+  
 
     if (!currentUserId || !currentUserPw) {
       console.log('User information not found.');
-      alert('User information not found');
+      this.snackBar.open('User information not found.', 'Close', {
+        duration: 5000,
+        panelClass: ['snackbar-warning']
+      });
       return;
     }
 
@@ -358,12 +414,15 @@ export class NoteComponent implements OnInit {
 
     if (!this.id || !this.note) {
       console.error('Note ID or data is missing.');
-      alert('Note ID or data is missing.');
+      this.snackBar.open('Note ID or data is missing.', 'Close', {
+        duration: 5000,
+        panelClass: ['snackbar-warning']
+      });
       return;
     }
 
     const noteData: CreateNote = {
-      name: note.name + ' (Summary)',
+      name: note.name + ' - ' + type,
       content: note.content,
       author: note.author,
       tags: note.tags ? note.tags.map(tag => tag.id) : [],
@@ -372,11 +431,17 @@ export class NoteComponent implements OnInit {
     this.noteService.createNote(noteData, currentUser).subscribe({
       next: (res) => {
         console.log('New note saved:', res);
-        alert('Summary successfully saved as a new note.')
+        this.snackBar.open('New note saved.', 'Close', {
+          duration: 5000,
+          panelClass: ['snackbar-success']
+        });
       },
       error: (err) => {
         console.error('Error saving new note:', err);
-        alert('Failed to save new note. Please check your data.');
+        this.snackBar.open('Failed to save new note. Please check your data.', 'Close', {
+          duration: 5000,
+          panelClass: ['snackbar-warning']
+        });
       },
     });
   }
