@@ -182,6 +182,17 @@ export class NoteService {
     });
   }
 
+  generateQuestions(noteId: number, userId: String, userpw: String): Observable<string> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userId} ${userpw}`,
+    });
+    return this.http.get(`${this.BASE_URL}/notes/${noteId}/questions`, {
+      headers, 
+      responseType: 'text',
+    });
+  }
+
   deleteNote(
     userId: number,
     password: string,

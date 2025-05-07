@@ -1,14 +1,14 @@
 <div class="form">
-    <h1 mat-dialog-title>
-      Do you want an AI generated summary of your note?
-    </h1>
-  
-    <div mat-dialog-content>
-      <p>This will use AI to summarize your note content and display it below.</p>
-    </div>
-  
-    <div mat-dialog-actions>
-      <button mat-button class="close-button" (click)="closeDialog()">No</button>
-      <button mat-raised-button (click)="generateSummary()">Yes, generate</button>
-    </div>
+  <h1 mat-dialog-title>
+    {{ data.title }}
+  </h1>
+
+  <div mat-dialog-content>
+    <p>{{ data.content }}.</p>
   </div>
+
+  <div mat-dialog-actions>
+    <button mat-button class="close-button" (click)="closeDialog()">No</button>
+    <button mat-raised-button (click)="generateSummary()">Yes, generate</button>
+  </div>
+</div>

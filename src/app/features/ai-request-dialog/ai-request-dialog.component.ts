@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-ai-request-dialog',
@@ -10,7 +10,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class AiRequestDialogComponent {
   
-  constructor(public dialogRef: MatDialogRef<AiRequestDialogComponent>) {}
+  constructor(public dialogRef: MatDialogRef<AiRequestDialogComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: { title: string; content: string }
+  ) {}
 
 
 
