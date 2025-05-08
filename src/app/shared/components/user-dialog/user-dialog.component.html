@@ -1,0 +1,13 @@
+<div class="form">
+    <h1 mat-dialog-title>
+      {{ data.title }}
+    </h1>
+  
+    <div mat-dialog-content>
+        <div mat-dialog-content [innerHTML]="data.content"></div>
+    </div>
+  
+    <div mat-dialog-actions>
+      <button mat-button class="close-button" (click)="closeDialog()">Exit</button>
+    </div>
+</div>
