@@ -93,9 +93,25 @@
                   </ul>
                   <div>
                     <button mat-button matStepperPrevious color="previous">Back</button>
-                    <button mat-button [disabled]="!isFormValid()" [matTooltip]="!isFormValid() ? 'Überprüfe die Richtigkeit aller Eingaben.' : null" (click)="register()">Register</button>
+                    <button mat-button matStepperNext [disabled]="!isPasswordValid()" [matTooltip]="!isPasswordValid() ? 'Überprüfe die Richtigkeit deiner Eingabe.' : null">Next</button>
                   </div>
                 </form>
+              </mat-step>
+
+              <mat-step [stepControl]="fifthFormGroup">
+                <form [formGroup]="fifthFormGroup">
+                  <ng-template matStepLabel>Terms & Conditions</ng-template>
+                  <mat-checkbox formControlName="agbAccepted" required>
+                    I read and accept the Terms & Conditions
+                  </mat-checkbox>
+                  <div>
+                    <button mat-button type="button" (click)="openAgb()">show Terms & Conditions</button>
+                  </div>
+                  <div>
+                    <button mat-button matStepperPrevious color="previous">Back</button>
+                    <button mat-button matStepperNext [disabled]="!isFormValid()" [matTooltip]="!isFormValid() ? 'Bitte stimme den AGBs zu.' : null" (click)="register()">Register</button>
+                  </div>
+                  </form>
               </mat-step>
         </mat-stepper>
         <mat-card-subtitle>You already have an account?</mat-card-subtitle>

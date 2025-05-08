@@ -13,6 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../shared/services/user.service';
 import * as sha512 from 'crypto-js';
 import { MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UserDialogComponent } from '../../shared/components/user-dialog/user-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +31,8 @@ import { MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
     MatTooltipModule,
     MatSnackBarModule,
     CommonModule,
-    MatIconModule
+    MatIconModule,
+    MatCheckboxModule
   ],
   providers: [UserService],
   templateUrl: './register.component.html',
@@ -39,9 +43,9 @@ export class RegisterComponent {
   private router = inject(Router);
   private UserService = inject(UserService);
   constructor(
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ){}
-
   hide = signal(true);
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -60,6 +64,9 @@ export class RegisterComponent {
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]],
   });
+  fifthFormGroup = this._formBuilder.group({
+    agbAccepted: [false, Validators.requiredTrue]
+  });
   isNameValid(){
     return this.firstFormGroup.valid;
   }
@@ -74,7 +81,7 @@ export class RegisterComponent {
   }
   
   isFormValid() {
-    return this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid;
+    return this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid && this.fifthFormGroup.valid;
   }
   hasMinLength(): boolean {
     const password = this.thirdFormGroup.get('thirdCtrl')?.value;
@@ -110,6 +117,7 @@ export class RegisterComponent {
     const username = this.secondFormGroup.get('secondCtrl')?.value;
     const password = this.thirdFormGroup.get('thirdCtrl')?.value;
     const email = this.fourthFormGroup.get('fourthCtrl')?.value;
+    const agb = ""
 
     let newUser: CreateUser | undefined;
 
@@ -155,5 +163,40 @@ export class RegisterComponent {
 
   toLogin(): void{
     this.router.navigate([`/login`]);
+  }
+
+  openAgb(){
+    const agbHtml = `
+    <strong>§1 Scope</strong><br>
+    These Terms and Conditions apply to the use of the web application “Noted.” By using the app, you agree to be bound by these terms.<br><br>
+
+    <strong>§2 Description of Service</strong><br>
+    “Noted” is a web-based note-taking app that allows users to save, manage, and retrieve personal notes. There is no guarantee of continuous availability or specific features.<br><br>
+
+    <strong>§3 Usage</strong><br>
+    A registration is required to use the app. By saving notes, you consent to their processing within the scope of this application.<br><br>
+
+    <strong>§4 Disclaimer of Liability</strong><br>
+    The provider assumes no liability for data loss, technical issues, or any damages that may result from the use of this app. Usage is at your own risk.<br><br>
+
+    <strong>§5 Privacy</strong><br>
+    The app only stores the notes you input. No personal tracking or third-party sharing takes place. Your data is your own.<br><br>
+
+    <strong>§6 Changes to the Terms</strong><br>
+    The provider reserves the right to modify these Terms and Conditions at any time. Changes will be published on this page. Continued use of the app constitutes acceptance of the modified terms.<br><br>
+
+    <strong>§7 Complete Transfer of Intellectual Property</strong><br>
+    By clicking the "I Agree" button, the user enthusiastically and wholeheartedly agrees to transfer all present, past, and future intellectual property – including, but not limited to, patents, ideas for flying vehicles, groundbreaking toast spreads, and radically new ways of taking notes – to the creators of the “Noted” app.<br>`;
+
+    const _popup = this.dialog.open(UserDialogComponent, {
+      restoreFocus: true,
+      autoFocus: false,
+      width: '400px',
+      height: '700px',
+      data: {
+        title: 'Terms & Conditions:',
+        content: agbHtml,
+      },
+    });
   }
 }
