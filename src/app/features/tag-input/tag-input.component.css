@@ -1,56 +1,60 @@
 #tags {
-    padding: 1rem;
-    border-radius: 8px;
-    background-color: var(--color-bg);
-    color: var(--color-text);
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
-mat-icon{
-    fill: var(--color-bg);
-    color: var(--color-bg);
+mat-icon {
+  fill: var(--color-bg);
+  color: var(--color-bg);
 }
 
-mat-panel-title, mat-panel-description{
-    color: var(--color-bg); 
+mat-panel-title,
+mat-panel-description {
+  color: var(--color-bg);
 }
 
 mat-expansion-panel {
-    background-color: var(--color-bg);
-    color: var(--color-text);
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 mat-form-field {
-    width: 100%;
-    color: var(--color-text);
-    margin: 5px;
+  width: 100%;
+  color: var(--color-text);
+  margin: 5px;
 
-    .mat-form-field-flex {
-      background-color: rgba(255, 255, 255, 0.6);
-    }
+  .mat-form-field-flex {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
 }
 
 mat-chip {
-    background-color: var(--color-greyblue) !important;
-    color: var(--color-text) !important;
+  background-color: var(--color-greyblue) !important;
+  color: var(--color-text) !important;
 }
 
-mat-chip button:hover{
+mat-chip button:hover {
   background-color: var(--color-greyblue);
 }
 
-
 mat-expansion-panel-header {
-    background-color: var(--color-primary) !important;
-    color: var(--color-bg) !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-bg) !important;
 }
 
 mat-expansion-panel-header:hover {
-    background-color: var(--color-secondary) !important;
-    color: var(--color-bg) !important;
+  background-color: var(--color-secondary) !important;
+  color: var(--color-bg) !important;
 }
 
 ::ng-deep .mdc-evolution-chip-set_chips {
   margin: 5px !important;
+}
+
+::ng-deep .mat-mdc-input-element::placeholder {
+  color: red !important;
 }
 
 /*::ng-deep #mat-autocomplete-0 {
