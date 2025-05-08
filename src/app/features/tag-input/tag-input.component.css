@@ -57,6 +57,9 @@ mat-expansion-panel-header:hover {
   color: red !important;
 }
 
+.addTags {
+  margin: 10px;
+}
 /*::ng-deep #mat-autocomplete-0 {
     background-color: var(--color-primary);
     color: var(--color-bg);
