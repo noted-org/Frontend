@@ -4,17 +4,24 @@
     <div mat-dialog-content>
       <mat-form-field>
         <mat-label>Title</mat-label>
-        <input matInput formControlName="title" required/>
+        <input matInput formControlName="title" required />
         <mat-error *ngIf="firstFormGroup.get('title')?.hasError('required')">
           Title is required
         </mat-error>
       </mat-form-field>
 
-      <app-text-editor formControlName="content" style="color: var(--color-text)"></app-text-editor>
+      <app-text-editor
+        formControlName="content"
+        style="color: var(--color-text)"
+      ></app-text-editor>
 
-      <mat-error *ngIf="
-        firstFormGroup.get('content')?.hasError('required') &&
-        (firstFormGroup.get('content')?.touched || firstFormGroup.get('content')?.dirty)">
+      <mat-error
+        *ngIf="
+          firstFormGroup.get('content')?.hasError('required') &&
+          (firstFormGroup.get('content')?.touched ||
+            firstFormGroup.get('content')?.dirty)
+        "
+      >
         Content is required
       </mat-error>
 
@@ -25,7 +32,6 @@
         (tagRemoved)="onTagRemoved($event)"
       >
       </app-tag-input>
-
     </div>
     <div mat-dialog-actions>
       <button mat-raised-button class="cancel-button" (click)="onCancel()">

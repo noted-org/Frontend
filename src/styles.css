@@ -21,9 +21,9 @@
   --color-greyblue: #7f889c;
   --color-button-text: #ffffff;
   --color-logo: white;
-  --color-shadow:  0 0 0 1px rgba(0, 0, 0, 0.05),       /* feine Umrandung */
-  0 10px 30px rgba(0, 0, 0, 0.2),      /* starker unterer Schatten */
-  0 0 20px rgba(0, 0, 0, 0.15);
+  --color-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05),
+    /* feine Umrandung */ 0 10px 30px rgba(0, 0, 0, 0.2),
+    /* starker unterer Schatten */ 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,9 +40,9 @@
     --color-button-text: #ffffff;
     --color-greyblue: #536a6e;
     --color-logo: none;
-    --color-shadow:  0 0 0 1px rgba(255, 255, 255, 0.1),       /* feiner heller Rand */
-    0 0 20px rgba(255, 255, 255, 0.08),       /* weicher Glow */
-    0 0 60px rgba(173, 216, 230, 0.1);
+    --color-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1),
+      /* feiner heller Rand */ 0 0 20px rgba(255, 255, 255, 0.08),
+      /* weicher Glow */ 0 0 60px rgba(173, 216, 230, 0.1);
   }
 }
 
@@ -70,7 +70,6 @@ button:hover {
 }
 
 .mat-menu-panel {
-
   background-color: var(--color-bg) !important;
   padding: 8px;
   border-radius: 10px;
@@ -97,5 +96,5 @@ button:hover {
 
 .cdk-overlay-backdrop {
   backdrop-filter: blur(6px);
-  background-color: rgba(0, 0, 0, 0.3); 
+  background-color: rgba(0, 0, 0, 0.3);
 }

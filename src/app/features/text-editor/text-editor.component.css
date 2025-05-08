@@ -18,3 +18,7 @@
   font-family: 'Comic Sans MS', cursive;
 }
 */
+
+.ql-editor.ql-blank::before {
+  color: var(--color-text);
+}

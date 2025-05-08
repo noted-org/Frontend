@@ -1,5 +1,8 @@
-<div id="custom-toolbar" class="flex flex-wrap gap-2 p-2 bg-gray-100 rounded-xl shadow-sm">
-   <!-- <select class="ql-font" matTooltip="Schriftart wählen">
+<div
+  id="custom-toolbar"
+  class="flex flex-wrap gap-2 p-2 bg-gray-100 rounded-xl shadow-sm"
+>
+  <!-- <select class="ql-font" matTooltip="Schriftart wählen">
         <option selected></option>
         <option value="arial">Arial</option>
         <option value="roboto">Roboto</option>
@@ -24,11 +27,21 @@
     <mat-icon>strikethrough_s</mat-icon>
   </button>
 
-  <button class="ql-list" value="ordered" mat-icon-button matTooltip="Numbered List">
+  <button
+    class="ql-list"
+    value="ordered"
+    mat-icon-button
+    matTooltip="Numbered List"
+  >
     <mat-icon>format_list_numbered</mat-icon>
   </button>
 
-  <button class="ql-list" value="bullet" mat-icon-button matTooltip="Bulleted List">
+  <button
+    class="ql-list"
+    value="bullet"
+    mat-icon-button
+    matTooltip="Bulleted List"
+  >
     <mat-icon>format_list_bulleted</mat-icon>
   </button>
 
@@ -36,11 +49,21 @@
     <mat-icon>format_align_left</mat-icon>
   </button>
 
-  <button class="ql-align" value="center" mat-icon-button matTooltip="Center Align">
+  <button
+    class="ql-align"
+    value="center"
+    mat-icon-button
+    matTooltip="Center Align"
+  >
     <mat-icon>format_align_center</mat-icon>
   </button>
 
-  <button class="ql-align" value="right" mat-icon-button matTooltip="Right Align">
+  <button
+    class="ql-align"
+    value="right"
+    mat-icon-button
+    matTooltip="Right Align"
+  >
     <mat-icon>format_align_right</mat-icon>
   </button>
 
@@ -49,10 +72,10 @@
   </button>
 </div>
 
-
 <quill-editor
   [(ngModel)]="content"
   [modules]="modules"
+  [placeholder]="isEmpty(content) ? 'Insert text here ...' : ''"
   [style]="{ height: '300px', width: '100%' }"
   (ngModelChange)="content = $event"
   (onBlur)="onEditorBlur()"

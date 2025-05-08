@@ -1,4 +1,11 @@
-import {Component, Input, Output, EventEmitter, forwardRef, ViewEncapsulation} from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  forwardRef,
+  ViewEncapsulation,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,16 +23,23 @@ Quill.register(Font, true);*/
   selector: 'app-text-editor',
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule, MatIconModule, MatTooltipModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    QuillModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule,
+  ],
   templateUrl: './text-editor.component.html',
   styleUrl: './text-editor.component.css',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TextEditorComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class TextEditorComponent implements ControlValueAccessor {
   private _content = '';
@@ -67,5 +81,9 @@ export class TextEditorComponent implements ControlValueAccessor {
   onEditorBlur(): void {
     this.onTouched();
     this.editorBlurred.emit();
+  }
+
+  isEmpty(text: string | null | undefined): boolean {
+    return !text || text.replace(/<(.|\n)*?>/g, '').trim() === '';
   }
 }
