@@ -13,7 +13,7 @@
                   <input matTooltip="Only letters allowed" matInput placeholder="Name" formControlName="firstCtrl" required>
                 </mat-form-field>
                 <div>
-                  <button mat-button matStepperNext>Next</button>
+                  <button mat-button matStepperNext [disabled]="!isNameValid()" [matTooltip]="!isNameValid() ? 'Überprüfe die Richtigkeit deiner Eingabe. Nur Buchstaben sind erlaubt.' : null">Next</button>
                 </div>
               </form>
             </mat-step>
@@ -27,7 +27,7 @@
                 </mat-form-field>
                 <div>
                   <button mat-button matStepperPrevious color="previous">Back</button>
-                  <button mat-button matStepperNext>Next</button>
+                  <button mat-button matStepperNext [disabled]="!isUsernameValid()" [matTooltip]="!isUsernameValid() ? 'Überprüfe die Richtigkeit deiner Eingabe. Es ist echt nicht so schwer!' : null">Next</button>
                 </div>
               </form>
             </mat-step>
@@ -45,7 +45,7 @@
                   </p>
                   <div>
                     <button mat-button matStepperPrevious color="previous">Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                    <button mat-button matStepperNext [disabled]="!isEmailValid()" [matTooltip]="!isEmailValid() ? 'Überprüfe die Richtigkeit deiner Eingabe.' : null">Next</button>
                   </div>
                 </form>
             </mat-step>

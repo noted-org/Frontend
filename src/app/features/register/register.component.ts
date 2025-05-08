@@ -60,6 +60,18 @@ export class RegisterComponent {
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]],
   });
+  isNameValid(){
+    return this.firstFormGroup.valid;
+  }
+  isUsernameValid(){
+    return this.secondFormGroup.valid;
+  }
+  isEmailValid(){
+    return this.fourthFormGroup.valid;
+  }
+  isPasswordValid(){
+    return this.thirdFormGroup.valid;
+  }
   
   isFormValid() {
     return this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid;
