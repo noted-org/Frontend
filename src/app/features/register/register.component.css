@@ -88,3 +88,14 @@ button[mat-raised-button][color="primary"]:disabled, button[mat-button]:disabled
     background-color: var(--color-primary);
     color: var(--color-bg);
   }
+
+  @media (prefers-color-scheme: dark){
+    mat-card, mat-stepper{
+        background-color: #c3d3d3;
+    }
+    button[mat-raised-button][color="primary"]:disabled, button[mat-button]:disabled, button[mat-button][color="previous"]:disabled{
+        background-color: #a3a3a3; 
+        color: #4b4b4b; 
+    } 
+}
+  

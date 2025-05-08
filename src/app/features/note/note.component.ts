@@ -324,6 +324,7 @@ export class NoteComponent implements OnInit {
       const _popup = this.dialog.open(SummaryDialogComponent, {
         restoreFocus: true,
         autoFocus: false,
+        width: '80%',
         data: {
           originalNote: this.note,
           summary: summaryText
