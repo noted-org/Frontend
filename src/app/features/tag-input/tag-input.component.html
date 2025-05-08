@@ -7,10 +7,10 @@
       (closed)="panelOpenState.set(false)"
     >
       <mat-expansion-panel-header #expansionPanelHeader>
-        <mat-panel-title> <mat-icon>add</mat-icon> </mat-panel-title>
-        <mat-panel-description>
-          {{ panelOpenState() ? "" : "add tags" }}
-        </mat-panel-description>
+        <mat-panel-title> 
+          <mat-icon>add</mat-icon> 
+          <span class="addTags" *ngIf="!panelOpenState()">add tags</span> 
+        </mat-panel-title>
       </mat-expansion-panel-header>
       <form
         class="example-form"
