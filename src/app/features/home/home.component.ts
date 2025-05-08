@@ -61,10 +61,12 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class HomeComponent implements OnInit {
   notes: Note[] = [];
   filteredNotes: Note[] = [];
+  visibleNotes: Note[] = [];
   allTags: { id: number; name: string }[] = [];
   selectedTags: { id: number; name: string }[] = [];
 
   tagCtrl = new FormControl('');
+  searchCtrl = new FormControl('');
   separatorKeysCodes: number[] = [ENTER, COMMA];
   filteredTagOptions!: Observable<{ id: number; name: string }[]>;
 
@@ -83,6 +85,9 @@ export class HomeComponent implements OnInit {
   async ngOnInit() {
     this.loadNotes();
     this.loadAllTags();
+    this.searchCtrl.valueChanges.subscribe(() => {
+      this.filterNotes();
+    });
   }
 
   trackByTagId(index: number, tag: { id: number; name: string }): number {
@@ -124,7 +129,7 @@ export class HomeComponent implements OnInit {
             ...note,
             tags: note.tags || [],
           }));
-          this.filteredNotes = this.notes;
+          this.filterNotes();
         },
         error: (error) => {
           console.error('Error fetching notes:', error);
@@ -251,14 +256,26 @@ export class HomeComponent implements OnInit {
   }
 
   filterNotes() {
+    const searchTerm = this.searchCtrl.value?.toLowerCase().trim() || '';
+
+    // Filter by tags
+    let filtered = this.notes;
     if (this.selectedTags.length > 0) {
       const tagIds = this.selectedTags.map((t) => t.id);
-      this.filteredNotes = this.notes.filter((note) =>
+      filtered = filtered.filter((note) =>
         tagIds.every((tagId) => note.tags?.some((tag) => tag.id === tagId))
       );
-    } else {
-      this.filteredNotes = this.notes;
     }
+
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (note) =>
+          note.name.toLowerCase().includes(searchTerm) ||
+          note.content.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    this.visibleNotes = filtered;
   }
 
   preventLoading(event: Event) {

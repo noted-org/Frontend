@@ -38,21 +38,27 @@
     </mat-autocomplete>
   </mat-form-field>
 
-  <div class="create-note-container">
-    <button
-      class="create-note-container-button"
-      mat-raised-button
-      class="create-note-button"
-      (click)="createNewNote()"
-    >
-      Create New Note (+)
-    </button>
-  </div>
+  <mat-form-field class="filter-field search-field" floatLabel="always">
+    <mat-label>Search notes</mat-label>
+    <input
+      matInput
+      placeholder="Search title or content"
+      [formControl]="searchCtrl"
+    />
+  </mat-form-field>
+
+  <button
+    class="create-note-button"
+    mat-raised-button
+    (click)="createNewNote()"
+  >
+    Create New Note (+)
+  </button>
 </div>
 
 <div class="show-notes">
   <div
-    *ngFor="let note of filteredNotes; trackBy: trackByNoteId"
+    *ngFor="let note of visibleNotes; trackBy: trackByNoteId"
     class="note-card"
     [routerLink]="['/notes', note.id]"
   >
