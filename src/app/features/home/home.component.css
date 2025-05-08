@@ -9,7 +9,7 @@
   background: var(--color-bg);
   border-radius: 10px;
   padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px var(--color-shadow);
   transition: transform 0.2s ease-in-out;
   border: 2px solid var(--color-border);
   min-height: 200px;
@@ -124,23 +124,21 @@ button[mat-raised-button] {
 }
 
 .filter-tag-label {
-  color: black;
+  color: var(--color-bg);
 }
 
 .filter-tag-label::placeholder {
-  color: black !important;
+  color: var(--color-bg) !important;
+}
+.mat-menu {
+  color: var(--color-text);
 }
 
-@media (prefers-color-scheme: dark) {
-  .mat-menu {
-    color: white;
-  }
-
-  ::ng-deep .mat-menu-background {
-    background-color: black;
-    border: 2px solid #636363;
-  }
+::ng-deep .mat-menu-background {
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-border);
 }
+
 
 ::ng-deep
   .filter-field.mat-mdc-form-field:hover

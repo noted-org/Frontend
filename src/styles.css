@@ -95,3 +95,7 @@ button:hover {
   margin-right: 0.5em;
 }
 
+.cdk-overlay-backdrop {
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.3); 
+}

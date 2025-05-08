@@ -74,3 +74,6 @@ h1 {
 ::ng-deep .mat-mdc-menu-item-text {
   color: var(--color-text) !important;
 }
+.matMenu{
+  box-shadow: var(--color-shadow);
+}
