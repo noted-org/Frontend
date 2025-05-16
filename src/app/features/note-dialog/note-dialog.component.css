@@ -39,7 +39,7 @@ h1[mat-dialog-title]{
 }
 
 .save-button {
-  color: var(--color-bg) !important;
+  color: var(--color-button-text) !important;
   background: var(--color-primary);
   border-radius: 8px;
   padding: 10px 20px;
@@ -63,6 +63,7 @@ h1[mat-dialog-title]{
 
 .cancel-button:hover {
   background: var(--color-primary);
+  color: var(--color-button-text);
 }
 
 .animated-dialog {

@@ -2,5 +2,5 @@
     background-color: var(--color-primary);
     line-height: 56px;
     text-align: center;
-    color: var(--color-bg);
+    color: var(--color-button-text);
 }

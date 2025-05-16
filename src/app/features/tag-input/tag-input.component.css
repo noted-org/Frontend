@@ -12,7 +12,7 @@ mat-icon {
 
 mat-panel-title,
 mat-panel-description {
-  color: var(--color-bg);
+  color: var(--color-button-text);
 }
 
 mat-expansion-panel {
@@ -54,7 +54,7 @@ mat-expansion-panel-header:hover {
 }
 
 ::ng-deep .mat-mdc-input-element::placeholder {
-  color: red !important;
+  color: var(--color-text) !important;
 }
 
 .addTags {

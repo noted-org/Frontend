@@ -5,6 +5,10 @@
     padding: 20px;
     box-sizing: border-box;
 }
+
+.mat-mdc-text-field-wrapper{
+    background-color: white;
+}
   
 
 mat-card {
@@ -35,7 +39,6 @@ button[mat-raised-button] {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    font-weight: bold;
     margin-top: 10px;
     border-radius: 8px; 
     transition: all 0.3s ease-in-out;
@@ -43,7 +46,7 @@ button[mat-raised-button] {
 
 button[mat-raised-button][color="primary"] {
     background-color: var(--color-primary);
-    color: var(--color-bg);
+    color: var(--color-button-text);
 }
   
 button[mat-raised-button][color="primary"]:hover {
@@ -89,4 +92,10 @@ mat-card-subtitle {
     }
 }
   
-  
+mat-icon{
+    color: #3d3d3d;
+}
+
+.visible-button:hover{
+    background-color: transparent;
+}

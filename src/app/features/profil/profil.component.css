@@ -4,7 +4,7 @@
     padding: 20px;
     background: var(--color-bg);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--color-shadow);
     text-align: center;
     border: 2px solid var(--color-border);
   }

@@ -57,15 +57,19 @@ mat-card-title {
     color: #333;
 }
 
+mat-card-subtitle{
+    color: black;
+}
+
 button[mat-button][color="previous"]{
     background-color: var(--color-greyblue);
-    color: var(--color-bg);
+    color: var(--color-button-text);
     margin: 5px;
 }
 
 button[mat-raised-button][color="primary"], button[mat-button], button[mat-button][color="previous"]:hover{
     background-color: var(--color-primary);
-    color: var(--color-bg);
+    color: var(--color-button-text);
     margin: 5px;
 }
   
@@ -81,12 +85,12 @@ button[mat-raised-button][color="primary"]:disabled, button[mat-button]:disabled
 
 ::ng-deep .mat-step-icon.mat-step-icon-state-number.mat-step-icon-selected{
     background-color: var(--color-primary);
-    color: var(--color-bg);
+    color: var(--color-button-text);
   }
 
   ::ng-deep .mat-step-icon.mat-step-icon-state-edit{
     background-color: var(--color-primary);
-    color: var(--color-bg);
+    color: var(--color-button-text);
   }
 
   @media (prefers-color-scheme: dark){
@@ -98,4 +102,19 @@ button[mat-raised-button][color="primary"]:disabled, button[mat-button]:disabled
         color: #4b4b4b; 
     } 
 }
-  
+
+p {
+    color: black;
+}
+ 
+mat-icon{
+    color: #3d3d3d;
+}
+
+.mat-mdc-text-field-wrapper{
+    background-color: #ffffff;
+}
+
+.visible-button:hover{
+    background-color: transparent;
+}

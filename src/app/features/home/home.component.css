@@ -140,6 +140,13 @@ button[mat-raised-button] {
 ::ng-deep .mat-mdc-chip {
   background-color: var(--color-border) !important;
 }
+
+mat-label{
+  color: var(--color-button-text);
+}
+::ng-deep .mat-mdc-input-element, .mat-mdc-input-element::placeholder{
+  color: var(--color-button-text) !important;
+}
 /* ::ng-deep .mat-mdc-option {
   background-color: purple !important;
 }

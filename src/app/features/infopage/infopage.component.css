@@ -10,7 +10,7 @@
     text-align: center;
     padding: 60px 20px;
     background: linear-gradient(135deg, #20545e, #68a6b1);
-    color: var(--color-bg);
+    color: var(--color-button-text);
     border-radius: 10px;
     margin-bottom: 40px;
   }
@@ -27,7 +27,7 @@
   
   .cta-button {
     background-color: var(--color-primary);
-    color: var(--color-bg);
+    color: var(--color-button-text);
     padding: 15px 30px;
     border-radius: 5px;
     text-decoration: none;
