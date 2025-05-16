@@ -137,3 +137,75 @@ app-tag-input {
 ::ng-deep .mat-mdc-floating-label {
   color: var(--color-text) !important;
 }
+
+.summary-button{
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-summary {
+  position: absolute;
+  bottom: 130%; /* leicht höher für Abstand */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #56668a;
+  color: var(--color-button-text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 180px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: normal; /* erlaubt Zeilenumbruch */
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.summary-button:hover .tooltip-summary {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.question-button{
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-question {
+  position: absolute;
+  bottom: 130%; /* leicht höher für Abstand */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #56668a;
+  color: var(--color-button-text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  min-width: 100px;
+  max-width: 180px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: normal; /* erlaubt Zeilenumbruch */
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.question-button:hover .tooltip-question {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+@media (prefers-color-scheme: dark){
+  .tooltip-summary{
+    background-color: #a3d3db;
+  }
+  .tooltip-question{
+    background-color: #a3d3db;
+  }
+}

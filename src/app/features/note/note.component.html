@@ -13,13 +13,18 @@
       (tagRemoved)="onTagRemoved($event)"
     ></app-tag-input>
     <div class="note-toolbar">
+      <div class="summary-button">
       <button mat-icon-button (click)="requestOfSummary()">
         <mat-icon>auto_awesome</mat-icon>
       </button>
+      <span class="tooltip-summary">Lasse KI deine Notizen zusammenfassen</span>
+      </div>
+      <div class="question-button">
       <button mat-icon-button (click)="requestOfQuestions()">
-        <mat-icon>question_answer</mat-icon>
+        <mat-icon>question_answer</mat-icon> 
       </button>
-
+      <span class="tooltip-question">Lasse KI Fragen zu deinen Notizen erstellen</span>
+      </div>
     </div>
     <p
       *ngIf="!isEditingHeader"
